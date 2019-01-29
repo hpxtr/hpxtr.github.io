@@ -21,9 +21,9 @@
 // The function gets called when the window is fully loaded
 window.onload = function() {
     // Get the canvas and context
-    var canvas = document.getElementById("viewport");
+    var canvas = document.getElementById("board");
     var context = canvas.getContext("2d");
-    
+
     // Timing and frames per second
     var lastframe = 0;
     var fpstime = 0;
@@ -66,26 +66,27 @@ window.onload = function() {
     var gamestate = gamestates.init;
     
     // Score
-    var score = 0;
+    var horcruxes = [
+        {type:"ring",   value: 0, img:"ring.png", x:30, y:120},
+        {type:"diary",  value: 0, img:"ring.png", x:100, y:120},
+        {type:"locket", value: 0, img:"ring.png", x:170, y:120},
+        {type:"cup",    value: 0, img:"ring.png", x:30, y:190},
+        {type:"diadem", value: 0, img:"ring.png", x:100, y:190},
+        {type:"narigi", value: 0, img:"ring.png", x:170, y:190},
+        {type:"scar",   value: 0, img:"ring.png", x:100, y:260}
+    ];
+    var scoreColors = ["#55f", "#5f5", "#f55"];
     
     // Animation variables
     var animationstate = 0;
     var animationtime = 0;
     var animationtimetotal = 0.3;
     
-    // Show available moves
-    var showmoves = false;
-    
-    // The AI bot
-    var aibot = false;
-    
     // Game Over
     var gameover = false;
     
     // Gui buttons
-    var buttons = [ { x: 30, y: 240, width: 150, height: 50, text: "New Game"},
-                    { x: 30, y: 300, width: 150, height: 50, text: "Show Moves"},
-                    { x: 30, y: 360, width: 150, height: 50, text: "Enable AI Bot"}];
+    var buttons = [ { x: 60, y: 340, width: 150, height: 50, text: "New Game"}];
     
     // Initialize the game
     function init() {
@@ -120,6 +121,27 @@ window.onload = function() {
         update(tframe);
         render();
     }
+
+    function addScore(i) {
+        var horcrux = horcruxes[i];
+        var color = scoreColors[horcrux.value];
+        if (color){
+            context.fillStyle = color;
+            context.fillRect(horcrux.x - 4, horcrux.y-4, 50 + 8, 50 + 8);
+            image = new Image(50, 50);
+            image.src = horcrux.img;
+            image.onload = context.drawImage(image, horcrux.x, horcrux.y, 50, 50);
+            horcrux.value = horcrux.value + 1;
+        } else {
+            // check end of the game
+            gameover = true;
+            for (var j=0; j<horcruxes.length; j++){
+                if (horcruxes[j].value < scoreColors.length){
+                    gameover = false;
+                }
+            }
+        }
+    }
     
     // Update the game state
     function update(tframe) {
@@ -136,27 +158,7 @@ window.onload = function() {
             if (moves.length <= 0) {
                 gameover = true;
             }
-            
-            // Let the AI bot make a move, if enabled
-            if (aibot) {
-                animationtime += dt;
-                if (animationtime > animationtimetotal) {
-                    // Check if there are moves available
-                    findMoves();
-                    
-                    if (moves.length > 0) {
-                        // Get a random valid move
-                        var move = moves[Math.floor(Math.random() * moves.length)];
-                        
-                        // Simulate a player using the mouse to swap two tiles
-                        mouseSwap(move.column1, move.row1, move.column2, move.row2);
-                    } else {
-                        // No moves left, Game Over. We could start a new game.
-                        // newGame();
-                    }
-                    animationtime = 0;
-                }
-            }
+
         } else if (gamestate == gamestates.resolve) {
             // Game is busy resolving and animating clusters
             animationtime += dt;
@@ -171,7 +173,8 @@ window.onload = function() {
                         // Add points to the score
                         for (var i=0; i<clusters.length; i++) {
                             // Add extra points for longer clusters
-                            score += 100 * (clusters[i].length - 2);;
+                            //score += 100 * (clusters[i].length - 2);
+                            addScore(clusters[i].type);
                         }
                     
                         // Clusters found, remove them
@@ -266,16 +269,8 @@ window.onload = function() {
     
     // Render the game
     function render() {
-        // Draw the frame
         drawFrame();
-        
-        // Draw score
-        context.fillStyle = "#000000";
-        context.font = "24px Verdana";
-        drawCenterText("Score:", 30, level.y+40, 150);
-        drawCenterText(score, 30, level.y+70, 150);
-        
-        // Draw buttons
+        drawScores();
         drawButtons();
         
         // Draw level background
@@ -291,8 +286,8 @@ window.onload = function() {
         renderClusters();
         
         // Render moves, when there are no clusters
-        if (showmoves && clusters.length <= 0 && gamestate == gamestates.ready) {
-            renderMoves();
+        if (clusters.length <= 0 && gamestate == gamestates.ready) {
+            //renderMoves();
         }
         
         // Game Over overlay
@@ -302,7 +297,11 @@ window.onload = function() {
             
             context.fillStyle = "#ffffff";
             context.font = "24px Verdana";
-            drawCenterText("Game Over!", level.x, level.y + levelheight / 2 + 10, levelwidth);
+            drawCenterText("Game Over!", level.x, level.y + levelheight / 2 - 20, levelwidth);
+            drawButton("Make love", level.x, level.y + levelheight / 2 + 20, 150, 50);
+            drawButton("Make war", level.x+170, level.y + levelheight / 2 + 20, 150, 50);
+
+            var buttons = [ { x: 60, y: 340, width: 150, height: 50, text: "New Game"}];
         }
     }
     
@@ -310,9 +309,9 @@ window.onload = function() {
     function drawFrame() {
         // Draw background and a border
         context.fillStyle = "#d0d0d0";
-        context.fillRect(0, 0, canvas.width, canvas.height);
+        //context.fillRect(0, 0, canvas.width, canvas.height);
         context.fillStyle = "#e8eaec";
-        context.fillRect(1, 1, canvas.width-2, canvas.height-2);
+        //context.fillRect(1, 1, canvas.width-2, canvas.height-2);
         
         // Draw header
         context.fillStyle = "#303030";
@@ -321,26 +320,35 @@ window.onload = function() {
         // Draw title
         context.fillStyle = "#ffffff";
         context.font = "24px Verdana";
-        context.fillText("Match3 Example - Rembound.com", 10, 30);
-        
-        // Display fps
-        context.fillStyle = "#ffffff";
-        context.font = "12px Verdana";
-        context.fillText("Fps: " + fps, 13, 50);
+        context.fillText("HPxTR match3-horcrux battle", 10, 30);
     }
-    
+
+    // Draw scores
+    function drawScores() {
+        var images = [];
+        for (var i=0; i<horcruxes.length; i++) {
+            images[i] = new Image(50, 50);
+            images[i].src = horcruxes[i].img;
+            images[i].onload = context.drawImage(images[i], horcruxes[i].x, horcruxes[i].y, 50, 50);
+        }
+    }
+
+    function drawButton(text, x, y, w, h) {
+        // Draw button shape
+        context.fillStyle = "#000000";
+        context.fillRect(x, y, w, h);
+
+        // Draw button text
+        context.fillStyle = "#ffffff";
+        context.font = "18px Verdana";
+        var textdim = context.measureText(text);
+        context.fillText(text, x + (w-textdim.width)/2, y+30);
+    }
+
     // Draw buttons
     function drawButtons() {
         for (var i=0; i<buttons.length; i++) {
-            // Draw button shape
-            context.fillStyle = "#000000";
-            context.fillRect(buttons[i].x, buttons[i].y, buttons[i].width, buttons[i].height);
-            
-            // Draw button text
-            context.fillStyle = "#ffffff";
-            context.font = "18px Verdana";
-            var textdim = context.measureText(buttons[i].text);
-            context.fillText(buttons[i].text, buttons[i].x + (buttons[i].width-textdim.width)/2, buttons[i].y+30);
+            drawButton(buttons[i].text, buttons[i].x, buttons[i].y, buttons[i].width, buttons[i].height);
         }
     }
     
@@ -436,23 +444,7 @@ window.onload = function() {
             }
         }
     }
-    
-    // Render moves
-    function renderMoves() {
-        for (var i=0; i<moves.length; i++) {
-            // Calculate coordinates of tile 1 and 2
-            var coord1 = getTileCoordinate(moves[i].column1, moves[i].row1, 0, 0);
-            var coord2 = getTileCoordinate(moves[i].column2, moves[i].row2, 0, 0);
-            
-            // Draw a line from tile 1 to tile 2
-            context.strokeStyle = "#ff0000";
-            context.beginPath();
-            context.moveTo(coord1.tilex + level.tilewidth/2, coord1.tiley + level.tileheight/2);
-            context.lineTo(coord2.tilex + level.tilewidth/2, coord2.tiley + level.tileheight/2);
-            context.stroke();
-        }
-    }
-    
+
     // Start a new game
     function newGame() {
         // Reset score
@@ -554,8 +546,8 @@ window.onload = function() {
                 if (checkcluster) {
                     if (matchlength >= 3) {
                         // Found a horizontal cluster
-                        clusters.push({ column: i+1-matchlength, row:j,
-                                        length: matchlength, horizontal: true });
+                        clusters.push(
+                            { column: i+1-matchlength, row:j, length: matchlength, horizontal: true, type:level.tiles[i][j].type });
                     }
                     
                     matchlength = 1;
@@ -589,8 +581,8 @@ window.onload = function() {
                 if (checkcluster) {
                     if (matchlength >= 3) {
                         // Found a vertical cluster
-                        clusters.push({ column: i, row:j+1-matchlength,
-                                        length: matchlength, horizontal: false });
+                        clusters.push(
+                            {column: i, row:j+1-matchlength, length: matchlength, horizontal: false, type:level.tiles[i][j].type});
                     }
                     
                     matchlength = 1;
@@ -833,8 +825,6 @@ window.onload = function() {
                     newGame();
                 } else if (i == 1) {
                     // Show Moves
-                    showmoves = !showmoves;
-                    buttons[i].text = (showmoves?"Hide":"Show") + " Moves";
                 } else if (i == 2) {
                     // AI Bot
                     aibot = !aibot;
