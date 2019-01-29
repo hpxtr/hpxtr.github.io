@@ -67,7 +67,7 @@ window.onload = function() {
     
     // Score
     var horcruxes = [
-        {type:"ring",   value: 0, img:"https://github.com/hpxtr/hpxtr.github.io/blob/master/ring.png", x:30, y:120},
+        {type:"ring",   value: 0, img:"ring.png", x:30, y:120},
         {type:"diary",  value: 0, img:"ring.png", x:100, y:120},
         {type:"locket", value: 0, img:"ring.png", x:170, y:120},
         {type:"cup",    value: 0, img:"ring.png", x:30, y:190},
@@ -364,11 +364,9 @@ window.onload = function() {
                 
                 // Check if there is a tile present
                 if (level.tiles[i][j].type >= 0) {
-                    // Get the color of the tile
-                    var col = tilecolors[level.tiles[i][j].type];
                     
                     // Draw the tile using the color
-                    drawTile(coord.tilex, coord.tiley, col[0], col[1], col[2]);
+                    drawTileWithType(coord.tilex, coord.tiley, level.tiles[i][j].type);
                 }
                 
                 // Draw the selected tile
@@ -404,12 +402,12 @@ window.onload = function() {
             // Change the order, depending on the animation state
             if (animationstate == 2) {
                 // Draw the tiles
-                drawTile(coord1shift.tilex, coord1shift.tiley, col1[0], col1[1], col1[2]);
-                drawTile(coord2shift.tilex, coord2shift.tiley, col2[0], col2[1], col2[2]);
+                drawTileWithType(coord1shift.tilex, coord1shift.tiley, level.tiles[currentmove.column1][currentmove.row1].type);
+                drawTileWithType(coord2shift.tilex, coord2shift.tiley, level.tiles[currentmove.column2][currentmove.row2].type);
             } else {
                 // Draw the tiles
-                drawTile(coord2shift.tilex, coord2shift.tiley, col2[0], col2[1], col2[2]);
-                drawTile(coord1shift.tilex, coord1shift.tiley, col1[0], col1[1], col1[2]);
+                drawTileWithType(coord2shift.tilex, coord2shift.tiley, level.tiles[currentmove.column2][currentmove.row2].type);
+                drawTileWithType(coord1shift.tilex, coord1shift.tiley, level.tiles[currentmove.column1][currentmove.row1].type);
             }
         }
     }
@@ -426,7 +424,18 @@ window.onload = function() {
         context.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
         context.fillRect(x + 2, y + 2, level.tilewidth - 4, level.tileheight - 4);
     }
-    
+
+    function drawTileWithType(x, y, type) {
+        if(type == 0){
+            var image = new Image(50, 50);
+            image.src = horcruxes[type].img;
+            image.onload = context.drawImage(image, x+2, y+2, level.tilewidth - 4, level.tileheight - 4);
+        } else {
+            context.fillStyle = "rgb(" + tilecolors[type][0] + "," + tilecolors[type][1] + "," + tilecolors[type][2] + ")";
+            context.fillRect(x + 2, y + 2, level.tilewidth - 4, level.tileheight - 4);
+        }
+    }
+
     // Render clusters
     function renderClusters() {
         for (var i=0; i<clusters.length; i++) {
