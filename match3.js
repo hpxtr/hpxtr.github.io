@@ -67,7 +67,7 @@ window.onload = function() {
     
     // Score
     var horcruxes = [
-        {type:"ring",   value: 0, img:"ring.png", x:30, y:120},
+        {type:"ring",   value: 0, img:"https://github.com/hpxtr/hpxtr.github.io/blob/master/ring.png", x:30, y:120},
         {type:"diary",  value: 0, img:"ring.png", x:100, y:120},
         {type:"locket", value: 0, img:"ring.png", x:170, y:120},
         {type:"cup",    value: 0, img:"ring.png", x:30, y:190},
