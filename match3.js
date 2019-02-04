@@ -72,13 +72,13 @@ window.onload = function () {
 
     // Score
     var horcruxes = [
-        {type: "ring", value: 0, img: "img/_ring.png", selected: "", probability: 20},
-        {type: "diary", value: 0, img: "img/_diary.png", selected: "diary_s.png", probability: 17},
-        {type: "locket", value: 0, img: "img/_l.png", selected: "", probability: 15},
-        {type: "cup", value: 0, img: "img/_cup.png", selected: "", probability: 14},
-        {type: "diadem", value: 0, img: "img/_diad.png", selected: "", probability: 13},
-        {type: "nagini", value: 0, img: "img/_sn.png", selected: "", probability: 12},
-        {type: "scar", value: 0, img: "img/_scar.png", selected: "", probability: 10}
+        {type: "ring", value: 0, img: "img/ring.png", selected: "", probability: 20},
+        {type: "diary", value: 0, img: "img/diary.png", selected: "diary_s.png", probability: 17},
+        {type: "locket", value: 0, img: "img/l.png", selected: "", probability: 15},
+        {type: "cup", value: 0, img: "img/cup.png", selected: "", probability: 14},
+        {type: "diadem", value: 0, img: "img/diad.png", selected: "", probability: 13},
+        {type: "nagini", value: 0, img: "img/sn.png", selected: "", probability: 12},
+        {type: "scar", value: 0, img: "img/scar.png", selected: "", probability: 10}
     ];
     var scoreColors = ["#55f", "#5f5", "#f55"];
 
