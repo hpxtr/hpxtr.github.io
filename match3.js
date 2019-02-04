@@ -36,7 +36,7 @@ window.onload = function () {
     // Level object
     var level = {
         x: 30,         // X position
-        y: 160,         // Y position
+        y: 140,         // Y position
         columns: 8,     // Number of tile columns
         rows: 8,        // Number of tile rows
         tilewidth: 70,  // Visual width of a tile
@@ -68,7 +68,7 @@ window.onload = function () {
     var horcrux_w = 80;
     var horcrux_h = 80;
     var horcrux_x = 30;
-    var horcrux_y = 60;
+    var horcrux_y = 55;
 
     // Score
     var horcruxes = [
@@ -77,8 +77,8 @@ window.onload = function () {
         {type: "locket", value: 0, img: "img/_l.png", selected: "", probability: 15},
         {type: "cup", value: 0, img: "img/_cup.png", selected: "", probability: 14},
         {type: "diadem", value: 0, img: "img/_diad.png", selected: "", probability: 13},
-        {type: "narigi", value: 0, img: "img/_sn.png", selected: "", probability: 12},
-        {type: "harry", value: 0, img: "img/_scar.png", selected: "", probability: 10}
+        {type: "nagini", value: 0, img: "img/_sn.png", selected: "", probability: 12},
+        {type: "scar", value: 0, img: "img/_scar.png", selected: "", probability: 10}
     ];
     var scoreColors = ["#55f", "#5f5", "#f55"];
 
@@ -129,7 +129,7 @@ window.onload = function () {
     }
 
     function addScore(i) {
-        if(horcruxes[i].value < scoreColors.length){
+        if (horcruxes[i].value < scoreColors.length) {
             // add if not max
             horcruxes[i].value = horcruxes[i].value + 1;
 
@@ -325,15 +325,16 @@ window.onload = function () {
         var images = [];
         for (var i = 0; i < horcruxes.length; i++) {
 
-            var color = scoreColors[horcruxes[i].value-1];
+            var color = scoreColors[horcruxes[i].value - 1];
             if (color) {
                 context.fillStyle = color;
-                context.fillRect(horcrux_x+i*horcrux_w, horcrux_y, horcrux_w, horcrux_h);
+                context.fillRect(horcrux_x + i * horcrux_w, horcrux_y, horcrux_w, horcrux_h);
             }
 
-                images[i] = new Image(horcrux_w, horcrux_h);
-                images[i].src = horcruxes[i].img;
-                images[i].onload = context.drawImage(images[i], horcrux_x+i*horcrux_w, horcrux_y, horcrux_w, horcrux_h);
+            images[i] = document.getElementById(horcruxes[i].type);//new Image(horcrux_w, horcrux_h);
+            //images[i].src = horcruxes[i].img;
+            //images[i].onload =
+                context.drawImage(images[i], horcrux_x + i * horcrux_w, horcrux_y, horcrux_w, horcrux_h);
         }
     }
 
