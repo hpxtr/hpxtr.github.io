@@ -27,7 +27,13 @@ body,
 canvas {
 @include size(100%);
 }
-
+canvas, img {
+    image-rendering: optimizeQuality;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: optimize-contrast;
+    -ms-interpolation-mode: nearest-neighbor;
+}
 body {
 @include size(100%);
     background-color: #222;

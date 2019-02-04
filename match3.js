@@ -326,11 +326,15 @@ window.onload = function () {
         for (var i = 0; i < horcruxes.length; i++) {
 
             var color = scoreColors[horcruxes[i].value - 1];
-            if (color) {
-                context.fillStyle = color;
-                context.fillRect(horcrux_x + i * horcrux_w, horcrux_y, horcrux_w, horcrux_h);
+            if (!color) {
+                color = "#fff";
             }
+            context.fillStyle = color;
+            context.fillRect(horcrux_x + i * horcrux_w, horcrux_y, horcrux_w, horcrux_h);
 
+            context.imageSmoothingEnabled = false;
+            context.webkitImageSmoothingEnabled = false;
+            context.mozImageSmoothingEnabled = false;
             images[i] = document.getElementById(horcruxes[i].type);//new Image(horcrux_w, horcrux_h);
             //images[i].src = horcruxes[i].img;
             //images[i].onload =
