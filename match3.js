@@ -35,12 +35,12 @@ window.onload = function () {
 
     // Level object
     var level = {
-        x: 250,         // X position
-        y: 113,         // Y position
+        x: 30,         // X position
+        y: 160,         // Y position
         columns: 8,     // Number of tile columns
         rows: 8,        // Number of tile rows
-        tilewidth: 40,  // Visual width of a tile
-        tileheight: 40, // Visual height of a tile
+        tilewidth: 70,  // Visual width of a tile
+        tileheight: 70, // Visual height of a tile
         tiles: [],      // The two-dimensional tile array
         selectedtile: {selected: false, column: 0, row: 0}
     };
@@ -65,15 +65,20 @@ window.onload = function () {
     var gamestates = {init: 0, ready: 1, resolve: 2};
     var gamestate = gamestates.init;
 
+    var horcrux_w = 80;
+    var horcrux_h = 80;
+    var horcrux_x = 30;
+    var horcrux_y = 60;
+
     // Score
     var horcruxes = [
-        {type: "ring", value: 0, img: "ring.png", selected: "", x: 30, y: 120, probability: 20},
-        {type: "diary", value: 0, img: "diary.png", selected: "diary_s.png", x: 100, y: 120, probability: 17},
-        {type: "locket", value: 0, img: "locket.png", selected: "", x: 170, y: 120, probability: 15},
-        {type: "cup", value: 0, img: "cup.png", selected: "", x: 30, y: 190, probability: 14},
-        {type: "diadem", value: 0, img: "diadem.png", selected: "", x: 100, y: 190, probability: 13},
-        {type: "narigi", value: 0, img: "nagini.png", selected: "", x: 170, y: 190, probability: 12},
-        {type: "harry", value: 0, img: "harry.png", selected: "", x: 100, y: 260, probability: 10}
+        {type: "ring", value: 0, img: "img/_ring.png", selected: "", probability: 20},
+        {type: "diary", value: 0, img: "img/_diary.png", selected: "diary_s.png", probability: 17},
+        {type: "locket", value: 0, img: "img/_l.png", selected: "", probability: 15},
+        {type: "cup", value: 0, img: "img/_cup.png", selected: "", probability: 14},
+        {type: "diadem", value: 0, img: "img/_diad.png", selected: "", probability: 13},
+        {type: "narigi", value: 0, img: "img/_sn.png", selected: "", probability: 12},
+        {type: "harry", value: 0, img: "img/_scar.png", selected: "", probability: 10}
     ];
     var scoreColors = ["#55f", "#5f5", "#f55"];
 
@@ -87,7 +92,7 @@ window.onload = function () {
     var win = true;
 
     // Gui buttons
-    var buttons = [{x: 60, y: 340, width: 150, height: 50, text: "New Game"}];
+    var buttons = [{x: 30, y: 0, width: 150, height: 50, text: "New Game"}];
 
     // Initialize the game
     function init() {
@@ -124,21 +129,16 @@ window.onload = function () {
     }
 
     function addScore(i) {
-        var horcrux = horcruxes[i];
-        var color = scoreColors[horcrux.value];
-        if (color) {
-            context.fillStyle = color;
-            context.fillRect(horcrux.x - 4, horcrux.y - 4, 50 + 8, 50 + 8);
-            image = new Image(50, 50);
-            image.src = horcrux.img;
-            image.onload = context.drawImage(image, horcrux.x, horcrux.y, 50, 50);
-            horcrux.value = horcrux.value + 1;
-        }
-        // check end of the game
-        gameover = true;
-        for (var j = 0; j < horcruxes.length; j++) {
-            if (horcruxes[j].value < scoreColors.length) {
-                gameover = false;
+        if(horcruxes[i].value < scoreColors.length){
+            // add if not max
+            horcruxes[i].value = horcruxes[i].value + 1;
+
+            // check end of the game
+            gameover = true;
+            for (var j = 0; j < horcruxes.length; j++) {
+                if (horcruxes[j].value < scoreColors.length) {
+                    gameover = false;
+                }
             }
         }
     }
@@ -300,8 +300,8 @@ window.onload = function () {
             context.font = "24px Verdana";
             if (win) {
                 drawCenterText("You picked up all horcruxes! ", level.x, level.y + levelheight / 2 - 20, levelwidth);
-                drawButton("Love them", level.x, level.y + levelheight / 2 + 20, 150, 50);
-                drawButton("Kill them", level.x + 170, level.y + levelheight / 2 + 20, 150, 50);
+                drawButton("Love them", level.x + 50, level.y + levelheight / 2 + 20, 150, 50);
+                drawButton("Kill them", level.x + 300, level.y + levelheight / 2 + 20, 150, 50);
             } else {
                 drawCenterText("You missed horcrux and Harry died", level.x, level.y + levelheight / 2 - 20, levelwidth);
             }
@@ -318,24 +318,22 @@ window.onload = function () {
         //context.fillRect(0, 0, canvas.width, canvas.height);
         context.fillStyle = "#e8eaec";
         //context.fillRect(1, 1, canvas.width-2, canvas.height-2);
-
-        // Draw header
-        context.fillStyle = "#303030";
-        context.fillRect(0, 0, canvas.width, 65);
-
-        // Draw title
-        context.fillStyle = "#ffffff";
-        context.font = "24px Verdana";
-        context.fillText("HPxTR match3-horcrux battle", 10, 30);
     }
 
     // Draw scores
     function drawScores() {
         var images = [];
         for (var i = 0; i < horcruxes.length; i++) {
-            images[i] = new Image(50, 50);
-            images[i].src = horcruxes[i].img;
-            images[i].onload = context.drawImage(images[i], horcruxes[i].x, horcruxes[i].y, 50, 50);
+
+            var color = scoreColors[horcruxes[i].value-1];
+            if (color) {
+                context.fillStyle = color;
+                context.fillRect(horcrux_x+i*horcrux_w, horcrux_y, horcrux_w, horcrux_h);
+            }
+
+                images[i] = new Image(horcrux_w, horcrux_h);
+                images[i].src = horcruxes[i].img;
+                images[i].onload = context.drawImage(images[i], horcrux_x+i*horcrux_w, horcrux_y, horcrux_w, horcrux_h);
         }
     }
 
@@ -432,13 +430,13 @@ window.onload = function () {
     }
 
     function drawSelectedTile(x, y, type) {
-        var image = new Image(50, 50);
+        var image = new Image(70, 70);
         image.src = horcruxes[type].selected;
         image.onload = context.drawImage(image, x + 2, y + 2, level.tilewidth - 4, level.tileheight - 4);
     }
 
     function drawTileWithType(x, y, type) {
-        var image = new Image(50, 50);
+        var image = new Image(70, 70);
         image.src = horcruxes[type].img;
         image.onload = context.drawImage(image, x + 2, y + 2, level.tilewidth - 4, level.tileheight - 4);
     }
