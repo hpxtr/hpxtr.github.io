@@ -876,7 +876,20 @@ window.onload = function () {
     }
 
     function onTouchMove(e) {
-        //alert("move");
+        var pos = getTouchPos(canvas, e);
+        var mt = getMouseTile(pos);
+        debug = debug + "move: " + pos.x + "; " + pos.y + " = " + mt.x + "; " + mt.y + " " + mt.valid + ". \n";
+        if(mt.valid){
+            if(start){
+                debug = debug + "Can move!";
+                // Check if the tiles can be swapped
+                if (canSwap(mt.x, mt.y, start.x, start.y)) {
+                    // Swap the tiles
+                    mouseSwap(mt.x, mt.y, start.x, start.y);
+                }
+            }
+        }
+        start = undefined;
     }
 
     // On mouse movement
