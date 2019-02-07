@@ -834,36 +834,16 @@ window.onload = function () {
     }
 
     var start;
-    var ongoingTouches = [];
-
     function onTouchStart(evt) {
-        alert(evt.changedTouches[0].pageX); // alert pageX coordinate of touch point
-
         var pos = getTouchPos(canvas, evt);
         var mt = getMouseTile(pos);
         if(mt.valid){
             start = mt;
-            alert("start " + start);
-        }
-
-        evt.preventDefault();
-        console.log("touchstart.");
-        var touches = evt.changedTouches;
-
-        for (var i = 0; i < touches.length; i++) {
-            console.log("touchstart:" + i + "...");
-            //ongoingTouches.push(copyTouch(touches[i]));
-            //var color = colorForTouch(touches[i]);
-            context.beginPath();
-            context.arc(touches[i].pageX, touches[i].pageY, 4, 0, 2 * Math.PI, false);  // a circle at the start
-            context.fillStyle = "#fff";
-            context.fill();
-            console.log("touchstart:" + i + ".");
         }
     }
 
     function onTouchEnd(e) {
-        var pos = getMousePos(canvas, e);
+        var pos = getTouchPos(canvas, e);
         var mt = getMouseTile(pos);
         if(mt.valid){
             alert("end " + mt.x + "; " + mt.y);
