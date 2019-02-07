@@ -857,11 +857,11 @@ window.onload = function () {
         debug = debug + "end: " + pos.x + "; " + pos.y + " = " + mt.x + "; " + mt.y + " " + mt.valid + ". \n";
         if(mt.valid){
             if(start){
-                //alert("move " + mt.x + "; " + mt.y);
+                debug = debug + "Can move!";
                 // Check if the tiles can be swapped
-                if (canSwap(mt.x, mt.y, level.selectedtile.column, level.selectedtile.row)) {
+                if (canSwap(mt.x, mt.y, start.x, start.y)) {
                     // Swap the tiles
-                    mouseSwap(mt.x, mt.y, level.selectedtile.column, level.selectedtile.row);
+                    mouseSwap(mt.x, mt.y, start.x, start.y);
                 }
             }
         }
