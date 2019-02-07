@@ -845,11 +845,21 @@ window.onload = function () {
     }
 
     function onTouchEnd(e) {
-        alert("end");
+        var pos = getMousePos(canvas, e);
+        var mt = getMouseTile(pos);
+        if(mt.valid){
+            alert("end " + mt.x + "; " + mt.y);
+            if(start){
+                alert("we moved!");
+            }
+        }
     }
 
     function onTouchCancel(e) {
-        alert("cancel");
+        if(start){
+            start = undefined;
+            alert("cancel");
+        }
     }
 
     function onTouchMove(e) {
