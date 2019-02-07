@@ -834,14 +834,30 @@ window.onload = function () {
     }
 
     var start;
+    var ongoingTouches = [];
 
-    function onTouchStart(e) {
-        var pos = getMousePos(canvas, e);
+    function onTouchStart(evt) {
+        var pos = getMousePos(canvas, evt);
         var mt = getMouseTile(pos);
         if(mt.valid){
             start = mt;
         }
-        alert("start " + mt.x + "; " + mt.y);
+        //alert("start " + mt.x + "; " + mt.y);
+
+        evt.preventDefault();
+        console.log("touchstart.");
+        var touches = evt.changedTouches;
+
+        for (var i = 0; i < touches.length; i++) {
+            console.log("touchstart:" + i + "...");
+            //ongoingTouches.push(copyTouch(touches[i]));
+            //var color = colorForTouch(touches[i]);
+            context.beginPath();
+            context.arc(touches[i].pageX, touches[i].pageY, 4, 0, 2 * Math.PI, false);  // a circle at the start
+            context.fillStyle = "#fff";
+            context.fill();
+            console.log("touchstart:" + i + ".");
+        }
     }
 
     function onTouchEnd(e) {
@@ -850,7 +866,11 @@ window.onload = function () {
         if(mt.valid){
             alert("end " + mt.x + "; " + mt.y);
             if(start){
-                alert("we moved!");
+                // Check if the tiles can be swapped
+                if (canSwap(mt.x, mt.y, level.selectedtile.column, level.selectedtile.row)) {
+                    // Swap the tiles
+                    mouseSwap(mt.x, mt.y, level.selectedtile.column, level.selectedtile.row);
+                }
             }
         }
     }
@@ -879,9 +899,9 @@ window.onload = function () {
                 // Valid tile
 
                 // Check if the tiles can be swapped
-                if (canSwap(mt.x, mt.y, level.selectedtile.column, level.selectedtile.row)) {
+                if (canSwap(mt.x, mt.y, start.x, start.y)) {
                     // Swap the tiles
-                    mouseSwap(mt.x, mt.y, level.selectedtile.column, level.selectedtile.row);
+                    mouseSwap(mt.x, mt.y, start.x, start.y);
                 }
             }
         }
