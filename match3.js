@@ -317,7 +317,7 @@ window.onload = function () {
 
             if(love){
                 var loveImg = document.getElementById("love");
-                context.drawImage(loveImg, level.x, level.y, levelwidth+2, levelheight+2);
+                context.drawImage(loveImg, level.x+2, level.y+2, levelwidth-2, levelheight-2);
             } else if(death){
 
             } else {
@@ -894,9 +894,6 @@ window.onload = function () {
         for (var i = 0; i < buttons.length; i++) {
             if (pos.x >= buttons[i].x && pos.x < buttons[i].x + buttons[i].width &&
                 pos.y >= buttons[i].y && pos.y < buttons[i].y + buttons[i].height) {
-
-                var levelwidth = level.tilewidth*level.rows;
-                var levelheight = level.tileheight*level.columns;
 
                 // Button i was clicked
                 if (i == 0) {
