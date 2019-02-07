@@ -837,12 +837,13 @@ window.onload = function () {
     var ongoingTouches = [];
 
     function onTouchStart(evt) {
+        alert(evt.changedTouches[0].pageX) // alert pageX coordinate of touch point
         var pos = getMousePos(canvas, evt);
         var mt = getMouseTile(pos);
         if(mt.valid){
             start = mt;
         }
-        //alert("start " + mt.x + "; " + mt.y);
+        alert("start " + evt);
 
         evt.preventDefault();
         console.log("touchstart.");
@@ -883,7 +884,7 @@ window.onload = function () {
     }
 
     function onTouchMove(e) {
-        alert("move");
+        //alert("move");
     }
 
     // On mouse movement
