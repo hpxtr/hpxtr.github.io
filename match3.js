@@ -1,18 +1,18 @@
 // ------------------------------------------------------------------------
 // How To Make A Match-3 Game With HTML5 Canvas
 // Copyright (c) 2015 Rembound.com
-// 
-// This program is free software: you can redistribute it and/or modify  
-// it under the terms of the GNU General Public License as published by  
-// the Free Software Foundation, either version 3 of the License, or  
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
-// This program is distributed in the hope that it will be useful,  
-// but WITHOUT ANY WARRANTY; without even the implied warranty of  
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the  
-// GNU General Public License for more details.  
-// 
-// You should have received a copy of the GNU General Public License  
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 // http://rembound.com/articles/how-to-make-a-match3-game-with-html5-canvas
@@ -35,8 +35,8 @@ window.onload = function () {
 
     // Level object
     var level = {
-        x: 30,         // X position
-        y: 140,         // Y position
+        x: 55,         // X position
+        y: 380,         // Y position
         columns: 8,     // Number of tile columns
         rows: 8,        // Number of tile rows
         tilewidth: 70,  // Visual width of a tile
@@ -67,20 +67,20 @@ window.onload = function () {
 
     var horcrux_w = 80;
     var horcrux_h = 80;
-    var horcrux_x = 30;
-    var horcrux_y = 55;
+    var horcrux_x = 55;
+    var horcrux_y = 270;
+    var max_horchrux_score = 3;
 
     // Score
     var horcruxes = [
         {type: "ring", value: 0, img: "img/ring.png", selected: "", probability: 20},
         {type: "diary", value: 0, img: "img/diary.png", selected: "diary_s.png", probability: 17},
-        {type: "locket", value: 0, img: "img/l.png", selected: "", probability: 15},
+        {type: "locket", value: 0, img: "img/locket.png", selected: "", probability: 15},
         {type: "cup", value: 0, img: "img/cup.png", selected: "", probability: 14},
-        {type: "diadem", value: 0, img: "img/diad.png", selected: "", probability: 13},
-        {type: "nagini", value: 0, img: "img/sn.png", selected: "", probability: 12},
+        {type: "diadem", value: 0, img: "img/diadem.png", selected: "", probability: 13},
+        {type: "snake", value: 0, img: "img/snake.png", selected: "", probability: 12},
         {type: "scar", value: 0, img: "img/scar.png", selected: "", probability: 10}
     ];
-    var scoreColors = ["#55f", "#5f5", "#f55"];
 
     // Animation variables
     var animationstate = 0;
@@ -89,10 +89,16 @@ window.onload = function () {
 
     // Game Over
     var gameover = false;
+    var love = false;
+    var death = false;
     var win = true;
 
     // Gui buttons
-    var buttons = [{x: 30, y: 0, width: 150, height: 50, text: "New Game"}];
+    var buttons = [
+        {x: 300, y: 200, width: 75, height: 40, text: "New Game"},
+        {x: level.x + 80, y: level.y + 200, width: 150, height: 50, text: "Love"},
+        {x: level.x + 320, y: level.y + 200, width: 150, height: 50, text: "Kill"}
+    ];
 
     // Initialize the game
     function init() {
@@ -124,19 +130,38 @@ window.onload = function () {
         window.requestAnimationFrame(main);
 
         // Update and render the game
+
+        // Draw background
+        drawHeader();
+
         update(tframe);
+        drawScores();
+        drawBoard();
         render();
     }
 
+    function drawHeader() {
+        // Draw background and a border
+        context.fillStyle = "#261a2f";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+
+        var header = document.getElementById("header");
+        context.drawImage(header, 0, 0, 680, 307);
+
+        var newGame = new Image(300, 160);
+        newGame.src = "img/button.png";
+        newGame.onload = context.drawImage(newGame, buttons[0].x, buttons[0].y, buttons[0].width, buttons[0].height);
+    }
+
     function addScore(i) {
-        if (horcruxes[i].value < scoreColors.length) {
+        if (horcruxes[i].value < max_horchrux_score) {
             // add if not max
             horcruxes[i].value = horcruxes[i].value + 1;
 
             // check end of the game
             gameover = true;
             for (var j = 0; j < horcruxes.length; j++) {
-                if (horcruxes[j].value < scoreColors.length) {
+                if (horcruxes[j].value < max_horchrux_score) {
                     gameover = false;
                 }
             }
@@ -270,15 +295,6 @@ window.onload = function () {
 
     // Render the game
     function render() {
-        drawFrame();
-        drawScores();
-        drawButtons();
-
-        // Draw level background
-        var levelwidth = level.columns * level.tilewidth;
-        var levelheight = level.rows * level.tileheight;
-        context.fillStyle = "#000000";
-        context.fillRect(level.x - 4, level.y - 4, levelwidth + 8, levelheight + 8);
 
         // Render tiles
         renderTiles();
@@ -293,31 +309,63 @@ window.onload = function () {
 
         // Game Over overlay
         if (gameover) {
-            context.fillStyle = "rgba(0, 0, 0, 0.8)";
-            context.fillRect(level.x, level.y, levelwidth, levelheight);
+            var levelwidth = level.tilewidth*level.rows;
+            var levelheight = level.tileheight*level.columns;
 
-            context.fillStyle = "#ffffff";
-            context.font = "24px Verdana";
-            if (win) {
-                drawCenterText("You picked up all horcruxes! ", level.x, level.y + levelheight / 2 - 20, levelwidth);
-                drawButton("Love them", level.x + 50, level.y + levelheight / 2 + 20, 150, 50);
-                drawButton("Kill them", level.x + 300, level.y + levelheight / 2 + 20, 150, 50);
+            if(love){
+                var loveImg = document.getElementById("love");
+                context.drawImage(loveImg, level.x, level.y, levelwidth+2, levelheight+2);
+            } else if(death){
+
             } else {
-                drawCenterText("You missed horcrux and Harry died", level.x, level.y + levelheight / 2 - 20, levelwidth);
-            }
+                context.fillStyle = "#FC921D";
+                context.globalAlpha = 0.2;
+                context.fillRect(level.x, level.y, levelwidth, levelheight);
+                context.globalAlpha = 1.0;
 
-            var buttons = [{x: 60, y: 340, width: 150, height: 50, text: "New Game"}];
+                context.fillStyle = "#261a2f";
+                context.fillRect(level.x, buttons[1].y - 100, levelwidth+4, 170);
+                context.fillStyle = "#FC921D";
+                context.font = "24px Verdana";
+                if (win) {
+                    drawCenterText("You picked up all horcruxes! ", level.x, buttons[1].y - 50, levelwidth);
+                    drawButton("Love them", buttons[1].x, buttons[1].y, buttons[1].width, buttons[1].height);
+                    drawButton("Kill them", buttons[2].x, buttons[2].y, buttons[2].width, buttons[2].height);
+                } else {
+                    drawCenterText("You missed horcrux and Harry died", level.x, level.y + levelheight / 2 - 20, levelwidth);
+                }
+            }
         }
 
     }
 
-    // Draw a frame with a border
-    function drawFrame() {
-        // Draw background and a border
-        context.fillStyle = "#d0d0d0";
-        //context.fillRect(0, 0, canvas.width, canvas.height);
-        context.fillStyle = "#e8eaec";
-        //context.fillRect(1, 1, canvas.width-2, canvas.height-2);
+    function drawBoard() {
+        var levelwidth = level.columns * level.tilewidth;
+        var levelheight = level.rows * level.tileheight;
+
+        // board borders
+        context.fillStyle = "#FC921D";//"#e8eaec";
+
+        for (var i=0; i<=level.columns; i++){
+            // vertical
+            context.fillRect(level.x + i*level.tilewidth, level.y, 2, levelheight);
+
+            //horizontal
+            context.fillRect(level.x, level.y + i*level.tileheight, levelwidth, 2);
+        }
+        context.fillRect(level.x, level.y, 2, levelheight);
+        context.fillRect(level.x + level.columns*level.tilewidth, level.y, 2, levelheight);
+        // horizontal
+        context.fillRect(level.x, level.y, levelwidth, 2);
+        context.fillRect(level.x, level.y + level.rows*level.tileheight, levelwidth, 2);
+
+        // scores borders
+        // vertical
+        context.fillRect(horcrux_x, horcrux_y, 2, horcrux_h);
+        context.fillRect(horcrux_x + horcrux_w*horcruxes.length, horcrux_y, 2, horcrux_h);
+        // horizontal
+        context.fillRect(horcrux_x, horcrux_y, horcrux_w*horcruxes.length, 2);
+        context.fillRect(horcrux_x, horcrux_y + horcrux_h, horcrux_w*horcruxes.length, 2);
     }
 
     // Draw scores
@@ -325,40 +373,27 @@ window.onload = function () {
         var images = [];
         for (var i = 0; i < horcruxes.length; i++) {
 
-            var color = scoreColors[horcruxes[i].value - 1];
-            if (!color) {
-                color = "#fff";
+            if(horcruxes[i].value > 0){
+                var image = new Image(horcrux_w, horcrux_h);
+                image.src = "img/top/"+ horcruxes[i].type + horcruxes[i].value + ".png";
+                context.imageSmoothingEnabled = false;
+                context.webkitImageSmoothingEnabled = false;
+                context.mozImageSmoothingEnabled = false;
+                image.onload = context.drawImage(image, horcrux_x + i * horcrux_w, horcrux_y, horcrux_w, horcrux_h);
             }
-            context.fillStyle = color;
-            context.fillRect(horcrux_x + i * horcrux_w, horcrux_y, horcrux_w, horcrux_h);
-
-            context.imageSmoothingEnabled = false;
-            context.webkitImageSmoothingEnabled = false;
-            context.mozImageSmoothingEnabled = false;
-            images[i] = document.getElementById(horcruxes[i].type);//new Image(horcrux_w, horcrux_h);
-            //images[i].src = horcruxes[i].img;
-            //images[i].onload =
-                context.drawImage(images[i], horcrux_x + i * horcrux_w, horcrux_y, horcrux_w, horcrux_h);
         }
     }
 
     function drawButton(text, x, y, w, h) {
         // Draw button shape
-        context.fillStyle = "#000000";
+        context.fillStyle = "#261a2f";
         context.fillRect(x, y, w, h);
 
         // Draw button text
-        context.fillStyle = "#ffffff";
+        context.fillStyle = "#FC921D";
         context.font = "18px Verdana";
         var textdim = context.measureText(text);
         context.fillText(text, x + (w - textdim.width) / 2, y + 30);
-    }
-
-    // Draw buttons
-    function drawButtons() {
-        for (var i = 0; i < buttons.length; i++) {
-            drawButton(buttons[i].text, buttons[i].x, buttons[i].y, buttons[i].width, buttons[i].height);
-        }
     }
 
     // Render tiles
@@ -395,18 +430,12 @@ window.onload = function () {
             var shifty = currentmove.row2 - currentmove.row1;
 
             // First tile
-            var coord1 = getTileCoordinate(currentmove.column1, currentmove.row1, 0, 0);
             var coord1shift = getTileCoordinate(currentmove.column1, currentmove.row1, (animationtime / animationtimetotal) * shiftx, (animationtime / animationtimetotal) * shifty);
             var col1 = tilecolors[level.tiles[currentmove.column1][currentmove.row1].type];
 
             // Second tile
-            var coord2 = getTileCoordinate(currentmove.column2, currentmove.row2, 0, 0);
             var coord2shift = getTileCoordinate(currentmove.column2, currentmove.row2, (animationtime / animationtimetotal) * -shiftx, (animationtime / animationtimetotal) * -shifty);
             var col2 = tilecolors[level.tiles[currentmove.column2][currentmove.row2].type];
-
-            // Draw a black background
-            drawTile(coord1.tilex, coord1.tiley, 0, 0, 0);
-            drawTile(coord2.tilex, coord2.tiley, 0, 0, 0);
 
             // Change the order, depending on the animation state
             if (animationstate == 2) {
@@ -428,22 +457,15 @@ window.onload = function () {
         return {tilex: tilex, tiley: tiley};
     }
 
-    // Draw a tile with a color
-    function drawTile(x, y, r, g, b) {
-        context.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
-        context.fillRect(x + 2, y + 2, level.tilewidth - 4, level.tileheight - 4);
-    }
-
     function drawSelectedTile(x, y, type) {
-        var image = new Image(70, 70);
+        var image = new Image(level.tilewidth, level.tileheight);
         image.src = horcruxes[type].selected;
         image.onload = context.drawImage(image, x + 2, y + 2, level.tilewidth - 4, level.tileheight - 4);
     }
 
-    function drawTileWithType(x, y, type) {
-        var image = new Image(70, 70);
-        image.src = horcruxes[type].img;
-        image.onload = context.drawImage(image, x + 2, y + 2, level.tilewidth - 4, level.tileheight - 4);
+    function drawTileWithType(x, y, type_id) {
+        var tile = document.getElementById(horcruxes[type_id].type);
+        context.drawImage(tile, x+2, y+2, level.tilewidth - 4, level.tileheight - 4);
     }
 
     // Render clusters
@@ -471,13 +493,17 @@ window.onload = function () {
     // Start a new game
     function newGame() {
         // Reset score
-        score = 0;
+        for (var i=0; i<horcruxes.length; i++){
+            horcruxes[i].value = 0;
+        }
 
         // Set the gamestate to ready
         gamestate = gamestates.ready;
 
         // Reset game over
         gameover = false;
+        love = false;
+        death = false;
 
         // Create the level
         createLevel();
@@ -866,16 +892,18 @@ window.onload = function () {
             if (pos.x >= buttons[i].x && pos.x < buttons[i].x + buttons[i].width &&
                 pos.y >= buttons[i].y && pos.y < buttons[i].y + buttons[i].height) {
 
+                var levelwidth = level.tilewidth*level.rows;
+                var levelheight = level.tileheight*level.columns;
+
                 // Button i was clicked
                 if (i == 0) {
                     // New Game
                     newGame();
                 } else if (i == 1) {
-                    // Show Moves
+                    // Show Love
+                    love = true;
                 } else if (i == 2) {
-                    // AI Bot
-                    aibot = !aibot;
-                    buttons[i].text = (aibot ? "Disable" : "Enable") + " AI Bot";
+                    // Show Death
                 }
             }
         }
