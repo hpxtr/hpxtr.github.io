@@ -880,7 +880,7 @@ window.onload = function () {
         var mt = getMouseTile(pos);
         debug = debug + "move: " + pos.x + "; " + pos.y + " = " + mt.x + "; " + mt.y + " " + mt.valid + ". \n";
         if(mt.valid){
-            if(start){
+            if(start && (mt.x != start.x || mt.y != start.y)){
                 debug = debug + "Can move!";
                 // Check if the tiles can be swapped
                 if (canSwap(mt.x, mt.y, start.x, start.y)) {
@@ -889,7 +889,6 @@ window.onload = function () {
                 }
             }
         }
-        start = undefined;
     }
 
     // On mouse movement
@@ -912,6 +911,7 @@ window.onload = function () {
             }
         }
     }
+
 
     // On mouse button click
     function onMouseDown(e) {
