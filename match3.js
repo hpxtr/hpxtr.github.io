@@ -145,7 +145,7 @@ window.onload = function () {
         drawBoard();
         render();
         if(debug){
-            context.font = "24px Verdana";
+            context.font = "14px Verdana";
             context.fillStyle = "#f00";
             context.fillText(debug, 50, 50);
         }
