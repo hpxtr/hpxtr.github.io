@@ -97,7 +97,8 @@ window.onload = function () {
     var buttons = [
         {x: 300, y: 200, width: 75, height: 40, text: "New Game"},
         {x: level.x + 80, y: level.y + 200, width: 150, height: 50, text: "Love"},
-        {x: level.x + 320, y: level.y + 200, width: 150, height: 50, text: "Kill"}
+        {x: level.x + 320, y: level.y + 200, width: 150, height: 50, text: "Kill"},
+        {x: 370, y: 200, width: 75, height: 40, text: "Win"}
     ];
 
     // Initialize the game
@@ -151,6 +152,8 @@ window.onload = function () {
         var newGame = new Image(300, 160);
         newGame.src = "img/button.png";
         newGame.onload = context.drawImage(newGame, buttons[0].x, buttons[0].y, buttons[0].width, buttons[0].height);
+
+        drawButton("Win", buttons[3].x, buttons[3].y, buttons[3].width, buttons[3].height);
     }
 
     function addScore(i) {
@@ -904,6 +907,8 @@ window.onload = function () {
                     love = true;
                 } else if (i == 2) {
                     // Show Death
+                } else if (i == 3){
+                    gameover = true;
                 }
             }
         }
