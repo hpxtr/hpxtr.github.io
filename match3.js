@@ -899,9 +899,9 @@ window.onload = function () {
                 // Valid tile
 
                 // Check if the tiles can be swapped
-                if (canSwap(mt.x, mt.y, start.x, start.y)) {
+                if (canSwap(mt.x, mt.y, level.selectedtile.column, level.selectedtile.row)) {
                     // Swap the tiles
-                    mouseSwap(mt.x, mt.y, start.x, start.y);
+                    mouseSwap(mt.x, mt.y, level.selectedtile.column, level.selectedtile.row);
                 }
             }
         }
