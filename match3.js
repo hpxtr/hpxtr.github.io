@@ -837,13 +837,14 @@ window.onload = function () {
     var ongoingTouches = [];
 
     function onTouchStart(evt) {
-        alert(evt.changedTouches[0].pageX) // alert pageX coordinate of touch point
-        var pos = getMousePos(canvas, evt);
+        alert(evt.changedTouches[0].pageX); // alert pageX coordinate of touch point
+
+        var pos = getTouchPos(canvas, evt);
         var mt = getMouseTile(pos);
         if(mt.valid){
             start = mt;
+            alert("start " + start);
         }
-        alert("start " + evt);
 
         evt.preventDefault();
         console.log("touchstart.");
@@ -986,6 +987,15 @@ window.onload = function () {
         return {
             x: Math.round((e.clientX - rect.left) / (rect.right - rect.left) * canvas.width),
             y: Math.round((e.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height)
+        };
+    }
+
+    // Get the mouse position
+    function getTouchPos(canvas, e) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+            x: Math.round((e.changedTouches[0].pageX - rect.left) / (rect.right - rect.left) * canvas.width),
+            y: Math.round((e.changedTouches[0].pageY - rect.top) / (rect.bottom - rect.top) * canvas.height)
         };
     }
 
