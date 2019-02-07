@@ -144,6 +144,11 @@ window.onload = function () {
         drawScores();
         drawBoard();
         render();
+        if(debug){
+            context.font = "24px Verdana";
+            context.fillStyle = "#f00";
+            context.fillText(debug, 50, 50);
+        }
     }
 
     function drawHeader() {
@@ -834,9 +839,13 @@ window.onload = function () {
     }
 
     var start;
+    var end;
+    var debug = "";
+
     function onTouchStart(evt) {
         var pos = getTouchPos(canvas, evt);
         var mt = getMouseTile(pos);
+        debug = "start: " + pos.x + "; " + pos.y + " = " + mt.x + "; " + mt.y + " " + mt.valid + ". \n";
         if(mt.valid){
             start = mt;
         }
@@ -845,6 +854,7 @@ window.onload = function () {
     function onTouchEnd(e) {
         var pos = getTouchPos(canvas, e);
         var mt = getMouseTile(pos);
+        debug = debug + "end: " + pos.x + "; " + pos.y + " = " + mt.x + "; " + mt.y + " " + mt.valid + ". \n";
         if(mt.valid){
             if(start){
                 //alert("move " + mt.x + "; " + mt.y);
