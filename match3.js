@@ -109,6 +109,11 @@ window.onload = function () {
         canvas.addEventListener("mouseup", onMouseUp);
         canvas.addEventListener("mouseout", onMouseOut);
 
+        canvas.addEventListener("touchstart", onTouchStart, false);
+        canvas.addEventListener("touchend", onTouchEnd, false);
+        canvas.addEventListener("touchcancel", onTouchCancel, false);
+        canvas.addEventListener("touchmove", onTouchMove, false);
+
         // Initialize the two-dimensional tile array
         for (var i = 0; i < level.columns; i++) {
             level.tiles[i] = [];
@@ -580,7 +585,7 @@ window.onload = function () {
     // Find clusters in the level
     function findClusters() {
         // Reset clusters
-        clusters = []
+        clusters = [];
 
         // Find horizontal clusters
         for (var j = 0; j < level.rows; j++) {
@@ -826,6 +831,22 @@ window.onload = function () {
         animationstate = 2;
         animationtime = 0;
         gamestate = gamestates.resolve;
+    }
+
+    function onTouchStart() {
+        alert("start");
+    }
+
+    function onTouchEnd() {
+        alert("end");
+    }
+
+    function onTouchCancel() {
+        alert("cancel");
+    }
+
+    function onTouchMove() {
+        alert("move");
     }
 
     // On mouse movement
