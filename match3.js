@@ -833,19 +833,26 @@ window.onload = function () {
         gamestate = gamestates.resolve;
     }
 
-    function onTouchStart() {
-        alert("start");
+    var start;
+
+    function onTouchStart(e) {
+        var pos = getMousePos(canvas, e);
+        var mt = getMouseTile(pos);
+        if(mt.valid){
+            start = mt;
+        }
+        alert("start " + mt.x + "; " + mt.y);
     }
 
-    function onTouchEnd() {
+    function onTouchEnd(e) {
         alert("end");
     }
 
-    function onTouchCancel() {
+    function onTouchCancel(e) {
         alert("cancel");
     }
 
-    function onTouchMove() {
+    function onTouchMove(e) {
         alert("move");
     }
 
