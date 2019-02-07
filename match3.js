@@ -144,11 +144,11 @@ window.onload = function () {
         drawScores();
         drawBoard();
         render();
-        if(debug){
+        /*if(debug){
             context.font = "14px Verdana";
             context.fillStyle = "#f00";
             context.fillText(debug, 50, 50);
-        }
+        }*/
     }
 
     function drawHeader() {
