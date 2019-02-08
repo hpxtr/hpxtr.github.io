@@ -19,10 +19,15 @@
 // ------------------------------------------------------------------------
 
 // The function gets called when the window is fully loaded
+
+
+
 window.onload = function () {
   // Get the canvas and context
   var canvas = document.getElementById("board");
   var context = canvas.getContext("2d");
+
+  initBolt();
 
   // Timing and frames per second
   var lastframe = 0;
@@ -168,6 +173,9 @@ window.onload = function () {
     // Update and render the game
 
     // Draw background
+    updateBolt();
+    renderBolt();
+
     drawHeader();
 
     update(tframe);
@@ -1039,6 +1047,7 @@ window.onload = function () {
         if (i == 0) {
           // New Game
           newGame();
+          bolt(e);
         } else if (gameover && i == 1) {
           // Show Love
           love = true;
@@ -1050,6 +1059,19 @@ window.onload = function () {
         }
       }
     }
+  }
+
+  function bolt(e) {
+    const x = e.clientX;
+    const y = e.clientY;
+    thunder.push(new Thunder({
+      x: x,
+      y: y
+    }));
+    particles.push(new Particles({
+      x: x,
+      y: y
+    }));
   }
 
   function onMouseUp(e) {
