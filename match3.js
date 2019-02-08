@@ -364,11 +364,13 @@ window.onload = function () {
 
       if (love) {
         var loveImg = document.getElementById("love");
-        context.drawImage(loveImg, level.x + 2, level.y + 2, levelwidth - 2,
-            levelheight - 2);
-      } else if (death) {
-
-      } else {
+        context.drawImage(loveImg, level.x + 2, level.y + 2, levelwidth - 2, levelheight - 2);
+      }
+      else if (death) {
+        var deathImg = document.getElementById("love");
+        context.drawImage(deathImg, level.x + 2, level.y + 2, levelwidth - 2, levelheight - 2);
+      }
+      else {
         context.fillStyle = "#FC921D";
         context.globalAlpha = 0.2;
         context.fillRect(level.x, level.y, levelwidth, levelheight);
@@ -383,9 +385,9 @@ window.onload = function () {
               buttons[1].y - 60, levelwidth);
           drawCenterText("Что будете с ним делать?", level.x, buttons[1].y - 20,
               levelwidth);
-          drawButton("Love him", buttons[1].x, buttons[1].y, buttons[1].width,
+          drawButton("Любить", buttons[1].x, buttons[1].y, buttons[1].width,
               buttons[1].height);
-          drawButton("Kill him", buttons[2].x, buttons[2].y, buttons[2].width,
+          drawButton("Прибить", buttons[2].x, buttons[2].y, buttons[2].width,
               buttons[2].height);
         } else {
           drawCenterText("У вас не вышло собрать все крестражи.", level.x,
