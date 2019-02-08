@@ -45,7 +45,7 @@ window.onload = function () {
   // Level object
   var level = {
     x: 55,         // X position
-    y: 380,         // Y position
+    y: 400,         // Y position
     columns: 8,     // Number of tile columns
     rows: 8,        // Number of tile rows
     tilewidth: 70,  // Visual width of a tile
@@ -77,7 +77,7 @@ window.onload = function () {
   var horcrux_w = 80;
   var horcrux_h = 80;
   var horcrux_x = 55;
-  var horcrux_y = 270;
+  var horcrux_y = 300;
   var max_horchrux_score = 3;
 
   // Score
@@ -133,8 +133,9 @@ window.onload = function () {
   var win = false;
 
   // Gui buttons
+  var doiton = false;
   var buttons = [
-    {x: 300, y: 200, width: 75, height: 40, text: "New Game"},
+    {x: 262, y: 228, width: 123, height: 35, text: "New Game"},
     {x: level.x + 80, y: level.y + 200, width: 150, height: 50, text: "Love"},
     {x: level.x + 320, y: level.y + 200, width: 150, height: 50, text: "Kill"},
     {x: 370, y: 200, width: 75, height: 40, text: "Win"}
@@ -204,16 +205,18 @@ window.onload = function () {
     var header = document.getElementById("header");
     context.drawImage(header, 0, 0, 680, 307);
 
-    context.fillStyle = red_color;
-    context.fillRect(buttons[0].x -10, buttons[0].y - 10, buttons[0].width+20, buttons[0].height+20);
-    context.fillStyle = bkgr_color;
-    context.fillRect(buttons[0].x -8, buttons[0].y - 8, buttons[0].width+16, buttons[0].height+16);
+    if(doiton){
+      var doitonbtn = document.getElementById("doiton");
+      context.drawImage(doitonbtn, buttons[0].x, buttons[0].y,buttons[0].width, buttons[0].height);
+    } else {
+      context.fillStyle = "#b76718";
+      context.fillRect(buttons[0].x, buttons[0].y, 1, buttons[0].height);
+      context.fillRect(buttons[0].x + buttons[0].width, buttons[0].y, 1, buttons[0].height);
+      context.fillRect(buttons[0].x, buttons[0].y, buttons[0].width, 1);
+      context.fillRect(buttons[0].x, buttons[0].y+buttons[0].height, buttons[0].width, 1);
+    }
 
-    var doit = document.getElementById("doit");
-    context.drawImage(doit, buttons[0].x, buttons[0].y,buttons[0].width, buttons[0].height);
-
-    drawButton("Win", buttons[3].x, buttons[3].y, buttons[3].width,
-        buttons[3].height);
+    //drawButton("Win", buttons[3].x, buttons[3].y, buttons[3].width, buttons[3].height);
   }
 
   function addScore(i) {
@@ -1063,8 +1066,7 @@ window.onload = function () {
         // Button i was clicked
         if (i == 0) {
           // New Game
-          //var doiton = document.getElementById("doiton");
-          //context.drawImage(doiton, buttons[0].x, buttons[0].y,buttons[0].width, buttons[0].height);
+          doiton = true;
           newGame();
           bolt(e);
         } else if (gameover && i == 1) {
@@ -1105,11 +1107,13 @@ window.onload = function () {
   function onMouseUp(e) {
     // Reset dragging
     drag = false;
+    doiton = false;
   }
 
   function onMouseOut(e) {
     // Reset dragging
     drag = false;
+    doiton = false;
   }
 
   // Get the mouse position
