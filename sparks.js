@@ -28,7 +28,7 @@ function Thunder(options) {
     this.render = function(ctx) {
         if (this.lifespan <= 0) return;
         ctx.beginPath();
-        //ctx.globalAlpha = this.lifespan / (2*this.maxlife);
+        ctx.globalAlpha = this.lifespan / this.maxlife;
         ctx.strokeStyle = this.color;
         ctx.lineWidth = this.width;
         ctx.shadowBlur = 32;
@@ -92,7 +92,7 @@ function Spark(options) {
     this.render = function(ctx) {
         if (this.lifespan <= 0) return;
         ctx.beginPath();
-        //ctx.globalAlpha = this.lifespan / this.maxlife;
+        ctx.globalAlpha = this.lifespan / this.maxlife;
         ctx.strokeStyle = this.color;
         ctx.lineWidth = this.width;
         ctx.moveTo(this.x, this.y);
@@ -126,24 +126,20 @@ function updateBolt() {
 }
 
 function renderBolt() {
-  ctx.globalCompositeOperation = 'source-over';
-  ctx.globalAlpha = 1;
-  //ctx.fillStyle = '#000';
-  //ctx.fillRect(0, 0, w, h);
-    //
     ctx.globalCompositeOperation = 'screen';
     thunder.forEach(l => l.render(ctx));
     particles.forEach(p => p.render(ctx));
-
-  //ctx.globalCompositeOperation = 'source-over';
 }
 
 function initBolt() {
-    //
     canvas = document.getElementById('board');
     input = document.getElementById('input');
     ctx = canvas.getContext("2d");
     thunder = [];
     particles = [];
+    w = window.innerWidth;
+    h = window.innerHeight;
+    //canvas.width = w;
+    //canvas.height = h;
     let cb = 0;
 }

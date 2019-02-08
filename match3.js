@@ -135,7 +135,7 @@ window.onload = function () {
   // Gui buttons
   var doiton = false;
   var buttons = [
-    {x: 262, y: 228, width: 123, height: 35, text: "New Game"},
+    {x: 276, y: 228, width: 123, height: 35, text: "New Game"},
     {x: level.x + 80, y: level.y + 200, width: 150, height: 50, text: "Love"},
     {x: level.x + 320, y: level.y + 200, width: 150, height: 50, text: "Kill"},
     {x: 370, y: 200, width: 75, height: 40, text: "Win"}
@@ -1096,7 +1096,7 @@ window.onload = function () {
     thunder.push(new Thunder({
       x: x,
       y: y,
-      color: '#55ff55'
+      color: "#50E575"//'#32ff95'
     }));
     particles.push(new Particles({
       x: x,
