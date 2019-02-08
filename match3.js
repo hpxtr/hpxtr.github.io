@@ -406,7 +406,7 @@ window.onload = function () {
         if (win) {
           drawCenterText("Поздравляем, вы собрали Волдеморта!", level.x,
               buttons[1].y - 60, levelwidth);
-          drawCenterText("Что будете с ним делать?", level.x, buttons[1].y - 20,
+          drawCenterText("Что с ним делать?", level.x, buttons[1].y - 20,
               levelwidth);
           drawButton("Любить", buttons[1].x, buttons[1].y, buttons[1].width,
               buttons[1].height);
