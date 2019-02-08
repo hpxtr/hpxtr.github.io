@@ -91,7 +91,7 @@ window.onload = function () {
     var gameover = false;
     var love = false;
     var death = false;
-    var win = true;
+    var win = false;
 
     // Gui buttons
     var buttons = [
@@ -153,7 +153,7 @@ window.onload = function () {
 
     function drawHeader() {
         // Draw background and a border
-        context.fillStyle = "#261a2f";
+        context.fillStyle = "#341935";
         context.fillRect(0, 0, canvas.width, canvas.height);
 
         var header = document.getElementById("header");
@@ -178,6 +178,7 @@ window.onload = function () {
                     gameover = false;
                 }
             }
+            if(gameover) win = true;
         }
     }
 
@@ -336,16 +337,18 @@ window.onload = function () {
                 context.fillRect(level.x, level.y, levelwidth, levelheight);
                 context.globalAlpha = 1.0;
 
-                context.fillStyle = "#261a2f";
+                context.fillStyle = "#341935";
                 context.fillRect(level.x, buttons[1].y - 100, levelwidth+4, 170);
                 context.fillStyle = "#FC921D";
                 context.font = "24px Verdana";
                 if (win) {
-                    drawCenterText("You picked up all horcruxes! ", level.x, buttons[1].y - 50, levelwidth);
-                    drawButton("Love them", buttons[1].x, buttons[1].y, buttons[1].width, buttons[1].height);
-                    drawButton("Kill them", buttons[2].x, buttons[2].y, buttons[2].width, buttons[2].height);
+                    drawCenterText("Поздравляем, вы собрали Волдеморта!", level.x, buttons[1].y - 60, levelwidth);
+                    drawCenterText("Что будете с ним делать?", level.x, buttons[1].y - 20, levelwidth);
+                    drawButton("Love him", buttons[1].x, buttons[1].y, buttons[1].width, buttons[1].height);
+                    drawButton("Kill him", buttons[2].x, buttons[2].y, buttons[2].width, buttons[2].height);
                 } else {
-                    drawCenterText("You missed horcrux and Harry died", level.x, level.y + levelheight / 2 - 20, levelwidth);
+                    drawCenterText("У вас не вышло собрать все крестражи.", level.x, buttons[1].y-40, levelwidth);
+                    drawCenterText("Попробуйте еще раз!", level.x, buttons[1].y + 10, levelwidth);
                 }
             }
         }
@@ -399,7 +402,7 @@ window.onload = function () {
 
     function drawButton(text, x, y, w, h) {
         // Draw button shape
-        context.fillStyle = "#261a2f";
+        context.fillStyle = "#341935";
         context.fillRect(x, y, w, h);
 
         // Draw button text
@@ -517,6 +520,7 @@ window.onload = function () {
         gameover = false;
         love = false;
         death = false;
+        win = false;
 
         // Create the level
         createLevel();
@@ -970,6 +974,7 @@ window.onload = function () {
                     // Show Death
                 } else if (i == 3){
                     gameover = true;
+                    win = true;
                 }
             }
         }
