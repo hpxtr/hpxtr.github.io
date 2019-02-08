@@ -1072,8 +1072,7 @@ window.onload = function () {
   function spark(x, y) {
     particles.push(new Particles({
       x: x,
-      y: y,
-      a: 100
+      y: y
     }));
   }
 
@@ -1082,9 +1081,7 @@ window.onload = function () {
     const y = e.clientY;
     thunder.push(new Thunder({
       x: x,
-      y: y,
-      direct : 0.01,
-      max: 100
+      y: y
     }));
     particles.push(new Particles({
       x: x,

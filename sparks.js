@@ -67,7 +67,7 @@ function Spark(options) {
     options = options || {};
     this.x = options.x || w * 0.5;
     this.y = options.y || h * 0.5;
-    this.v = options.v || { direct: Math.random() * Math.PI * 2, weight: Math.random() * 14 + 2, friction: 0.88 };
+    this.v = options.v || { direct: Math.random() * Math.PI * 2, weight: Math.random() * 3 + 2, friction: 0.88 };
     this.a = options.a || { change: Math.random() * 0.4 - 0.2, min: this.v.direct - Math.PI * 0.4, max: this.v.direct + Math.PI * 0.4 };
     this.g = options.g || { direct: Math.PI * 0.5 + (Math.random() * 0.4 - 0.2), weight: Math.random() * 0.25 + 0.25 };
     this.width = options.width || Math.random() * 3;
