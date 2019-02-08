@@ -138,7 +138,7 @@ window.onload = function () {
     {x: 276, y: 204, width: 123, height: 35, text: "New Game"},
     {x: level.x + 80, y: level.y + 200, width: 150, height: 50, text: "Love"},
     {x: level.x + 320, y: level.y + 200, width: 150, height: 50, text: "Kill"},
-    {x: 370, y: 200, width: 75, height: 40, text: "Win"}
+    {x: 400, y: 160, width: 75, height: 40, text: "Win"}
   ];
 
   // Initialize the game
@@ -393,7 +393,7 @@ window.onload = function () {
       }
       else {
 
-        context.fillStyle = (win)? red_color : "#44aa44";
+        context.fillStyle = red_color; //(win)? red_color : "#44aa44";
         context.globalAlpha = 0.2;
         context.fillRect(level.x, level.y, levelwidth, levelheight);
         context.globalAlpha = 1.0;
