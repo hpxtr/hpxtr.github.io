@@ -581,8 +581,6 @@ window.onload = function () {
         for (var v=0; v<clusters[i].length; v++){
           spark(coord.tilex + level.tilewidth/2 - 4, coord.tiley + level.tileheight/2 + v*level.tileheight);
         }
-        //context.fillStyle = "#0000ff";
-        //context.fillRect(coord.tilex + level.tilewidth/2 - 4, coord.tiley + level.tileheight/2, 8, (clusters[i].length - 1) * level.tileheight);
       }
     }
   }
@@ -1074,7 +1072,8 @@ window.onload = function () {
   function spark(x, y) {
     particles.push(new Particles({
       x: x,
-      y: y
+      y: y,
+      width: 30
     }));
   }
 
