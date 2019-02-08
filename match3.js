@@ -401,7 +401,7 @@ window.onload = function () {
         context.fillStyle = bkgr_color;
         context.fillRect(level.x, buttons[1].y - 100, levelwidth + 4, 170);
         context.fillStyle = red_color;
-        context.font = "24px Verdana";
+        context.font = "20px Verdana";
 
         if (win) {
           drawCenterText("Поздравляем, вы собрали Волдеморта!", level.x,
