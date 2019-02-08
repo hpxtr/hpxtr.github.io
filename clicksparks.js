@@ -10,6 +10,7 @@ function Thunder(options) {
     this.y = options.y || Math.random() * h;
     this.width = options.width || 2;
     this.direct = options.direct || Math.random() * Math.PI * 2;
+    //alert(this.x + "; " + this.y + "; " + this.direct);
     this.max = options.max || Math.round(Math.random() * 10 + 20);
     this.segments = [...new Array(this.max)].map(() => {
         return {
@@ -27,7 +28,7 @@ function Thunder(options) {
     this.render = function(ctx) {
         if (this.lifespan <= 0) return;
         ctx.beginPath();
-        ctx.globalAlpha = this.lifespan / this.maxlife;
+        //ctx.globalAlpha = this.lifespan / (2*this.maxlife);
         ctx.strokeStyle = this.color;
         ctx.lineWidth = this.width;
         ctx.shadowBlur = 32;
@@ -91,7 +92,7 @@ function Spark(options) {
     this.render = function(ctx) {
         if (this.lifespan <= 0) return;
         ctx.beginPath();
-        ctx.globalAlpha = this.lifespan / this.maxlife;
+        //ctx.globalAlpha = this.lifespan / this.maxlife;
         ctx.strokeStyle = this.color;
         ctx.lineWidth = this.width;
         ctx.moveTo(this.x, this.y);
@@ -127,12 +128,14 @@ function updateBolt() {
 function renderBolt() {
   ctx.globalCompositeOperation = 'source-over';
   ctx.globalAlpha = 1;
-  ctx.fillStyle = '#000';
-  ctx.fillRect(0, 0, w, h);
+  //ctx.fillStyle = '#000';
+  //ctx.fillRect(0, 0, w, h);
     //
     ctx.globalCompositeOperation = 'screen';
     thunder.forEach(l => l.render(ctx));
     particles.forEach(p => p.render(ctx));
+
+  //ctx.globalCompositeOperation = 'source-over';
 }
 
 function initBolt() {

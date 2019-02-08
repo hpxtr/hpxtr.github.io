@@ -173,15 +173,18 @@ window.onload = function () {
     // Update and render the game
 
     // Draw background
-    updateBolt();
-    renderBolt();
 
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = 1;
     drawHeader();
 
     update(tframe);
     drawScores();
     drawBoard();
     render();
+
+    updateBolt();
+    renderBolt();
     /*if(debug){
         context.font = "14px Verdana";
         context.fillStyle = "#f00";
