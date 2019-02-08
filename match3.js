@@ -358,30 +358,31 @@ window.onload = function () {
     function drawBoard() {
         var levelwidth = level.columns * level.tilewidth;
         var levelheight = level.rows * level.tileheight;
+        var borderwidth = 1;
 
         // board borders
         context.fillStyle = "#FC921D";//"#e8eaec";
 
         for (var i=0; i<=level.columns; i++){
             // vertical
-            context.fillRect(level.x + i*level.tilewidth, level.y, 2, levelheight);
+            context.fillRect(level.x + i*level.tilewidth, level.y, borderwidth, levelheight);
 
             //horizontal
-            context.fillRect(level.x, level.y + i*level.tileheight, levelwidth, 2);
+            context.fillRect(level.x, level.y + i*level.tileheight, levelwidth, borderwidth);
         }
-        context.fillRect(level.x, level.y, 2, levelheight);
-        context.fillRect(level.x + level.columns*level.tilewidth, level.y, 2, levelheight);
+        context.fillRect(level.x, level.y, borderwidth, levelheight);
+        context.fillRect(level.x + level.columns*level.tilewidth, level.y, borderwidth, levelheight);
         // horizontal
-        context.fillRect(level.x, level.y, levelwidth, 2);
-        context.fillRect(level.x, level.y + level.rows*level.tileheight, levelwidth, 2);
+        context.fillRect(level.x, level.y, levelwidth, borderwidth);
+        context.fillRect(level.x, level.y + level.rows*level.tileheight, levelwidth, borderwidth);
 
         // scores borders
         // vertical
-        context.fillRect(horcrux_x, horcrux_y, 2, horcrux_h);
-        context.fillRect(horcrux_x + horcrux_w*horcruxes.length, horcrux_y, 2, horcrux_h);
+        context.fillRect(horcrux_x, horcrux_y, borderwidth, horcrux_h);
+        context.fillRect(horcrux_x + horcrux_w*horcruxes.length, horcrux_y, borderwidth, horcrux_h);
         // horizontal
-        context.fillRect(horcrux_x, horcrux_y, horcrux_w*horcruxes.length, 2);
-        context.fillRect(horcrux_x, horcrux_y + horcrux_h, horcrux_w*horcruxes.length, 2);
+        context.fillRect(horcrux_x, horcrux_y, horcrux_w*horcruxes.length, borderwidth);
+        context.fillRect(horcrux_x, horcrux_y + horcrux_h, horcrux_w*horcruxes.length, borderwidth);
     }
 
     // Draw scores
