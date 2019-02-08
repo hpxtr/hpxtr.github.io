@@ -182,11 +182,6 @@ window.onload = function () {
     context.font = "14px Verdana";
     context.fillStyle = "#f00";
     context.fillText("go:"+gameover+", w:"+win+", l:"+love+", d:"+death, 50, 50);
-
-    gameover = false;
-    love = false;
-    death = false;
-    win = false;
   }
 
   function drawHeader() {
