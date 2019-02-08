@@ -179,9 +179,6 @@ window.onload = function () {
         context.fillStyle = "#f00";
         context.fillText(debug, 50, 50);
     }*/
-    context.font = "14px Verdana";
-    context.fillStyle = "#f00";
-    context.fillText("go:"+gameover+", w:"+win+", l:"+love+", d:"+death, 50, 50);
   }
 
   function drawHeader() {
@@ -1040,10 +1037,10 @@ window.onload = function () {
         if (i == 0) {
           // New Game
           newGame();
-        } else if (i == 1) {
+        } else if (gameover && i == 1) {
           // Show Love
           love = true;
-        } else if (i == 2) {
+        } else if (gameover && i == 2) {
           // Show Death
         } else if (i == 3) {
           gameover = true;
