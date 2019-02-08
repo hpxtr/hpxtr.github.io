@@ -45,7 +45,7 @@ window.onload = function () {
   // Level object
   var level = {
     x: 55,         // X position
-    y: 400,         // Y position
+    y: 380,         // Y position
     columns: 8,     // Number of tile columns
     rows: 8,        // Number of tile rows
     tilewidth: 70,  // Visual width of a tile
@@ -77,7 +77,7 @@ window.onload = function () {
   var horcrux_w = 80;
   var horcrux_h = 80;
   var horcrux_x = 55;
-  var horcrux_y = 300;
+  var horcrux_y = 280;
   var max_horchrux_score = 3;
 
   // Score
@@ -135,7 +135,7 @@ window.onload = function () {
   // Gui buttons
   var doiton = false;
   var buttons = [
-    {x: 276, y: 228, width: 123, height: 35, text: "New Game"},
+    {x: 276, y: 204, width: 123, height: 35, text: "New Game"},
     {x: level.x + 80, y: level.y + 200, width: 150, height: 50, text: "Love"},
     {x: level.x + 320, y: level.y + 200, width: 150, height: 50, text: "Kill"},
     {x: 370, y: 200, width: 75, height: 40, text: "Win"}
@@ -203,7 +203,7 @@ window.onload = function () {
     context.fillRect(0, 0, canvas.width, canvas.height);
 
     var header = document.getElementById("header");
-    context.drawImage(header, 0, 0, 680, 307);
+    context.drawImage(header, 0, 0, 680, 276);
 
     if(doiton){
       var doitonbtn = document.getElementById("doiton");
