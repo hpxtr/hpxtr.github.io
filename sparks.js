@@ -143,10 +143,6 @@ function initBolt() {
     canvas = document.getElementById('board');
     input = document.getElementById('input');
     ctx = canvas.getContext("2d");
-    w = window.innerWidth;
-    h = window.innerHeight;
-    canvas.width = w;
-    canvas.height = h;
     thunder = [];
     particles = [];
     let cb = 0;

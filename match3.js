@@ -27,6 +27,10 @@ window.onload = function () {
   var canvas = document.getElementById("board");
   var context = canvas.getContext("2d");
 
+  var bkgr_color = "#1E1933";
+  var red_color = "#FC921D";
+  var board_color = "#341935";
+
   initBolt();
 
   // Timing and frames per second
@@ -194,16 +198,19 @@ window.onload = function () {
 
   function drawHeader() {
     // Draw background and a border
-    context.fillStyle = "#1E1933";
+    context.fillStyle = bkgr_color;
     context.fillRect(0, 0, canvas.width, canvas.height);
 
     var header = document.getElementById("header");
     context.drawImage(header, 0, 0, 680, 307);
 
-    var newGame = new Image(300, 160);
-    newGame.src = "img/button.png";
-    newGame.onload = context.drawImage(newGame, buttons[0].x, buttons[0].y,
-        buttons[0].width, buttons[0].height);
+    context.fillStyle = red_color;
+    context.fillRect(buttons[0].x -10, buttons[0].y - 10, buttons[0].width+20, buttons[0].height+20);
+    context.fillStyle = bkgr_color;
+    context.fillRect(buttons[0].x -8, buttons[0].y - 8, buttons[0].width+16, buttons[0].height+16);
+
+    var doit = document.getElementById("doit");
+    context.drawImage(doit, buttons[0].x, buttons[0].y,buttons[0].width, buttons[0].height);
 
     drawButton("Win", buttons[3].x, buttons[3].y, buttons[3].width,
         buttons[3].height);
@@ -382,15 +389,17 @@ window.onload = function () {
         context.drawImage(deathImg, level.x + 2, level.y + 2, levelwidth - 2, levelheight - 2);
       }
       else {
-        context.fillStyle = "#FC921D";
+
+        context.fillStyle = (win)? red_color : "#44aa44";
         context.globalAlpha = 0.2;
         context.fillRect(level.x, level.y, levelwidth, levelheight);
         context.globalAlpha = 1.0;
 
-        context.fillStyle = "#341935";
+        context.fillStyle = bkgr_color;
         context.fillRect(level.x, buttons[1].y - 100, levelwidth + 4, 170);
-        context.fillStyle = "#FC921D";
+        context.fillStyle = red_color;
         context.font = "24px Verdana";
+
         if (win) {
           drawCenterText("Поздравляем, вы собрали Волдеморта!", level.x,
               buttons[1].y - 60, levelwidth);
@@ -400,7 +409,8 @@ window.onload = function () {
               buttons[1].height);
           drawButton("Прибить", buttons[2].x, buttons[2].y, buttons[2].width,
               buttons[2].height);
-        } else {
+        }
+        else {
           drawCenterText("У вас не вышло собрать все крестражи.", level.x,
               buttons[1].y - 40, levelwidth);
           drawCenterText("Попробуйте еще раз!", level.x, buttons[1].y + 10,
@@ -416,11 +426,11 @@ window.onload = function () {
     var levelheight = level.rows * level.tileheight;
     var borderwidth = 1;
 
-    context.fillStyle = "#341935";
+    context.fillStyle = board_color;
     context.fillRect(level.x, level.y, levelwidth, levelheight);
 
     // board borders
-    context.fillStyle = "#FC921D";//"#e8eaec";
+    context.fillStyle = red_color;//"#e8eaec";
 
     for (var i = 0; i <= level.columns; i++) {
       // vertical
@@ -453,7 +463,7 @@ window.onload = function () {
 
   // Draw scores
   function drawScores() {
-    context.fillStyle = "#341935";
+    context.fillStyle = board_color;
     context.fillRect(horcrux_x, horcrux_y, horcrux_w*horcruxes.length, horcrux_h);
 
     var images = [];
@@ -470,11 +480,11 @@ window.onload = function () {
 
   function drawButton(text, x, y, w, h) {
     // Draw button shape
-    context.fillStyle = "#341935";
+    context.fillStyle = bkgr_color;
     context.fillRect(x, y, w, h);
 
     // Draw button text
-    context.fillStyle = "#FC921D";
+    context.fillStyle = red_color;
     context.font = "18px Verdana";
     var textdim = context.measureText(text);
     context.fillText(text, x + (w - textdim.width) / 2, y + 30);
@@ -1053,6 +1063,8 @@ window.onload = function () {
         // Button i was clicked
         if (i == 0) {
           // New Game
+          //var doiton = document.getElementById("doiton");
+          //context.drawImage(doiton, buttons[0].x, buttons[0].y,buttons[0].width, buttons[0].height);
           newGame();
           bolt(e);
         } else if (gameover && i == 1) {
@@ -1081,7 +1093,8 @@ window.onload = function () {
     const y = e.clientY;
     thunder.push(new Thunder({
       x: x,
-      y: y
+      y: y,
+      color: '#55ff55'
     }));
     particles.push(new Particles({
       x: x,
