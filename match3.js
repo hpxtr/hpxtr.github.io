@@ -1076,8 +1076,8 @@ window.onload = function () {
           // Show Death
           death = true;
         } else if (i == 3) {
-          gameover = true;
-          win = true;
+          //gameover = true;
+          //win = true;
         }
       }
     }
