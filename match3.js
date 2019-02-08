@@ -570,16 +570,17 @@ window.onload = function () {
       // Calculate the tile coordinates
       var coord = getTileCoordinate(clusters[i].column, clusters[i].row, 0, 0);
 
+
       if (clusters[i].horizontal) {
         // Draw a horizontal line
-        //testLightning();
-        //var light = createLightning(50, 150);
-        //drawLightning(light, context);
-
-        //context.fillStyle = "#00ff00";
-        //context.fillRect(coord.tilex + level.tilewidth/2, coord.tiley + level.tileheight/2 - 4, (clusters[i].length - 1) * level.tilewidth, 8);
+        for (var h=0; h<clusters[i].length; h++){
+          spark(coord.tilex + level.tilewidth/2 + h*level.tilewidth, coord.tiley + level.tileheight/2 - 4);
+        }
       } else {
         // Draw a vertical line
+        for (var v=0; v<clusters[i].length; v++){
+          spark(coord.tilex + level.tilewidth/2 - 4, coord.tiley + level.tileheight/2 + v*level.tileheight);
+        }
         //context.fillStyle = "#0000ff";
         //context.fillRect(coord.tilex + level.tilewidth/2 - 4, coord.tiley + level.tileheight/2, 8, (clusters[i].length - 1) * level.tileheight);
       }
@@ -1070,12 +1071,21 @@ window.onload = function () {
     }
   }
 
+  function spark(x, y) {
+    particles.push(new Particles({
+      x: x,
+      y: y
+    }));
+  }
+
   function bolt(e) {
     const x = e.clientX;
     const y = e.clientY;
     thunder.push(new Thunder({
       x: x,
-      y: y
+      y: y,
+      direct : 0.01,
+      max: 100
     }));
     particles.push(new Particles({
       x: x,
