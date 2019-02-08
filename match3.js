@@ -191,7 +191,7 @@ window.onload = function () {
 
   function drawHeader() {
     // Draw background and a border
-    context.fillStyle = "#341935";
+    context.fillStyle = "#1E1933";
     context.fillRect(0, 0, canvas.width, canvas.height);
 
     var header = document.getElementById("header");
@@ -375,7 +375,7 @@ window.onload = function () {
         context.drawImage(loveImg, level.x + 2, level.y + 2, levelwidth - 2, levelheight - 2);
       }
       else if (death) {
-        var deathImg = document.getElementById("love");
+        var deathImg = document.getElementById("death");
         context.drawImage(deathImg, level.x + 2, level.y + 2, levelwidth - 2, levelheight - 2);
       }
       else {
@@ -413,6 +413,9 @@ window.onload = function () {
     var levelheight = level.rows * level.tileheight;
     var borderwidth = 1;
 
+    context.fillStyle = "#341935";
+    context.fillRect(level.x, level.y, levelwidth, levelheight);
+
     // board borders
     context.fillStyle = "#FC921D";//"#e8eaec";
 
@@ -447,6 +450,9 @@ window.onload = function () {
 
   // Draw scores
   function drawScores() {
+    context.fillStyle = "#341935";
+    context.fillRect(horcrux_x, horcrux_y, horcrux_w*horcruxes.length, horcrux_h);
+
     var images = [];
     for (var i = 0; i < horcruxes.length; i++) {
       var image = new Image(horcrux_w, horcrux_h);
