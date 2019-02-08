@@ -924,7 +924,6 @@ window.onload = function () {
   }
 
   var start;
-  var end;
   var debug = "";
 
   function onTouchStart(evt) {
@@ -1061,6 +1060,7 @@ window.onload = function () {
           love = true;
         } else if (gameover && i == 2) {
           // Show Death
+          death = true;
         } else if (i == 3) {
           gameover = true;
           win = true;
@@ -1073,7 +1073,7 @@ window.onload = function () {
     particles.push(new Particles({
       x: x,
       y: y,
-      width: 30
+      a: 100
     }));
   }
 
