@@ -1,0 +1,146 @@
+let canvas, ctx, w, h, thunder, particles, input;
+
+function Thunder(options) {
+    options = options || {};
+    this.lifespan = options.lifespan || Math.round(Math.random() * 10 + 10);
+    this.maxlife = this.lifespan;
+    this.color = options.color || '#fefefe';
+    this.glow = options.glow || '#2323fe';
+    this.x = options.x || Math.random() * w;
+    this.y = options.y || Math.random() * h;
+    this.width = options.width || 2;
+    this.direct = options.direct || Math.random() * Math.PI * 2;
+    //alert(this.x + "; " + this.y + "; " + this.direct);
+    this.max = options.max || Math.round(Math.random() * 10 + 20);
+    this.segments = [...new Array(this.max)].map(() => {
+        return {
+            direct: this.direct + (Math.PI * Math.random() * 0.2 - 0.1),
+            length: Math.random() * 20 + 80,
+            change: Math.random() * 0.04 - 0.02
+        };
+    });
+
+    this.update = function(index, array) {
+        this.segments.forEach(s => { (s.direct += s.change) && Math.random() > 0.96 && (s.change *= -1) });
+        (this.lifespan > 0 && this.lifespan--) || this.remove(index, array);
+    }
+
+    this.render = function(ctx) {
+        if (this.lifespan <= 0) return;
+        ctx.globalAlpha = this.lifespan / this.maxlife;
+        ctx.strokeStyle = this.color;
+       // ctx.lineWidth = Math.random()*10;
+        ctx.shadowBlur = 32;
+        ctx.shadowColor = this.glow;
+        let prev = { x: this.x, y: this.y };
+        this.segments.forEach(s => {
+            ctx.beginPath();
+            ctx.moveTo(prev.x, prev.y);
+            ctx.lineWidth = Math.random()*4;
+            const x = prev.x + Math.cos(s.direct) * s.length;
+            const y = prev.y + Math.sin(s.direct) * s.length;
+            prev = { x: x, y: y };
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.closePath();
+        });
+        ctx.shadowBlur = 0;
+        const strength = Math.random() * 80 + 40;
+        const light = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, strength);
+        light.addColorStop(0, 'rgba(250, 200, 50, 0.6)');
+        light.addColorStop(0.1, 'rgba(250, 200, 50, 0.2)');
+        light.addColorStop(0.4, 'rgba(250, 200, 50, 0.06)');
+        light.addColorStop(0.65, 'rgba(250, 200, 50, 0.01)');
+        light.addColorStop(0.8, 'rgba(250, 200, 50, 0)');
+        ctx.beginPath();
+        ctx.fillStyle = light;
+        ctx.arc(this.x, this.y, strength, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.closePath();
+    }
+
+    this.remove = function(index, array) {
+        array.splice(index, 1);
+    }
+}
+
+function Spark(options) {
+    options = options || {};
+    this.x = options.x || w * 0.5;
+    this.y = options.y || h * 0.5;
+    this.v = options.v || { direct: Math.random() * Math.PI * 2, weight: Math.random() * 3 + 2, friction: 0.88 };
+    this.a = options.a || { change: Math.random() * 0.4 - 0.2, min: this.v.direct - Math.PI * 0.4, max: this.v.direct + Math.PI * 0.4 };
+    this.g = options.g || { direct: Math.PI * 0.5 + (Math.random() * 0.4 - 0.2), weight: Math.random() * 0.25 + 0.25 };
+    this.width = options.width || Math.random() * 3;
+    this.lifespan = options.lifespan || Math.round(Math.random() * 20 + 40);
+    this.maxlife = this.lifespan;
+    this.color = options.color || '#feca32';
+    this.prev = { x: this.x, y: this.y };
+
+    this.update = function(index, array) {
+        this.prev = { x: this.x, y: this.y };
+        this.x += Math.cos(this.v.direct) * this.v.weight;
+        this.x += Math.cos(this.g.direct) * this.g.weight;
+        this.y += Math.sin(this.v.direct) * this.v.weight;
+        this.y += Math.sin(this.g.direct) * this.g.weight;
+        this.v.weight > 0.2 && (this.v.weight *= this.v.friction);
+        this.v.direct += this.a.change;
+        (this.v.direct > this.a.max || this.v.direct < this.a.min) && (this.a.change *= -1);
+        this.lifespan > 0 && this.lifespan--;
+        this.lifespan <= 0 && this.remove(index, array);
+    }
+
+    this.render = function(ctx) {
+        if (this.lifespan <= 0) return;
+        ctx.beginPath();
+        ctx.globalAlpha = this.lifespan / this.maxlife;
+        ctx.strokeStyle = this.color;
+        ctx.lineWidth = this.width;
+        ctx.moveTo(this.x, this.y);
+        ctx.lineTo(this.prev.x, this.prev.y);
+        ctx.stroke();
+        ctx.closePath();
+    }
+
+    this.remove = function(index, array) {
+        array.splice(index, 1);
+    }
+}
+
+function Particles(options) {
+    options = options || {};
+    this.max = options.max || Math.round(Math.random() * 10 + 10);
+    this.sparks = [...new Array(this.max)].map(() => new Spark(options));
+
+    this.update = function() {
+        this.sparks.forEach((s, i) => s.update(i, this.sparks));
+    }
+
+    this.render = function(ctx) {
+        this.sparks.forEach(s => s.render(ctx));
+    }
+}
+
+function updateBolt() {
+    thunder.forEach((l, i) => l.update(i, thunder));
+    particles.forEach(p => p.update());
+}
+
+function renderBolt() {
+    ctx.globalCompositeOperation = 'screen';
+    thunder.forEach(l => l.render(ctx));
+    particles.forEach(p => p.render(ctx));
+}
+
+function initBolt() {
+    canvas = document.getElementById('board');
+    input = document.getElementById('input');
+    ctx = canvas.getContext("2d");
+    thunder = [];
+    particles = [];
+    w = window.innerWidth;
+    h = window.innerHeight;
+    //canvas.width = w;
+    //canvas.height = h;
+    let cb = 0;
+}
