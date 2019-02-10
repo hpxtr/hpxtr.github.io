@@ -1,4 +1,4 @@
-let canvas, ctx, w, h, thunder, particles, input;
+let w, h, thunder, particles, input;
 
 function Thunder(options) {
     options = options || {};
@@ -27,23 +27,22 @@ function Thunder(options) {
 
     this.render = function(ctx) {
         if (this.lifespan <= 0) return;
+        ctx.beginPath();
         ctx.globalAlpha = this.lifespan / this.maxlife;
         ctx.strokeStyle = this.color;
-       // ctx.lineWidth = Math.random()*10;
+        ctx.lineWidth = this.width;
         ctx.shadowBlur = 32;
         ctx.shadowColor = this.glow;
+        ctx.moveTo(this.x, this.y);
         let prev = { x: this.x, y: this.y };
         this.segments.forEach(s => {
-            ctx.beginPath();
-            ctx.moveTo(prev.x, prev.y);
-            ctx.lineWidth = Math.random()*4;
             const x = prev.x + Math.cos(s.direct) * s.length;
             const y = prev.y + Math.sin(s.direct) * s.length;
             prev = { x: x, y: y };
             ctx.lineTo(x, y);
-            ctx.stroke();
-            ctx.closePath();
         });
+        ctx.stroke();
+        ctx.closePath();
         ctx.shadowBlur = 0;
         const strength = Math.random() * 80 + 40;
         const light = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, strength);
@@ -132,10 +131,7 @@ function renderBolt() {
     particles.forEach(p => p.render(ctx));
 }
 
-function initBolt() {
-    canvas = document.getElementById('board');
-    input = document.getElementById('input');
-    ctx = canvas.getContext("2d");
+function initSparks() {
     thunder = [];
     particles = [];
     w = window.innerWidth;
