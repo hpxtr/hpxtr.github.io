@@ -1096,7 +1096,7 @@ window.onload = function () {
     thunder.push(new Thunder({
       x: x,
       y: y,
-      color: "#50E575"//'#32ff95'
+      color: "#00ff11"//'#32ff95'
     }));
     particles.push(new Particles({
       x: x,
