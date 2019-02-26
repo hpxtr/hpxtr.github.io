@@ -4,19 +4,20 @@ let red_color = "#FC921D";
 let undertext_color = "#f4ecc0";
 let font = "HoboStd";
 
-let score_x = 94;
-let score_y = 263;
+let score_x = 85;
+let score_y = 264;
 
-let calendar_x = 130;
-let calendar_y = 100;
+let calendar_x = 115;
+let calendar_y = 103;
 
 function drawHeader() {
     // Draw background and a border
     ctx.fillStyle = bkgr_color;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    var header = document.getElementById("cover");
-    ctx.drawImage(header, 0, 0, 680, 1220);
+    var cover = document.getElementById("cover");
+
+    ctx.drawImage(cover, 0, 0, 638, 638*4150/2480);
 
     //if (buttons[0].pressed) {
     //    var doitonbtn = document.getElementById("doiton");
@@ -24,7 +25,7 @@ function drawHeader() {
     //}
 
     ctx.fillStyle = undertext_color;
-    ctx.fillRect(calendar_x, calendar_y-40, 50, 95);
+    ctx.fillRect(calendar_x, calendar_y-33, 50, 88);
 
     ctx.font = "36px " + font;
     ctx.fillStyle = bkgr_color;
@@ -139,17 +140,17 @@ function renderClusters() {
 // Draw scores
 function drawScores() {
     ctx.fillStyle = undertext_color;
-    ctx.fillRect(score_x, score_y-24, 172, 30);
+    ctx.fillRect(score_x, score_y-24, 166, 27);
 
     ctx.font = "26px "+ font;
     ctx.fillStyle = red_color;
     ctx.fillText(scores.harry.toLocaleString('en-US', {minimumIntegerDigits: 3, useGrouping:false}), score_x, score_y);
 
     ctx.fillStyle = "#00ff00";
-    ctx.fillText(scores.tom.toLocaleString('en-US', {minimumIntegerDigits: 3, useGrouping:false}), score_x+63, score_y);
+    ctx.fillText(scores.tom.toLocaleString('en-US', {minimumIntegerDigits: 3, useGrouping:false}), score_x+60, score_y);
 
     ctx.fillStyle = "#000";
-    ctx.fillText(scores.nobody.toLocaleString('en-US', {minimumIntegerDigits: 3, useGrouping:false}), score_x+126, score_y);
+    ctx.fillText(scores.nobody.toLocaleString('en-US', {minimumIntegerDigits: 3, useGrouping:false}), score_x+120, score_y);
 }
 
 

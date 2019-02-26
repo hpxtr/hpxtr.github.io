@@ -1,8 +1,8 @@
 var canvas, ctx;
 
 var level = {
-    x: 60,         // X position
-    y: 405,         // Y position
+    x: 38,         // X position
+    y: 284,         // Y position
     columns: 8,     // Number of tile columns
     rows: 8,        // Number of tile rows
     tilewidth: 70,  // Visual width of a tile
