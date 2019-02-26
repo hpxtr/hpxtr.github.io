@@ -5,7 +5,7 @@ let undertext_color = "#f4ecc0";
 let font = "HoboStd";
 
 let score_x = 92;
-let score_y = 274;
+let score_y = 275;
 
 let calendar_x = 120;
 let calendar_y = 110;
@@ -39,6 +39,7 @@ function drawHeader() {
 function render() {
     renderTiles();
     renderClusters();
+    renderBusters();
 
     // Render moves, when there are no clusters
     if (clusters.length <= 0 && gamestate == gamestates.ready) {
@@ -134,6 +135,13 @@ function renderClusters() {
                 spark(coord.tilex + level.tilewidth/2 - 4, coord.tiley + level.tileheight/2 + v*level.tileheight);
             }
         }
+    }
+}
+
+function renderBusters() {
+    if(buster.type == "hb"){
+        var coord = getTileCoordinate(buster.column, buster.row, 0, 0);
+        spark(coord.tilex + level.tilewidth/2, coord.tiley + level.tileheight/2 - 4);
     }
 }
 

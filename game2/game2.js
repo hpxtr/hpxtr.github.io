@@ -46,6 +46,7 @@ var drag = false;
 
 // Clusters and moves that were found
 var clusters = [];  // { column, row, length, horizontal }
+var buster = {};
 var moves = [];     // { column1, row1, column2, row2 }
 
 // Current move
@@ -56,7 +57,7 @@ var gamestates = {init: 0, ready: 1, resolve: 2};
 var gamestate = gamestates.init;
 
 // Animation variables
-var animationstates = {searchClusters:0, shiftTilesDown:1, swapTiles:2, reSwapTiles:3};
+var animationstates = {searchClusters:0, shiftTilesDown:1, swapTiles:2, reSwapTiles:3, buster:4};
 var animationstate = animationstates.searchClusters;
 var animationtime = 0;
 var animationtimetotal = 0.3;
@@ -139,19 +140,7 @@ window.onload = function () {
 
             if (animationstate == animationstates.searchClusters) {
                 if (animationtime > animationtimetotal) {
-                    findClusters();
-
-                    if (clusters.length > 0) {
-                        for (var i = 0; i < clusters.length; i++) {
-                            var scoretype = (clusters[i].type < 3) ? "harry" : (clusters[i].type < 5) ? "nobody" : "tom";
-                            scores[scoretype] += 10 * (clusters[i].length - 2);
-                        }
-                        removeClustersAndStartShiftingAnimation();
-                        animationstate = animationstates.shiftTilesDown;
-                    } else {
-                        gamestate = gamestates.ready;
-                    }
-                    animationtime = 0;
+                    afterRemovingItems();
                 }
             } else if (animationstate == animationstates.shiftTilesDown) {
                 // Tiles need to be shifted down
@@ -180,8 +169,23 @@ window.onload = function () {
                         animationstate = animationstates.searchClusters;
                         animationtime = 0;
                         gamestate = gamestates.resolve;
-                    } else {
-                        // Invalid swap, Rewind swapping animation
+                    }
+                    // if buster
+                    else if(level.tiles[currentmove.column1][currentmove.row1].type >= 8
+                    ) {
+                        gamestate = gamestates.resolve;
+                        animationstate = animationstates.buster;
+                        animationtime = 0;
+                        doBuster(currentmove.column1, currentmove.row1);
+                    } else if(level.tiles[currentmove.column2][currentmove.row2].type >= 8
+                    ) {
+                        gamestate = gamestates.resolve;
+                        animationstate = animationstates.buster;
+                        animationtime = 0;
+                        doBuster(currentmove.column2, currentmove.row2);
+                    }
+                    // Invalid swap, Rewind swapping animation
+                    else {
                         animationstate = animationstates.reSwapTiles;
                         animationtime = 0;
                     }
@@ -199,10 +203,39 @@ window.onload = function () {
                     // Animation complete
                     gamestate = gamestates.ready;
                 }
+            } else if (animationstate == animationstates.buster) {
+                if (animationtime > animationtimetotal) {
+                    buster = {};
+                    afterRemovingItems();
+                }
             }
 
             findMoves();
             findClusters();
+        }
+    }
+
+    function afterRemovingItems() {
+        findClusters();
+
+        if (clusters.length > 0) {
+            for (var i = 0; i < clusters.length; i++) {
+                var scoretype = (clusters[i].type < 3) ? "harry" : (clusters[i].type < 5) ? "nobody" : "tom";
+                scores[scoretype] += 5 * (clusters[i].length - 2);
+            }
+            removeClustersAndStartShiftingAnimation();
+            animationstate = animationstates.shiftTilesDown;
+        } else {
+            gamestate = gamestates.ready;
+        }
+        animationtime = 0;
+    }
+
+    function doBuster(column, row) {
+        var type = level.tiles[column][row].type;
+        if(icons[type] == "hb"){
+            console.log("HAPPY BIRTHDAY!");
+            buster = {"type" : "hb", "column" : column, "row" : row};
         }
     }
 
