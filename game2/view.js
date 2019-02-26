@@ -18,13 +18,7 @@ function drawHeader() {
     if (buttons[0].pressed) {
         var doitonbtn = document.getElementById("doiton");
         ctx.drawImage(doitonbtn, buttons[0].x, buttons[0].y, buttons[0].width, buttons[0].height);
-    } else {
-        ctx.fillStyle = "#b76718";
-        ctx.fillRect(buttons[0].x, buttons[0].y, 1, buttons[0].height);
-        ctx.fillRect(buttons[0].x + buttons[0].width, buttons[0].y, 1, buttons[0].height);
-        ctx.fillRect(buttons[0].x, buttons[0].y, buttons[0].width, 1);
-        ctx.fillRect(buttons[0].x, buttons[0].y + buttons[0].height, buttons[0].width, 1);
-    }
+    } 
 
     //drawButton("Win", buttons[3].x, buttons[3].y, buttons[3].width, buttons[3].height);
 }
