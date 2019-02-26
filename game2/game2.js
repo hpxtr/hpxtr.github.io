@@ -11,10 +11,15 @@ var level = {
     selectedtile: {selected: false, column: 0, row: 0}
 };
 
+var time = [{"type":"hb", "number":"31", "month":"07"}];
+var current_time = time[0];
+
 var icons = [
     "brum", "deer", "galleon",
     "hut", "prophecy",
-    "mark", "sign", "snake"];
+    "mark", "sign", "snake",
+    "hb", "christmas", "stval"
+];
 
 var scores = {
     "harry": 0,
@@ -141,7 +146,6 @@ window.onload = function () {
                             var scoretype = (clusters[i].type < 3) ? "harry" : (clusters[i].type < 5) ? "nobody" : "tom";
                             scores[scoretype] += 10 * (clusters[i].length - 2);
                         }
-
                         removeClustersAndStartShiftingAnimation();
                         animationstate = animationstates.shiftTilesDown;
                     } else {
@@ -240,7 +244,6 @@ window.onload = function () {
 
         // Keep generating levels until it is correct
         while (!done) {
-
             for (var i = 0; i < level.columns; i++) {
                 for (var j = 0; j < level.rows; j++) {
                     level.tiles[i][j].type = getRandomTile();
@@ -258,7 +261,10 @@ window.onload = function () {
     }
 
     function getRandomTile() {
-        return Math.floor(Math.random() * icons.length);
+        var lucky = Math.floor(Math.random() * 100);
+        if(lucky == 1) return icons.indexOf(current_time.type);
+
+        return Math.floor(Math.random() * 8); //icons.length
     }
 
     // Remove clusters and insert tiles

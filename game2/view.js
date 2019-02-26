@@ -2,10 +2,13 @@
 let bkgr_color = "#1E1933";
 let red_color = "#FC921D";
 let undertext_color = "#f4ecc0";
+let font = "HoboStd";
 
-let score_x = 95;
-let score_y = 260;
+let score_x = 94;
+let score_y = 263;
 
+let calendar_x = 130;
+let calendar_y = 100;
 
 function drawHeader() {
     // Draw background and a border
@@ -15,10 +18,19 @@ function drawHeader() {
     var header = document.getElementById("cover");
     ctx.drawImage(header, 0, 0, 680, 1220);
 
-    if (buttons[0].pressed) {
-        var doitonbtn = document.getElementById("doiton");
-        ctx.drawImage(doitonbtn, buttons[0].x, buttons[0].y, buttons[0].width, buttons[0].height);
-    } 
+    //if (buttons[0].pressed) {
+    //    var doitonbtn = document.getElementById("doiton");
+    //    ctx.drawImage(doitonbtn, buttons[0].x, buttons[0].y, buttons[0].width, buttons[0].height);
+    //}
+
+    ctx.fillStyle = undertext_color;
+    ctx.fillRect(calendar_x, calendar_y-20, 60, 90);
+
+    ctx.font = "36px " + font;
+    ctx.fillStyle = bkgr_color;
+    ctx.fillText(current_time.number, calendar_x, calendar_y);
+    ctx.fillText(current_time.month, calendar_x, calendar_y+50);
+
 
     //drawButton("Win", buttons[3].x, buttons[3].y, buttons[3].width, buttons[3].height);
 }
@@ -54,7 +66,7 @@ function render() {
             ctx.fillStyle = bkgr_color;
             ctx.fillRect(level.x, buttons[1].y - 100, levelwidth + 4, 170);
             ctx.fillStyle = red_color;
-            ctx.font = "20px Verdana";
+            ctx.font = "20px " + font;
 
             if (win) {
                 drawCenterText("Поздравляем, вы собрали Волдеморта!", level.x,
@@ -129,15 +141,15 @@ function drawScores() {
     ctx.fillStyle = undertext_color;
     ctx.fillRect(score_x, score_y-20, 170, 30);
 
-    ctx.font = "26px Verdana";
+    ctx.font = "26px "+ font;
     ctx.fillStyle = red_color;
     ctx.fillText(scores.harry.toLocaleString('en-US', {minimumIntegerDigits: 3, useGrouping:false}), score_x, score_y);
 
     ctx.fillStyle = "#00ff00";
-    ctx.fillText(scores.tom.toLocaleString('en-US', {minimumIntegerDigits: 3, useGrouping:false}), score_x+65, score_y);
+    ctx.fillText(scores.tom.toLocaleString('en-US', {minimumIntegerDigits: 3, useGrouping:false}), score_x+63, score_y);
 
     ctx.fillStyle = "#000";
-    ctx.fillText(scores.nobody.toLocaleString('en-US', {minimumIntegerDigits: 3, useGrouping:false}), score_x+130, score_y);
+    ctx.fillText(scores.nobody.toLocaleString('en-US', {minimumIntegerDigits: 3, useGrouping:false}), score_x+126, score_y);
 }
 
 
@@ -147,7 +159,7 @@ function drawButton(text, x, y, w, h) {
     ctx.fillRect(x, y, w, h);
 
     ctx.fillStyle = red_color;
-    ctx.font = "18px Verdana";
+    ctx.font = "18px " + font;
     var textdim = ctx.measureText(text);
     ctx.fillText(text, x + (w - textdim.width) / 2, y + 30);
 }
