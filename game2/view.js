@@ -1,23 +1,23 @@
 
-let bkgr_color = "#1E1933";
-let red_color = "#FC921D";
+let font_color = "#373789";
+let border_color = "#00ffff";
 let undertext_color = "#f4ecc0";
 let font = "HoboStd";
 
-let score_x = 85;
-let score_y = 264;
+let score_x = 92;
+let score_y = 274;
 
-let calendar_x = 115;
-let calendar_y = 103;
+let calendar_x = 120;
+let calendar_y = 110;
 
 function drawHeader() {
     // Draw background and a border
-    ctx.fillStyle = bkgr_color;
+    ctx.fillStyle = font_color;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     var cover = document.getElementById("cover");
 
-    ctx.drawImage(cover, 0, 0, 638, 638*4150/2480);
+    ctx.drawImage(cover, 0, 0, 670, 670*4150/2480);
 
     //if (buttons[0].pressed) {
     //    var doitonbtn = document.getElementById("doiton");
@@ -28,7 +28,7 @@ function drawHeader() {
     ctx.fillRect(calendar_x, calendar_y-33, 50, 88);
 
     ctx.font = "36px " + font;
-    ctx.fillStyle = bkgr_color;
+    ctx.fillStyle = font_color;
     ctx.fillText(current_time.number, calendar_x, calendar_y);
     ctx.fillText(current_time.month, calendar_x, calendar_y+50);
 
@@ -59,14 +59,14 @@ function render() {
         }
         else {
 
-            ctx.fillStyle = red_color; //(win)? red_color : "#44aa44";
+            ctx.fillStyle = border_color; //(win)? border_color : "#44aa44";
             ctx.globalAlpha = 0.2;
             ctx.fillRect(level.x, level.y, levelwidth, levelheight);
             ctx.globalAlpha = 1.0;
 
-            ctx.fillStyle = bkgr_color;
+            ctx.fillStyle = font_color;
             ctx.fillRect(level.x, buttons[1].y - 100, levelwidth + 4, 170);
-            ctx.fillStyle = red_color;
+            ctx.fillStyle = border_color;
             ctx.font = "20px " + font;
 
             if (win) {
@@ -99,7 +99,7 @@ function drawBoard() {
     //ctx.fillRect(level.x, level.y, levelwidth, levelheight);
 
     // board borders
-    ctx.fillStyle = red_color;//"#e8eaec";
+    ctx.fillStyle = border_color;//"#e8eaec";
 
     for (var i = 0; i <= level.columns; i++) {
         // vertical
@@ -143,23 +143,23 @@ function drawScores() {
     ctx.fillRect(score_x, score_y-24, 166, 27);
 
     ctx.font = "26px "+ font;
-    ctx.fillStyle = red_color;
+    ctx.fillStyle = "#E0523C";
     ctx.fillText(scores.harry.toLocaleString('en-US', {minimumIntegerDigits: 3, useGrouping:false}), score_x, score_y);
 
-    ctx.fillStyle = "#00ff00";
+    ctx.fillStyle = "#5BD790";
     ctx.fillText(scores.tom.toLocaleString('en-US', {minimumIntegerDigits: 3, useGrouping:false}), score_x+60, score_y);
 
-    ctx.fillStyle = "#000";
+    ctx.fillStyle = font_color;
     ctx.fillText(scores.nobody.toLocaleString('en-US', {minimumIntegerDigits: 3, useGrouping:false}), score_x+120, score_y);
 }
 
 
 
 function drawButton(text, x, y, w, h) {
-    ctx.fillStyle = bkgr_color;
+    ctx.fillStyle = font_color;
     ctx.fillRect(x, y, w, h);
 
-    ctx.fillStyle = red_color;
+    ctx.fillStyle = border_color;
     ctx.font = "18px " + font;
     var textdim = ctx.measureText(text);
     ctx.fillText(text, x + (w - textdim.width) / 2, y + 30);

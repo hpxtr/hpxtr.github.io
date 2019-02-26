@@ -393,7 +393,7 @@ window.onload = function () {
       }
       else {
 
-        context.fillStyle = red_color; //(win)? red_color : "#44aa44";
+        context.fillStyle = red_color; //(win)? border_color : "#44aa44";
         context.globalAlpha = 0.2;
         context.fillRect(level.x, level.y, levelwidth, levelheight);
         context.globalAlpha = 1.0;
