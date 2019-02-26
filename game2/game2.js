@@ -46,7 +46,8 @@ var drag = false;
 
 // Clusters and moves that were found
 var clusters = [];  // { column, row, length, horizontal }
-var buster = {};
+var buster = {};    // {type, column, row}
+var buster_victims = []; // column, row
 var moves = [];     // { column1, row1, column2, row2 }
 
 // Current move
@@ -206,7 +207,19 @@ window.onload = function () {
             } else if (animationstate == animationstates.buster) {
                 if (animationtime > animationtimetotal) {
                     buster = {};
-                    afterRemovingItems();
+
+                    if (buster_victims.length > 0) {
+                        for (var i = 0; i < buster_victims.length; i++) {
+                            var scoretype = (buster_victims[i].type < 3) ? "harry" : (buster_victims[i].type < 5) ? "nobody" : "tom";
+                            scores[scoretype] += 5;
+                            level.tiles[buster_victims[i].column][buster_victims[i].row].type = -1;
+                        }
+                        removeClustersAndStartShiftingAnimation();
+                        animationstate = animationstates.shiftTilesDown;
+                    } else {
+                        gamestate = gamestates.ready;
+                    }
+                    animationtime = 0;
                 }
             }
 
@@ -234,8 +247,15 @@ window.onload = function () {
     function doBuster(column, row) {
         var type = level.tiles[column][row].type;
         if(icons[type] == "hb"){
-            console.log("HAPPY BIRTHDAY!");
+            console.log("HAPPY BIRTHDAY!" + column + ";" + row);
             buster = {"type" : "hb", "column" : column, "row" : row};
+            for (var i=column-1; i<=column+1; i++){
+                for (var j=row-1; j<=row+1; j++){
+                    if(i>= 0 && i<8 && j>=0 && j<8){
+                        buster_victims.push({"column" : i, "row" : j, "type": level.tiles[i][j].type});
+                    }
+                }
+            }
         }
     }
 
