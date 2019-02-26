@@ -1,9 +1,8 @@
 var canvas, ctx;
 
-// Level object
 var level = {
-    x: 55,         // X position
-    y: 380,         // Y position
+    x: 60,         // X position
+    y: 405,         // Y position
     columns: 8,     // Number of tile columns
     rows: 8,        // Number of tile rows
     tilewidth: 70,  // Visual width of a tile
@@ -12,20 +11,19 @@ var level = {
     selectedtile: {selected: false, column: 0, row: 0}
 };
 
-// Score
-var horcruxes = [
-    {type: "ring", value: 0},
-    {type: "diary", value: 0},
-    {type: "locket", value: 0},
-    {type: "cup", value: 0},
-    {type: "diadem", value: 0},
-    {type: "snake", value: 0},
-    {type: "scar", value: 0}
-];
-var max_horchrux_score = 3;
+var icons = [
+    "brum", "deer", "galleon",
+    "hut", "prophecy",
+    "mark", "sign", "snake"];
+
+var scores = {
+    "harry": 0,
+    "tom": 0,
+    "nobody": 0
+};
 
 var buttons = [
-    {x: 276, y: 204, width: 123, height: 35, text: "New Game", pressed: false},
+    {x: 290, y: 80, width: 95, height: 45, text: "New Game", pressed: false},
     {x: level.x + 80, y: level.y + 200, width: 150, height: 50, text: "Love"},
     {x: level.x + 320, y: level.y + 200, width: 150, height: 50, text: "Kill"},
     {x: 400, y: 160, width: 75, height: 40, text: "Win"}
@@ -53,7 +51,7 @@ var gamestates = {init: 0, ready: 1, resolve: 2};
 var gamestate = gamestates.init;
 
 // Animation variables
-var animationstates = {searchClusters:0, shiftTiles:1};
+var animationstates = {searchClusters:0, shiftTilesDown:1, swapTiles:2, reSwapTiles:3};
 var animationstate = animationstates.searchClusters;
 var animationtime = 0;
 var animationtimetotal = 0.3;
@@ -114,24 +112,6 @@ window.onload = function () {
          }*/
     }
 
-    function addScore(i) {
-        if (horcruxes[i].value < max_horchrux_score) {
-            // add if not max
-            horcruxes[i].value = horcruxes[i].value + 1;
-
-            // check end of the game
-            gameover = true;
-            for (var j = 0; j < horcruxes.length; j++) {
-                if (horcruxes[j].value < max_horchrux_score) {
-                    gameover = false;
-                }
-            }
-            if (gameover) {
-                win = true;
-            }
-        }
-    }
-
     // Update the game state
     function update(tframe) {
         var dt = (tframe - lastframe) / 1000;
@@ -157,22 +137,20 @@ window.onload = function () {
                     findClusters();
 
                     if (clusters.length > 0) {
-                        // Add points to the score
                         for (var i = 0; i < clusters.length; i++) {
-                            // Add extra points for longer clusters
-                            //score += 100 * (clusters[i].length - 2);
-                            addScore(clusters[i].type);
+                            var scoretype = (clusters[i].type < 3) ? "harry" : (clusters[i].type < 5) ? "nobody" : "tom";
+                            scores[scoretype] += 10 * (clusters[i].length - 2);
                         }
 
-                        removeClusters();
-                        animationstate = animationstates.shiftTiles;
+                        removeClustersAndStartShiftingAnimation();
+                        animationstate = animationstates.shiftTilesDown;
                     } else {
                         gamestate = gamestates.ready;
                     }
                     animationtime = 0;
                 }
-            } else if (animationstate == 1) {
-                // Tiles need to be shifted
+            } else if (animationstate == animationstates.shiftTilesDown) {
+                // Tiles need to be shifted down
                 if (animationtime > animationtimetotal) {
                     shiftTiles();
 
@@ -184,8 +162,30 @@ window.onload = function () {
                         gamestate = gamestates.ready;
                     }
                 }
-            } else if (animationstate == 2) {
-            } else if (animationstate == 3) {
+            } else if (animationstate == animationstates.swapTiles) {
+                // Swapping tiles animation
+                if (animationtime > animationtimetotal) {
+
+                    swap(currentmove.column1, currentmove.row1, currentmove.column2, currentmove.row2);
+
+                    // Check if the swap made a cluster
+                    findClusters();
+                    if (clusters.length > 0) {
+                        // Valid swap, found one or more clusters
+                        // Prepare animation states
+                        animationstate = animationstates.searchClusters;
+                        animationtime = 0;
+                        gamestate = gamestates.resolve;
+                    } else {
+                        // Invalid swap, Rewind swapping animation
+                        animationstate = animationstates.reSwapTiles;
+                        animationtime = 0;
+                    }
+
+                    findMoves();
+                    findClusters();
+                }
+            } else if (animationstate == animationstates.reSwapTiles) {
                 // Rewind swapping animation
                 if (animationtime > animationtimetotal) {
                     // Invalid swap, swap back
@@ -218,9 +218,7 @@ window.onload = function () {
     }
 
     function newGame() {
-        for (var i = 0; i < horcruxes.length; i++) {
-            horcruxes[i].value = 0;
-        }
+        scores.harry = scores.tom = scores.nobody = 0;
 
         gamestate = gamestates.ready;
 
@@ -260,7 +258,7 @@ window.onload = function () {
     }
 
     function getRandomTile() {
-        return Math.floor(Math.random() * horcruxes.length);
+        return Math.floor(Math.random() * icons.length);
     }
 
     // Remove clusters and insert tiles
@@ -269,7 +267,7 @@ window.onload = function () {
 
         // While there are clusters left
         while (clusters.length > 0) {
-            removeClusters();
+            removeClustersAndStartShiftingAnimation();
             shiftTiles();
             findClusters();
         }
@@ -361,10 +359,9 @@ window.onload = function () {
         }
     }
 
-    // Find available moves
     function findMoves() {
         // Reset moves
-        moves = []
+        moves = [];
 
         // Check horizontal swaps
         for (var j = 0; j < level.rows; j++) {
@@ -421,8 +418,7 @@ window.onload = function () {
         }
     }
 
-    // Remove the clusters
-    function removeClusters() {
+    function removeClustersAndStartShiftingAnimation() {
         // Change the type of the tiles to -1, indicating a removed tile
         loopClusters(function (index, column, row, cluster) {
             level.tiles[column][row].type = -1;
@@ -447,7 +443,6 @@ window.onload = function () {
 
     // Shift tiles and insert new tiles
     function shiftTiles() {
-        // Shift tiles
         for (var i = 0; i < level.columns; i++) {
             for (var j = level.rows - 1; j >= 0; j--) {
                 // Loop from bottom to top
@@ -485,14 +480,9 @@ window.onload = function () {
         }
 
         // No valid tile
-        return {
-            valid: false,
-            x: 0,
-            y: 0
-        };
+        return {valid: false, x: 0, y: 0};
     }
 
-    // Check if two tiles can be swapped
     function canSwap(x1, y1, x2, y2) {
         // Check if the tile is a direct neighbor of the selected tile
         if ((Math.abs(x1 - x2) == 1 && y1 == y2) ||
@@ -503,14 +493,12 @@ window.onload = function () {
         return false;
     }
 
-    // Swap two tiles in the level
     function swap(x1, y1, x2, y2) {
         var typeswap = level.tiles[x1][y1].type;
         level.tiles[x1][y1].type = level.tiles[x2][y2].type;
         level.tiles[x2][y2].type = typeswap;
     }
 
-    // Swap two tiles as a player action
     function mouseSwap(c1, r1, c2, r2) {
         // Save the current move
         currentmove = {column1: c1, row1: r1, column2: c2, row2: r2};
@@ -519,12 +507,10 @@ window.onload = function () {
         level.selectedtile.selected = false;
 
         // Start animation
-        animationstate = 2;
+        animationstate = animationstates.swapTiles;
         animationtime = 0;
         gamestate = gamestates.resolve;
     }
-
-    var debug = "";
 
     function onTouchStart(evt) {
         var pos = getTouchPos(canvas, evt);
@@ -594,21 +580,16 @@ window.onload = function () {
 
         // Start dragging
         if (!drag) {
-            // Get the tile under the mouse
             mt = getMouseTile(pos);
-
             if (mt.valid) {
-                // Valid tile
                 var swapped = checkMoving(mt, true);
 
                 if (!swapped) {
-                    // Set the new selected tile
                     level.selectedtile.column = mt.x;
                     level.selectedtile.row = mt.y;
                     level.selectedtile.selected = true;
                 }
             } else {
-                // Invalid tile
                 level.selectedtile.selected = false;
             }
 
@@ -639,16 +620,15 @@ window.onload = function () {
     }
 
     function bolt(e) {
-        const x = e.clientX;
-        const y = e.clientY;
+        const pos = getMousePos(canvas, e);
         thunder.push(new Thunder({
-            x: x,
-            y: y,
+            x: pos.x,
+            y: pos.y,
             color: "#00ff11"//'#32ff95'
         }));
         particles.push(new Particles({
-            x: x,
-            y: y
+            x: pos.x,
+            y: pos.y
         }));
     }
 

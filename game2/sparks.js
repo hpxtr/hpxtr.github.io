@@ -1,4 +1,4 @@
-let w, h, thunder, particles, input;
+let w, h, thunder, particles;
 
 function Thunder(options) {
     options = options || {};
@@ -138,5 +138,4 @@ function initSparks() {
     h = window.innerHeight;
     //canvas.width = w;
     //canvas.height = h;
-    let cb = 0;
 }

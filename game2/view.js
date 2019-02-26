@@ -1,12 +1,10 @@
 
 let bkgr_color = "#1E1933";
 let red_color = "#FC921D";
-let board_color = "#341935";
+let undertext_color = "#f4ecc0";
 
-let horcrux_w = 80;
-let horcrux_h = 80;
-let horcrux_x = 55;
-let horcrux_y = 280;
+let score_x = 95;
+let score_y = 260;
 
 
 function drawHeader() {
@@ -14,8 +12,8 @@ function drawHeader() {
     ctx.fillStyle = bkgr_color;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    var header = document.getElementById("header");
-    ctx.drawImage(header, 0, 0, 680, 276);
+    var header = document.getElementById("cover");
+    ctx.drawImage(header, 0, 0, 680, 1220);
 
     if (buttons[0].pressed) {
         var doitonbtn = document.getElementById("doiton");
@@ -31,13 +29,8 @@ function drawHeader() {
     //drawButton("Win", buttons[3].x, buttons[3].y, buttons[3].width, buttons[3].height);
 }
 
-// Render the game
 function render() {
-
-    // Render tiles
     renderTiles();
-
-    // Render clusters
     renderClusters();
 
     // Render moves, when there are no clusters
@@ -45,7 +38,6 @@ function render() {
         //renderMoves();
     }
 
-    // Game Over overlay
     if (gameover) {
         var levelwidth = level.tilewidth * level.rows;
         var levelheight = level.tileheight * level.columns;
@@ -96,42 +88,28 @@ function drawBoard() {
     var levelheight = level.rows * level.tileheight;
     var borderwidth = 1;
 
-    ctx.fillStyle = board_color;
-    ctx.fillRect(level.x, level.y, levelwidth, levelheight);
+    //ctx.fillStyle = board_color;
+    //ctx.fillRect(level.x, level.y, levelwidth, levelheight);
 
     // board borders
     ctx.fillStyle = red_color;//"#e8eaec";
 
     for (var i = 0; i <= level.columns; i++) {
         // vertical
-        ctx.fillRect(level.x + i * level.tilewidth, level.y, borderwidth,
-            levelheight);
+        ctx.fillRect(level.x + i * level.tilewidth, level.y, borderwidth, levelheight);
 
         //horizontal
-        ctx.fillRect(level.x, level.y + i * level.tileheight, levelwidth,
-            borderwidth);
+        ctx.fillRect(level.x, level.y + i * level.tileheight, levelwidth, borderwidth);
     }
+
     ctx.fillRect(level.x, level.y, borderwidth, levelheight);
-    ctx.fillRect(level.x + level.columns * level.tilewidth, level.y,
-        borderwidth, levelheight);
+    ctx.fillRect(level.x + level.columns * level.tilewidth, level.y, borderwidth, levelheight);
     // horizontal
     ctx.fillRect(level.x, level.y, levelwidth, borderwidth);
-    ctx.fillRect(level.x, level.y + level.rows * level.tileheight,
-        levelwidth, borderwidth);
+    ctx.fillRect(level.x, level.y + level.rows * level.tileheight, levelwidth, borderwidth);
 
-    // scores borders
-    // vertical
-    ctx.fillRect(horcrux_x, horcrux_y, borderwidth, horcrux_h);
-    ctx.fillRect(horcrux_x + horcrux_w * horcruxes.length, horcrux_y,
-        borderwidth, horcrux_h);
-    // horizontal
-    ctx.fillRect(horcrux_x, horcrux_y, horcrux_w * horcruxes.length,
-        borderwidth);
-    ctx.fillRect(horcrux_x, horcrux_y + horcrux_h,
-        horcrux_w * horcruxes.length, borderwidth);
 }
 
-// Render clusters
 function renderClusters() {
     for (var i = 0; i < clusters.length; i++) {
         // Calculate the tile coordinates
@@ -154,20 +132,21 @@ function renderClusters() {
 
 // Draw scores
 function drawScores() {
-    ctx.fillStyle = board_color;
-    ctx.fillRect(horcrux_x, horcrux_y, horcrux_w*horcruxes.length, horcrux_h);
+    ctx.fillStyle = undertext_color;
+    ctx.fillRect(score_x, score_y-20, 170, 30);
 
-    var images = [];
-    for (var i = 0; i < horcruxes.length; i++) {
-        var image = new Image(horcrux_w, horcrux_h);
-        image.src = "img/top/" + horcruxes[i].type + (horcruxes[i].value+1) + ".png";
-        ctx.imageSmoothingEnabled = false;
-        ctx.webkitImageSmoothingEnabled = false;
-        ctx.mozImageSmoothingEnabled = false;
-        image.onload = ctx.drawImage(image, horcrux_x + i * horcrux_w,
-            horcrux_y, horcrux_w, horcrux_h);
-    }
+    ctx.font = "26px Verdana";
+    ctx.fillStyle = red_color;
+    ctx.fillText(scores.harry.toLocaleString('en-US', {minimumIntegerDigits: 3, useGrouping:false}), score_x, score_y);
+
+    ctx.fillStyle = "#00ff00";
+    ctx.fillText(scores.tom.toLocaleString('en-US', {minimumIntegerDigits: 3, useGrouping:false}), score_x+65, score_y);
+
+    ctx.fillStyle = "#000";
+    ctx.fillText(scores.nobody.toLocaleString('en-US', {minimumIntegerDigits: 3, useGrouping:false}), score_x+130, score_y);
 }
+
+
 
 function drawButton(text, x, y, w, h) {
     ctx.fillStyle = bkgr_color;
@@ -184,7 +163,7 @@ function drawSelectedTile(x, y, type_id) {
 }
 
 function drawTileWithType(x, y, type_id) {
-    var tile = document.getElementById(horcruxes[type_id].type);
+    var tile = document.getElementById(icons[type_id]);
     ctx.drawImage(tile, x + 2, y + 2, level.tilewidth - 4, level.tileheight - 4);
 }
 
@@ -201,28 +180,21 @@ function getTileCoordinate(column, row, columnoffset, rowoffset) {
     return {tilex: tilex, tiley: tiley};
 }
 
-// Render tiles
 function renderTiles() {
     for (var i = 0; i < level.columns; i++) {
         for (var j = 0; j < level.rows; j++) {
-            // Get the shift of the tile for animation
-            var shift = level.tiles[i][j].shift;
 
-            // Calculate the tile coordinates
-            var coord = getTileCoordinate(i, j, 0,
-                (animationtime / animationtimetotal) * shift);
+            // Render the shift animation
+            var shift = level.tiles[i][j].shift;
+            var coord = getTileCoordinate(i, j, 0, (animationtime / animationtimetotal) * shift);
 
             // Check if there is a tile present
             if (level.tiles[i][j].type >= 0) {
-
-                // Draw the tile using the color
                 drawTileWithType(coord.tilex, coord.tiley, level.tiles[i][j].type);
             }
 
-            // Draw the selected tile
             if (level.selectedtile.selected) {
                 if (level.selectedtile.column == i && level.selectedtile.row == j) {
-                    // Draw a red tile
                     drawSelectedTile(coord.tilex, coord.tiley, level.tiles[i][j].type);
                 }
             }
@@ -230,8 +202,8 @@ function renderTiles() {
     }
 
     // Render the swap animation
-    if (gamestate == gamestates.resolve && (animationstate == 2
-        || animationstate == 3)) {
+    if (gamestate == gamestates.resolve &&
+        (animationstate == animationstates.swapTiles || animationstate == animationstates.reSwapTiles)) {
         // Calculate the x and y shift
         var shiftx = currentmove.column2 - currentmove.column1;
         var shifty = currentmove.row2 - currentmove.row1;
@@ -247,7 +219,7 @@ function renderTiles() {
             (animationtime / animationtimetotal) * -shifty);
 
         // Change the order, depending on the animation state
-        if (animationstate == 2) {
+        if (animationstate == animationstates.swapTiles) {
             // Draw the tiles
             drawTileWithType(coord1shift.tilex, coord1shift.tiley,
                 level.tiles[currentmove.column1][currentmove.row1].type);
