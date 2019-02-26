@@ -24,7 +24,7 @@ function drawHeader() {
     //}
 
     ctx.fillStyle = undertext_color;
-    ctx.fillRect(calendar_x, calendar_y-20, 60, 90);
+    ctx.fillRect(calendar_x, calendar_y-40, 50, 95);
 
     ctx.font = "36px " + font;
     ctx.fillStyle = bkgr_color;
@@ -139,7 +139,7 @@ function renderClusters() {
 // Draw scores
 function drawScores() {
     ctx.fillStyle = undertext_color;
-    ctx.fillRect(score_x, score_y-20, 170, 30);
+    ctx.fillRect(score_x, score_y-24, 172, 30);
 
     ctx.font = "26px "+ font;
     ctx.fillStyle = red_color;
