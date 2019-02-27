@@ -1,8 +1,8 @@
 var canvas, ctx;
 
 var level = {
-    x: 55,         // X position
-    y: 312,         // Y position
+    x: 40,         // X position
+    y: 285,         // Y position
     columns: 8,     // Number of tile columns
     rows: 8,        // Number of tile rows
     tilewidth: 70,  // Visual width of a tile
@@ -20,9 +20,9 @@ var current_time = 0;
 var days_counter = 0;
 
 var icons = [
-    "brum", "deer", "galleon",
+    "hscarf", "phoenix", "snitch",
     "hut", "prophecy",
-    "mark", "sign", "snake",
+    "tscarf", "mark", "sign",
     "hb", "christmas", "stval"
 ];
 
@@ -33,7 +33,7 @@ var scores = {
 };
 
 var buttons = [
-    {x: 290, y: 80, width: 95, height: 45, text: "New Game", pressed: false},
+    {x: 275, y: 90, width: 95, height: 45, text: "New Game", pressed: false},
     {x: level.x + 80, y: level.y + 200, width: 150, height: 50, text: "Love"},
     {x: level.x + 320, y: level.y + 200, width: 150, height: 50, text: "Kill"},
     {x: 400, y: 160, width: 75, height: 40, text: "Win"}

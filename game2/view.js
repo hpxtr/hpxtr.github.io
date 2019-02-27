@@ -4,11 +4,11 @@ let border_color = "#00ffff";
 let undertext_color = "#f4ecc0";
 let font = "HoboStd";
 
-let score_x = 92;
+let score_x = 85;
 let score_y = 275;
 
 let calendar_x = 120;
-let calendar_y = 110;
+let calendar_y = 120;
 
 function drawHeader() {
     // Draw background and a border
@@ -17,20 +17,18 @@ function drawHeader() {
 
     var cover = document.getElementById("cover");
 
-    ctx.drawImage(cover, 0, 0, 670, 670*4150/2480);
+    ctx.drawImage(cover, 0, 0, 638, 638*4150/2480);
 
-    //if (buttons[0].pressed) {
-    //    var doitonbtn = document.getElementById("doiton");
-    //    ctx.drawImage(doitonbtn, buttons[0].x, buttons[0].y, buttons[0].width, buttons[0].height);
-    //}
+    var start_btn = (buttons[0].pressed) ? document.getElementById("start_on") : document.getElementById("start");
+    ctx.drawImage(start_btn, buttons[0].x, buttons[0].y, buttons[0].width, buttons[0].height);
 
-    ctx.fillStyle = undertext_color;
-    ctx.fillRect(calendar_x, calendar_y-33, 50, 88);
+    //ctx.fillStyle = undertext_color;
+   // ctx.fillRect(calendar_x, calendar_y-33, 50, 88);
 
-    ctx.font = "36px " + font;
+    ctx.font = "26px " + font;
     ctx.fillStyle = font_color;
     ctx.fillText(time[current_time].number, calendar_x, calendar_y);
-    ctx.fillText(time[current_time].month, calendar_x, calendar_y+50);
+    ctx.fillText(time[current_time].month, calendar_x, calendar_y+30);
 
 
     //drawButton("Win", buttons[3].x, buttons[3].y, buttons[3].width, buttons[3].height);
@@ -104,17 +102,17 @@ function drawBoard() {
 
     for (var i = 0; i <= level.columns; i++) {
         // vertical
-        ctx.fillRect(level.x + i * level.tilewidth, level.y, borderwidth, levelheight);
+        //ctx.fillRect(level.x + i * level.tilewidth, level.y, borderwidth, levelheight);
 
         //horizontal
-        ctx.fillRect(level.x, level.y + i * level.tileheight, levelwidth, borderwidth);
+        //ctx.fillRect(level.x, level.y + i * level.tileheight, levelwidth, borderwidth);
     }
 
-    ctx.fillRect(level.x, level.y, borderwidth, levelheight);
-    ctx.fillRect(level.x + level.columns * level.tilewidth, level.y, borderwidth, levelheight);
+    //ctx.fillRect(level.x, level.y, borderwidth, levelheight);
+    //ctx.fillRect(level.x + level.columns * level.tilewidth, level.y, borderwidth, levelheight);
     // horizontal
-    ctx.fillRect(level.x, level.y, levelwidth, borderwidth);
-    ctx.fillRect(level.x, level.y + level.rows * level.tileheight, levelwidth, borderwidth);
+    //ctx.fillRect(level.x, level.y, levelwidth, borderwidth);
+    //ctx.fillRect(level.x, level.y + level.rows * level.tileheight, levelwidth, borderwidth);
 
 }
 
@@ -147,8 +145,8 @@ function renderBusters() {
 
 // Draw scores
 function drawScores() {
-    ctx.fillStyle = undertext_color;
-    ctx.fillRect(score_x, score_y-24, 166, 27);
+    //ctx.fillStyle = undertext_color;
+    //ctx.fillRect(score_x, score_y-24, 166, 27);
 
     ctx.font = "26px "+ font;
     ctx.fillStyle = "#E0523C";
