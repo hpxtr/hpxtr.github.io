@@ -17,7 +17,7 @@ function drawHeader() {
 
     var cover = document.getElementById("cover");
 
-    ctx.drawImage(cover, 0, 0, 638, 638*4150/2480);
+    ctx.drawImage(cover, 0, 0, 638, 1068);//638*4150/2480);
 
     var start_btn = (buttons[0].pressed) ? document.getElementById("start_on") : document.getElementById("start");
     ctx.drawImage(start_btn, buttons[0].x, buttons[0].y, buttons[0].width, buttons[0].height);
@@ -125,12 +125,12 @@ function renderClusters() {
         if (clusters[i].horizontal) {
             // Draw a horizontal line
             for (var h=0; h<clusters[i].length; h++){
-                spark(coord.tilex + level.tilewidth/2 + h*level.tilewidth, coord.tiley + level.tileheight/2 - 4);
+                spark(coord.tilex + h*level.tilewidth, coord.tiley);
             }
         } else {
             // Draw a vertical line
             for (var v=0; v<clusters[i].length; v++){
-                spark(coord.tilex + level.tilewidth/2 - 4, coord.tiley + level.tileheight/2 + v*level.tileheight);
+                spark(coord.tilex, coord.tiley + v*level.tileheight);
             }
         }
     }
@@ -138,8 +138,24 @@ function renderClusters() {
 
 function renderBusters() {
     if(buster.type == "hb"){
-        var coord = getTileCoordinate(buster.column, buster.row, 0, 0);
-        spark(coord.tilex + level.tilewidth/2, coord.tiley + level.tileheight/2 - 4);
+        var buster_coord = getTileCoordinate(buster.column, buster.row, 0, 0);
+        var size = 70*2 / (animationtimetotal / animationtime );
+        ctx.drawImage(document.getElementById("bang"),
+            buster_coord.tilex - size/2 + level.tilewidth/2,
+            buster_coord.tiley - size/2 + level.tileheight/2,
+            size, size);
+    }
+    else if(buster.type == "halloween"){
+        for (var v=0; v<buster_victims.length; v++){
+            var vcoord = getTileCoordinate(buster_victims[v].column, buster_victims[v].row, 0, 0);
+            colorspark(vcoord.tilex, vcoord.tiley, "#00ff00");
+        }
+    }
+    else if(buster.type == "stval"){
+        for (var v=0; v<buster_victims.length; v++){
+            var vcoord = getTileCoordinate(buster_victims[v].column, buster_victims[v].row, 0, 0);
+            colorspark(vcoord.tilex, vcoord.tiley, "#ff55ad");
+        }
     }
 }
 
@@ -253,9 +269,40 @@ function renderTiles() {
     }
 }
 
+function tilebolt(pos) {
+    thunder.push(new Thunder({
+        x: pos.tilex + level.tilewidth/2,
+        y: pos.tiley + level.tileheight/2 - 4,
+        color: "#00ff11"//'#32ff95'
+    }));
+    particles.push(new Particles({
+        x: pos.tilex + level.tilewidth/2,
+        y: pos.tiley + level.tileheight/2 - 4
+    }));
+}
+
+function colorspark(x, y, color) {
+    particles.push(new Particles({
+        x: x  + level.tilewidth/2,
+        y: y + level.tileheight/2 - 4,
+        color: color
+    }));
+}
+
 function spark(x, y) {
     particles.push(new Particles({
-        x: x,
-        y: y
+        x: x  + level.tilewidth/2,
+        y: y + level.tileheight/2 - 4
+    }));
+}
+
+function bigspark(x, y) {
+    particles.push(new Particles({
+        x: x  + level.tilewidth/2,
+        y: y + level.tileheight/2 - 4,
+        width: 50
+        //v: {direct: 5.810678095494448, weight: 20.562300635604453, friction: 0.88},
+        //g: {direct: 1.464413895595235, weight: 1.38336239105111736}
+        //a: {change: 0.039701101933149546, min: 0.8697720456281206, max: 30.383046168499955}
     }));
 }

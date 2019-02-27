@@ -13,16 +13,18 @@ var level = {
 
 var time = [
     {"type":"hb", "number":"31", "month":"07"},
-    {"type":"christmas", "number":25, "month":"12"}
+    {"type":"christmas", "number":"25", "month":"12"},
+    {"type":"stval", "number":"14", "month":"02"}
 ];
 
 var current_time = 0;
 var days_counter = 0;
+var was_lucky = false;
 
 var icons = [
     "hscarf", "phoenix", "snitch",
-    "hut", "prophecy",
     "tscarf", "mark", "sign",
+    "hut", "prophecy",
     "hb", "christmas", "stval"
 ];
 
@@ -120,6 +122,7 @@ window.onload = function () {
 
         if(days_counter > 10){
             days_counter = 0;
+            was_lucky = false;
             current_time++;
             if(current_time >= time.length){
                 current_time = 0;
@@ -223,7 +226,7 @@ window.onload = function () {
 
                     if (buster_victims.length > 0) {
                         for (var i = 0; i < buster_victims.length; i++) {
-                            var scoretype = (buster_victims[i].type < 3) ? "harry" : (buster_victims[i].type < 5) ? "nobody" : "tom";
+                            var scoretype = (buster_victims[i].type < 3) ? "harry" : (buster_victims[i].type < 6) ? "tom" : "nobody";
                             scores[scoretype] += 5;
                             level.tiles[buster_victims[i].column][buster_victims[i].row].type = -1;
                         }
@@ -247,7 +250,7 @@ window.onload = function () {
 
         if (clusters.length > 0) {
             for (var i = 0; i < clusters.length; i++) {
-                var scoretype = (clusters[i].type < 3) ? "harry" : (clusters[i].type < 5) ? "nobody" : "tom";
+                var scoretype = (clusters[i].type < 3) ? "harry" : (clusters[i].type < 6) ? "tom" : "nobody";
                 scores[scoretype] += 5 * (clusters[i].length - 2);
             }
             removeClustersAndStartShiftingAnimation();
@@ -267,6 +270,34 @@ window.onload = function () {
             for (var i=column-1; i<=column+1; i++){
                 for (var j=row-1; j<=row+1; j++){
                     if(i>= 0 && i<8 && j>=0 && j<8){
+                        buster_victims.push({"column" : i, "row" : j, "type": level.tiles[i][j].type});
+                    }
+                }
+            }
+        } else if(icons[type] == "halloween"){
+            console.log("HAPPY HALLOWEEN!" + column + ";" + row);
+            buster = {"type" : "halloween", "column" : column, "row" : row};
+
+            var buster_coord = getTileCoordinate(column, row, 0, 0);
+            tilebolt(buster_coord);
+            buster_victims.push({"column" : column, "row" : row, "type": type});
+            for (var i = 0; i < level.columns; i++) {
+                for (var j = 0; j < level.rows; j++) {
+                    if(level.tiles[i][j].type < 3){ // all harry's items will die
+                        buster_victims.push({"column" : i, "row" : j, "type": level.tiles[i][j].type});
+                    }
+                }
+            }
+        } else if(icons[type] == "stval"){
+            console.log("HAPPY ST VALENTINE!" + column + ";" + row);
+            buster = {"type" : "stval", "column" : column, "row" : row};
+
+            var buster_coord = getTileCoordinate(column, row, 0, 0);
+            tilebolt(buster_coord);
+            buster_victims.push({"column" : column, "row" : row, "type": type});
+            for (var i = 0; i < level.columns; i++) {
+                for (var j = 0; j < level.rows; j++) {
+                    if(level.tiles[i][j].type < 3){ // all harry's items will die
                         buster_victims.push({"column" : i, "row" : j, "type": level.tiles[i][j].type});
                     }
                 }
@@ -329,8 +360,11 @@ window.onload = function () {
     }
 
     function getRandomTile() {
-        var lucky = Math.floor(Math.random() * 70);
-        if(lucky == 1) return icons.indexOf(time[current_time].type);
+        var lucky = Math.floor(Math.random() * (was_lucky ? 120 : 80));
+        if(lucky == 1) {
+            was_lucky = true;
+            return icons.indexOf(time[current_time].type);
+        }
 
         return Math.floor(Math.random() * 8); //icons.length
     }
