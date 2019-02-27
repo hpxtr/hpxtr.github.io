@@ -260,7 +260,7 @@ window.onload = function () {
     function doBuster(column, row) {
         buster_victims = [];
         var type = level.tiles[column][row].type;
-        if(icons[type] == "hb1"){
+        if(icons[type] == "hb"){
             console.log("HAPPY BIRTHDAY!" + column + ";" + row);
             buster = {"type" : "hb", "column" : column, "row" : row};
             for (var i=column-1; i<=column+1; i++){
