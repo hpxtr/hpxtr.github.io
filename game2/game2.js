@@ -260,7 +260,7 @@ window.onload = function () {
     function doBuster(column, row) {
         buster_victims = [];
         var type = level.tiles[column][row].type;
-        if(icons[type] == "hb"){
+        if(icons[type] == "hb1"){
             console.log("HAPPY BIRTHDAY!" + column + ";" + row);
             buster = {"type" : "hb", "column" : column, "row" : row};
             for (var i=column-1; i<=column+1; i++){
@@ -293,7 +293,7 @@ window.onload = function () {
             buster_victims.push({"column" : column, "row" : row, "type": type});
             for (var i = 0; i < level.columns; i++) {
                 for (var j = 0; j < level.rows; j++) {
-                    if(level.tiles[i][j].type < 3){ // all harry's items will die
+                    if(level.tiles[i][j].type > 2 && level.tiles[i][j].type < 6){ // all tom's items will die
                         buster_victims.push({"column" : i, "row" : j, "type": level.tiles[i][j].type});
                     }
                 }
