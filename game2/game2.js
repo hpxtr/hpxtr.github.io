@@ -224,6 +224,7 @@ window.onload = function () {
                 }
             } else if (animationstate == animationstates.buster) {
                 if (animationtime > animationtimetotal) {
+                    animationtimetotal = 0.3;
                     buster = {};
 
                     if (buster_victims.length > 0) {
