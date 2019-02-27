@@ -178,9 +178,13 @@ function drawSelectedTile(x, y, type_id) {
 }
 
 function drawTileWithType(x, y, type_id) {
-    console.log(icons[type_id]);
     var tile = document.getElementById(icons[type_id]);
-    ctx.drawImage(tile, x + 2, y + 2, level.tilewidth - 4, level.tileheight - 4);
+    try{
+        ctx.drawImage(tile, x + 2, y + 2, level.tilewidth - 4, level.tileheight - 4);
+    } catch (err){
+        console.log(x+";"+y+" - " + icons[type_id]);
+        console.warn(err);
+    }
 }
 
 // Draw text that is centered
