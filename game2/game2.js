@@ -24,7 +24,7 @@ var was_lucky = false;
 var icons = [
     "hscarf", "phoenix", "snitch",
     "tscarf", "mark", "sign",
-    "hut", "prophecy",
+    /*"hut",*/ "prophecy",
     "hb", "christmas", "stval"
 ];
 
@@ -184,13 +184,13 @@ window.onload = function () {
                         gamestate = gamestates.resolve;
                     }
                     // if buster
-                    else if(level.tiles[currentmove.column1][currentmove.row1].type >= 8
+                    else if(level.tiles[currentmove.column1][currentmove.row1].type >= 7
                     ) {
                         gamestate = gamestates.resolve;
                         animationstate = animationstates.buster;
                         animationtime = 0;
                         doBuster(currentmove.column1, currentmove.row1);
-                    } else if(level.tiles[currentmove.column2][currentmove.row2].type >= 8
+                    } else if(level.tiles[currentmove.column2][currentmove.row2].type >= 7
                     ) {
                         gamestate = gamestates.resolve;
                         animationstate = animationstates.buster;
@@ -223,7 +223,7 @@ window.onload = function () {
                     if (buster_victims.length > 0) {
                         for (var i = 0; i < buster_victims.length; i++) {
                             var scoretype = (buster_victims[i].type < 3) ? "harry" : (buster_victims[i].type < 6) ? "tom" : "nobody";
-                            scores[scoretype] += 5;
+                            scores[scoretype] += 1;
                             level.tiles[buster_victims[i].column][buster_victims[i].row].type = -1;
                         }
                         removeClustersAndStartShiftingAnimation();
@@ -247,7 +247,7 @@ window.onload = function () {
         if (clusters.length > 0) {
             for (var i = 0; i < clusters.length; i++) {
                 var scoretype = (clusters[i].type < 3) ? "harry" : (clusters[i].type < 6) ? "tom" : "nobody";
-                scores[scoretype] += 5 * (clusters[i].length - 2);
+                scores[scoretype] += 3 * (clusters[i].length - 2);
             }
             removeClustersAndStartShiftingAnimation();
             animationstate = animationstates.shiftTilesDown;
@@ -359,7 +359,7 @@ window.onload = function () {
             return icons.indexOf(time[current_time].type);
         }
 
-        return Math.floor(Math.random() * 8); //icons.length
+        return Math.floor(Math.random() * 7); //icons.length
     }
 
     // Remove clusters and insert tiles
