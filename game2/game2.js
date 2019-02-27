@@ -72,9 +72,6 @@ var animationtimetotal = 0.3;
 
 // Game Over
 var gameover = false;
-var love = false;
-var death = false;
-var win = false;
 
 window.onload = function () {
     canvas = document.getElementById("board");
@@ -148,7 +145,6 @@ window.onload = function () {
             // Check for game over
             if (moves.length <= 0) {
                 gameover = true;
-                win = false;
             }
 
         } else if (gamestate == gamestates.resolve) {
@@ -327,9 +323,6 @@ window.onload = function () {
 
         // Reset game over
         gameover = false;
-        love = false;
-        death = false;
-        win = false;
 
         createLevel();
 
@@ -716,9 +709,9 @@ window.onload = function () {
                     newGame();
                     bolt(e);
                 } else if (gameover && i == 1) {
-                    love = true;
+                   // love = true;
                 } else if (gameover && i == 2) {
-                    death = true;
+                   // death = true;
                 } else if (i == 3) {
                     //gameover = true;
                     //win = true;

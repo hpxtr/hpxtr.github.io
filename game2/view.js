@@ -48,43 +48,20 @@ function render() {
         var levelwidth = level.tilewidth * level.rows;
         var levelheight = level.tileheight * level.columns;
 
-        if (love) {
-            var loveImg = document.getElementById("love");
-            ctx.drawImage(loveImg, level.x + 2, level.y + 2, levelwidth - 2, levelheight - 2);
-        }
-        else if (death) {
-            var deathImg = document.getElementById("death");
-            ctx.drawImage(deathImg, level.x + 2, level.y + 2, levelwidth - 2, levelheight - 2);
-        }
-        else {
-
             ctx.fillStyle = border_color; //(win)? border_color : "#44aa44";
             ctx.globalAlpha = 0.2;
             ctx.fillRect(level.x, level.y, levelwidth, levelheight);
             ctx.globalAlpha = 1.0;
 
             ctx.fillStyle = font_color;
-            ctx.fillRect(level.x, buttons[1].y - 100, levelwidth + 4, 170);
+            ctx.fillRect(level.x, buttons[1].y - 55, levelwidth + 4, 120);
             ctx.fillStyle = border_color;
             ctx.font = "20px " + font;
 
-            if (win) {
-                drawCenterText("Поздравляем, вы собрали Волдеморта!", level.x,
-                    buttons[1].y - 60, levelwidth);
-                drawCenterText("Что делать?", level.x, buttons[1].y - 20,
-                    levelwidth);
-                drawButton("Любить", buttons[1].x, buttons[1].y, buttons[1].width,
-                    buttons[1].height);
-                drawButton("Прибить", buttons[2].x, buttons[2].y, buttons[2].width,
-                    buttons[2].height);
-            }
-            else {
-                drawCenterText("У вас не вышло собрать все крестражи.", level.x,
-                    buttons[1].y - 40, levelwidth);
-                drawCenterText("Попробуйте еще раз!", level.x, buttons[1].y + 10,
-                    levelwidth);
-            }
-        }
+                drawCenterText("Воу, вы собрали " + scores.harry + " гарриков и "
+                    + scores.tom + " томиков!",
+                    level.x,
+                    buttons[1].y, levelwidth);
     }
 
 }
