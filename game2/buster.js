@@ -9,6 +9,9 @@ function renderBusters() {
             size, size);
     }
     else if(buster.type == "halloween"){
+        let buster_coord = getTileCoordinate(buster.column, buster.row, 0, 0);
+        tilebolt(buster_coord);
+
         for (let v=0; v<buster_victims.length; v++){
             let vcoord = getTileCoordinate(buster_victims[v].column, buster_victims[v].row, 0, 0);
             colorspark(vcoord.tilex, vcoord.tiley, "#00ff00");
@@ -34,7 +37,7 @@ function doBuster(column, row) {
     animationtimetotal = 0.5;
     buster_victims = [];
     var type = level.tiles[column][row].type;
-    if(icons[type] == "hb"){
+    if(icons[type] == "hb1"){
         console.log("HAPPY BIRTHDAY!" + column + ";" + row);
         buster = {"type" : "hb", "column" : column, "row" : row};
         for (let i=column-1; i<=column+1; i++){
@@ -44,12 +47,10 @@ function doBuster(column, row) {
                 }
             }
         }
-    } else if(icons[type] == "halloween"){
+    } else if(icons[type] == "hb"){
         console.log("HAPPY HALLOWEEN!" + column + ";" + row);
         buster = {"type" : "halloween", "column" : column, "row" : row};
 
-        let buster_coord = getTileCoordinate(column, row, 0, 0);
-        tilebolt(buster_coord);
         buster_victims.push({"column" : column, "row" : row, "type": type});
         for (let i = 0; i < level.columns; i++) {
             for (let j = 0; j < level.rows; j++) {
