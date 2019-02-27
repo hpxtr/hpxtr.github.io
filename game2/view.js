@@ -29,8 +29,8 @@ function drawHeader() {
 
     ctx.font = "36px " + font;
     ctx.fillStyle = font_color;
-    ctx.fillText(current_time.number, calendar_x, calendar_y);
-    ctx.fillText(current_time.month, calendar_x, calendar_y+50);
+    ctx.fillText(time[current_time].number, calendar_x, calendar_y);
+    ctx.fillText(time[current_time].month, calendar_x, calendar_y+50);
 
 
     //drawButton("Win", buttons[3].x, buttons[3].y, buttons[3].width, buttons[3].height);
@@ -178,6 +178,7 @@ function drawSelectedTile(x, y, type_id) {
 }
 
 function drawTileWithType(x, y, type_id) {
+    console.log(icons[type_id]);
     var tile = document.getElementById(icons[type_id]);
     ctx.drawImage(tile, x + 2, y + 2, level.tilewidth - 4, level.tileheight - 4);
 }

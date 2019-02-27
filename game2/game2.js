@@ -11,8 +11,13 @@ var level = {
     selectedtile: {selected: false, column: 0, row: 0}
 };
 
-var time = [{"type":"hb", "number":"31", "month":"07"}];
-var current_time = time[0];
+var time = [
+    {"type":"hb", "number":"31", "month":"07"},
+    {"type":"christmas", "number":25, "month":"12"}
+];
+
+var current_time = 0;
+var days_counter = 0;
 
 var icons = [
     "brum", "deer", "galleon",
@@ -112,6 +117,14 @@ window.onload = function () {
 
         updateBolt();
         renderBolt();
+
+        if(days_counter > 10){
+            days_counter = 0;
+            current_time++;
+            if(current_time >= time.length){
+                current_time = 0;
+            }
+        }
         /*if(debug){
          ctx.font = "14px Verdana";
          ctx.fillStyle = "#f00";
@@ -229,6 +242,7 @@ window.onload = function () {
     }
 
     function afterRemovingItems() {
+        days_counter++;
         findClusters();
 
         if (clusters.length > 0) {
@@ -245,6 +259,7 @@ window.onload = function () {
     }
 
     function doBuster(column, row) {
+        buster_victims = [];
         var type = level.tiles[column][row].type;
         if(icons[type] == "hb"){
             console.log("HAPPY BIRTHDAY!" + column + ";" + row);
@@ -314,8 +329,8 @@ window.onload = function () {
     }
 
     function getRandomTile() {
-        var lucky = Math.floor(Math.random() * 100);
-        if(lucky == 1) return icons.indexOf(current_time.type);
+        var lucky = Math.floor(Math.random() * 70);
+        if(lucky == 1) return icons.indexOf(time[current_time].type);
 
         return Math.floor(Math.random() * 8); //icons.length
     }
