@@ -176,29 +176,35 @@ window.onload = function () {
 
                     // Check if the swap made a cluster
                     findClusters();
+                    var dosmth = false;
+
                     if (clusters.length > 0) {
+                        dosmth = true;
                         // Valid swap, found one or more clusters
                         // Prepare animation states
                         animationstate = animationstates.searchClusters;
                         animationtime = 0;
                         gamestate = gamestates.resolve;
                     }
+
                     // if buster
-                    else if(level.tiles[currentmove.column1][currentmove.row1].type >= 7
-                    ) {
+                    if(level.tiles[currentmove.column1][currentmove.row1].type >= 7) {
+                        dosmth = true;
                         gamestate = gamestates.resolve;
                         animationstate = animationstates.buster;
                         animationtime = 0;
                         doBuster(currentmove.column1, currentmove.row1);
-                    } else if(level.tiles[currentmove.column2][currentmove.row2].type >= 7
-                    ) {
+                    }
+                    if(level.tiles[currentmove.column2][currentmove.row2].type >= 7) {
+                        dosmth = true;
                         gamestate = gamestates.resolve;
                         animationstate = animationstates.buster;
                         animationtime = 0;
                         doBuster(currentmove.column2, currentmove.row2);
                     }
+
                     // Invalid swap, Rewind swapping animation
-                    else {
+                    if(!dosmth) {
                         animationstate = animationstates.reSwapTiles;
                         animationtime = 0;
                     }
@@ -257,50 +263,6 @@ window.onload = function () {
         animationtime = 0;
     }
 
-    function doBuster(column, row) {
-        buster_victims = [];
-        var type = level.tiles[column][row].type;
-        if(icons[type] == "hb"){
-            console.log("HAPPY BIRTHDAY!" + column + ";" + row);
-            buster = {"type" : "hb", "column" : column, "row" : row};
-            for (var i=column-1; i<=column+1; i++){
-                for (var j=row-1; j<=row+1; j++){
-                    if(i>= 0 && i<8 && j>=0 && j<8){
-                        buster_victims.push({"column" : i, "row" : j, "type": level.tiles[i][j].type});
-                    }
-                }
-            }
-        } else if(icons[type] == "halloween"){
-            console.log("HAPPY HALLOWEEN!" + column + ";" + row);
-            buster = {"type" : "halloween", "column" : column, "row" : row};
-
-            var buster_coord = getTileCoordinate(column, row, 0, 0);
-            tilebolt(buster_coord);
-            buster_victims.push({"column" : column, "row" : row, "type": type});
-            for (var i = 0; i < level.columns; i++) {
-                for (var j = 0; j < level.rows; j++) {
-                    if(level.tiles[i][j].type < 3){ // all harry's items will die
-                        buster_victims.push({"column" : i, "row" : j, "type": level.tiles[i][j].type});
-                    }
-                }
-            }
-        } else if(icons[type] == "stval"){
-            console.log("HAPPY ST VALENTINE!" + column + ";" + row);
-            buster = {"type" : "stval", "column" : column, "row" : row};
-
-            var buster_coord = getTileCoordinate(column, row, 0, 0);
-            tilebolt(buster_coord);
-            buster_victims.push({"column" : column, "row" : row, "type": type});
-            for (var i = 0; i < level.columns; i++) {
-                for (var j = 0; j < level.rows; j++) {
-                    if(level.tiles[i][j].type > 2 && level.tiles[i][j].type < 6){ // all tom's items will die
-                        buster_victims.push({"column" : i, "row" : j, "type": level.tiles[i][j].type});
-                    }
-                }
-            }
-        }
-    }
-
     function updateFps(dt) {
         if (fpstime > 0.25) {
             // Calculate fps
@@ -353,7 +315,8 @@ window.onload = function () {
     }
 
     function getRandomTile() {
-        var lucky = Math.floor(Math.random() * (was_lucky ? 120 : 80));
+        var d = was_lucky ? 120 : (80/days_counter);
+        var lucky = Math.floor(Math.random() * d);
         if(lucky == 1) {
             was_lucky = true;
             return icons.indexOf(time[current_time].type);

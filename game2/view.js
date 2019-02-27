@@ -113,29 +113,6 @@ function renderClusters() {
     }
 }
 
-function renderBusters() {
-    if(buster.type == "hb"){
-        var buster_coord = getTileCoordinate(buster.column, buster.row, 0, 0);
-        var size = 70*2 / (animationtimetotal / animationtime );
-        ctx.drawImage(document.getElementById("bang"),
-            buster_coord.tilex - size/2 + level.tilewidth/2,
-            buster_coord.tiley - size/2 + level.tileheight/2,
-            size, size);
-    }
-    else if(buster.type == "halloween"){
-        for (var v=0; v<buster_victims.length; v++){
-            var vcoord = getTileCoordinate(buster_victims[v].column, buster_victims[v].row, 0, 0);
-            colorspark(vcoord.tilex, vcoord.tiley, "#00ff00");
-        }
-    }
-    else if(buster.type == "stval"){
-        for (var v=0; v<buster_victims.length; v++){
-            var vcoord = getTileCoordinate(buster_victims[v].column, buster_victims[v].row, 0, 0);
-            colorspark(vcoord.tilex, vcoord.tiley, "#ff55ad");
-        }
-    }
-}
-
 // Draw scores
 function drawScores() {
     //ctx.fillStyle = undertext_color;
