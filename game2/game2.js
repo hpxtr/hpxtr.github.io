@@ -132,40 +132,10 @@ function update(tframe) {
         // not for skull
         if(level.tiles[currentmove.column1][currentmove.row1].type != icons.indexOf("skull") &&
             level.tiles[currentmove.column2][currentmove.row2].type != icons.indexOf("skull")) {
-          swap(currentmove.column1, currentmove.row1, currentmove.column2, currentmove.row2);
-
-          // Check if the swap made a cluster
-          findClusters();
-
-          if (clusters.length > 0) {
-            // Valid swap, found one or more clusters
-            // Prepare animation states
-            animationstate = animationstates.searchClusters;
-            animationtime = 0;
-            gamestate = gamestates.resolve;
-          }
-        }
-
-        // if buster
-        else if (level.tiles[currentmove.column1][currentmove.row1].type >= 7 &&
-            level.tiles[currentmove.column1][currentmove.row1].type != icons.indexOf("skull")) {
-          gamestate = gamestates.resolve;
-          animationstate = animationstates.buster;
+          notSkullSwapping();
+        } else {
           animationtime = 0;
-          doBuster(currentmove.column1, currentmove.row1);
-        }
-        else if (level.tiles[currentmove.column2][currentmove.row2].type >= 7 &&
-            level.tiles[currentmove.column1][currentmove.row1].type != icons.indexOf("skull")) {
-          gamestate = gamestates.resolve;
-          animationstate = animationstates.buster;
-          animationtime = 0;
-          doBuster(currentmove.column2, currentmove.row2);
-        }
-
-        // Invalid swap, Rewind swapping animation
-        else {
-          animationstate = animationstates.reSwapTiles;
-          animationtime = 0;
+          gamestate = gamestates.ready;
         }
 
         findMoves();
@@ -210,6 +180,43 @@ function update(tframe) {
 
     findMoves();
     findClusters();
+  }
+}
+
+function notSkullSwapping() {
+  swap(currentmove.column1, currentmove.row1, currentmove.column2, currentmove.row2);
+
+  // Check if the swap made a cluster
+  findClusters();
+
+  if (clusters.length > 0) {
+    // Valid swap, found one or more clusters
+    // Prepare animation states
+    animationstate = animationstates.searchClusters;
+    animationtime = 0;
+    gamestate = gamestates.resolve;
+  }
+
+  // if buster
+  else if (level.tiles[currentmove.column1][currentmove.row1].type >= 7 &&
+      level.tiles[currentmove.column1][currentmove.row1].type != icons.indexOf("skull")) {
+    gamestate = gamestates.resolve;
+    animationstate = animationstates.buster;
+    animationtime = 0;
+    doBuster(currentmove.column1, currentmove.row1);
+  }
+  else if (level.tiles[currentmove.column2][currentmove.row2].type >= 7 &&
+      level.tiles[currentmove.column1][currentmove.row1].type != icons.indexOf("skull")) {
+    gamestate = gamestates.resolve;
+    animationstate = animationstates.buster;
+    animationtime = 0;
+    doBuster(currentmove.column2, currentmove.row2);
+  }
+
+  // Invalid swap, Rewind swapping animation
+  else {
+    animationstate = animationstates.reSwapTiles;
+    animationtime = 0;
   }
 }
 
