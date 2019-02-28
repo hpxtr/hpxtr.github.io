@@ -43,9 +43,6 @@ window.onload = function () {
         updateBolt();
         renderBolt();
 
-        if(days_counter > time_duration){
-            nextDate();
-        }
         /*if(debug){
          ctx.font = "14px Verdana";
          ctx.fillStyle = "#f00";
@@ -74,6 +71,7 @@ function updateFps(dt) {
 
 function newGame() {
     scores.harry = scores.tom = scores.nobody = 0;
+    days_counter = 0;
 
     gamestate = gamestates.ready;
 
@@ -361,11 +359,11 @@ function mouseSwap(c1, r1, c2, r2) {
 
 function nextDate() {
   days_counter = 0;
-  was_lucky = false;
   current_time++;
   if(current_time >= time.length){
     current_time = 0;
   }
+  console.log("next date " + current_time);
 }
 
 function onTouchStart(evt) {

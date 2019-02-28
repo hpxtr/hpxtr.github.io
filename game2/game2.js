@@ -20,8 +20,6 @@ var time = [
 
 var current_time = 0;
 var days_counter = 0;
-var time_duration = 20;
-var was_lucky = false;
 
 var icons = [
     "hscarf", "phoenix", "snitch",
@@ -38,7 +36,7 @@ var scores = {
 
 var buttons = [
     {x: 275, y: 90, width: 95, height: 45, text: "New Game", pressed: false},
-    {x: 100, y: 100, width: 300, height: 300, text: "Calendar"},
+    {x: 100, y: 88, width: 70, height: 70, text: "Calendar"},
     {x: level.x + 320, y: level.y + 200, width: 150, height: 50, text: "Nothing"},
     {x: 400, y: 160, width: 75, height: 40, text: "Win"}
 ];
@@ -77,11 +75,12 @@ var gameover = false;
 
 
 function getRandomTile() {
-    var d = was_lucky ? 90 : (time_duration + 5 + time_duration/(days_counter+1));
-    var lucky = Math.floor(Math.random() * d);
-    if (lucky == 0) {
-        was_lucky = true;
-        return icons.indexOf(time[current_time].type);
+    let lucky_val = 30 + 250/(5 + days_counter);
+    if (Math.floor(Math.random() * lucky_val) == 0) {
+        console.info(time[current_time].type);
+        const icon = icons.indexOf(time[current_time].type);
+        nextDate();
+        return icon;
     }
 
     return Math.floor(Math.random() * 7); //icons.length
