@@ -214,15 +214,20 @@ function findMoves() {
     // Check horizontal swaps
     for (var j = 0; j < level.rows; j++) {
         for (var i = 0; i < level.columns - 1; i++) {
-            // Swap, find clusters and swap back
-            swap(i, j, i + 1, j);
-            findClusters();
-            swap(i, j, i + 1, j);
+            // if no skulls
+            if(level.tiles[i][j].type != icons.indexOf("skull") &&
+                level.tiles[i+1][j].type != icons.indexOf("skull")){
 
-            // Check if the swap made a cluster
-            if (clusters.length > 0) {
-                // Found a move
-                moves.push({column1: i, row1: j, column2: i + 1, row2: j});
+                // Swap, find clusters and swap back
+                swap(i, j, i + 1, j);
+                findClusters();
+                swap(i, j, i + 1, j);
+
+                // Check if the swap made a cluster
+                if (clusters.length > 0) {
+                    // Found a move
+                    moves.push({column1: i, row1: j, column2: i + 1, row2: j});
+                }
             }
         }
     }
@@ -230,15 +235,19 @@ function findMoves() {
     // Check vertical swaps
     for (var i = 0; i < level.columns; i++) {
         for (var j = 0; j < level.rows - 1; j++) {
-            // Swap, find clusters and swap back
-            swap(i, j, i, j + 1);
-            findClusters();
-            swap(i, j, i, j + 1);
+            // if no skulls
+            if(level.tiles[i][j].type != icons.indexOf("skull") &&
+                level.tiles[i][j+1].type != icons.indexOf("skull")){
+                // Swap, find clusters and swap back
+                swap(i, j, i, j + 1);
+                findClusters();
+                swap(i, j, i, j + 1);
 
-            // Check if the swap made a cluster
-            if (clusters.length > 0) {
-                // Found a move
-                moves.push({column1: i, row1: j, column2: i, row2: j + 1});
+                // Check if the swap made a cluster
+                if (clusters.length > 0) {
+                    // Found a move
+                    moves.push({column1: i, row1: j, column2: i, row2: j + 1});
+                }
             }
         }
     }
