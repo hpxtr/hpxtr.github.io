@@ -129,17 +129,21 @@ function update(tframe) {
       // Swapping tiles animation
       if (animationtime > animationtimetotal) {
 
-        swap(currentmove.column1, currentmove.row1, currentmove.column2, currentmove.row2);
+        // not for skull
+        if(level.tiles[currentmove.column1][currentmove.row1].type != icons.indexOf("skull") &&
+            level.tiles[currentmove.column2][currentmove.row2].type != icons.indexOf("skull")) {
+          swap(currentmove.column1, currentmove.row1, currentmove.column2, currentmove.row2);
 
-        // Check if the swap made a cluster
-        findClusters();
+          // Check if the swap made a cluster
+          findClusters();
 
-        if (clusters.length > 0) {
-          // Valid swap, found one or more clusters
-          // Prepare animation states
-          animationstate = animationstates.searchClusters;
-          animationtime = 0;
-          gamestate = gamestates.resolve;
+          if (clusters.length > 0) {
+            // Valid swap, found one or more clusters
+            // Prepare animation states
+            animationstate = animationstates.searchClusters;
+            animationtime = 0;
+            gamestate = gamestates.resolve;
+          }
         }
 
         // if buster
