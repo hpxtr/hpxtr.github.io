@@ -45,8 +45,10 @@ function render() {
     ctx.fillStyle = "#E8E5D0"; //(win)? border_color : "#44aa44";
     ctx.globalAlpha = 0.3;
     //ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+    const alpha = (gamestate == gamestates.ready) ? 1 : (1 - animationtime/animationtimetotal );
+    console.info(alpha);
+    ctx.globalAlpha = alpha;
 
-    ctx.globalAlpha = (animationstate == animationstates.show_final) ? (animationtimetotal / animationtime ) : 1.0;
 
     var final = (scores.harry == scores.tom) ? document.getElementById("eq_end") : (scores.harry > scores.tom) ? document.getElementById("harry_end") : document.getElementById("tom_end");
     ctx.drawImage(final, level.x-1, level.y-1,levelwidth+2, levelheight+2);

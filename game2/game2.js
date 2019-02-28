@@ -37,7 +37,7 @@ var scores = {
 var buttons = [
   {x: 275, y: 90, width: 95, height: 45, text: "New Game", pressed: false},
   {x: 100, y: 88, width: 70, height: 70, text: "Calendar"},
-  {x: level.x + 220, y: level.y + 250, width: 150, height: 50, text: "Play again"},
+  {x: level.x + 220, y: level.y + 250, width: 150, height: 100, text: "Play again"},
   {x: 400, y: 160, width: 75, height: 40, text: "Win"}
 ];
 
@@ -198,6 +198,7 @@ function update(tframe) {
     }
     else if(animationstate == animationstates.show_final){
       if (animationtime > animationtimetotal) {
+        animationtimetotal = 0.3;
         newGame();
         animationtime = 0;
       }

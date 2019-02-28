@@ -466,6 +466,7 @@ function onMouseDown(e) {
             } else if (i == 1) {
                 nextDate();
             } else if (gameover && i == 2) {
+              animationtimetotal = 0.5;
                 gamestate = gamestates.resolve;
                 animationstate = animationstates.show_final;
                 bolt(e);
