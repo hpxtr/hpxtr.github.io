@@ -466,8 +466,9 @@ function onMouseDown(e) {
             } else if (i == 1) {
                 nextDate();
             } else if (gameover && i == 2) {
-              newGame();
-              bolt(e);
+                gamestate = gamestates.resolve;
+                animationstate = animationstates.show_final;
+                bolt(e);
             } else if (i == 3) {
                 gameover = true;
             }

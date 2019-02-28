@@ -38,11 +38,6 @@ function render() {
   renderClusters();
   renderBusters();
 
-  // Render moves, when there are no clusters
-  if (clusters.length <= 0 && gamestate == gamestates.ready) {
-    //renderMoves();
-  }
-
   if (gameover) {
     var levelwidth = level.tilewidth * level.rows;
     var levelheight = level.tileheight * level.columns;
@@ -50,12 +45,13 @@ function render() {
     ctx.fillStyle = "#E8E5D0"; //(win)? border_color : "#44aa44";
     ctx.globalAlpha = 0.3;
     //ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
-    ctx.globalAlpha = 1.0;
 
-    var final = (scores.harry > scores.tom) ? document.getElementById("harry_end") : document.getElementById("tom_end");
+    ctx.globalAlpha = (animationstate == animationstates.show_final) ? (animationtimetotal / animationtime ) : 1.0;
+
+    var final = (scores.harry == scores.tom) ? document.getElementById("eq_end") : (scores.harry > scores.tom) ? document.getElementById("harry_end") : document.getElementById("tom_end");
     ctx.drawImage(final, level.x-1, level.y-1,levelwidth+2, levelheight+2);
 
-    ctx.fillStyle = (scores.harry > scores.tom) ? "#96493B" : "#3C5A48";
+    ctx.fillStyle = (scores.harry > scores.tom) ? "#4D3873" : (scores.harry > scores.tom) ? "#96493B" : "#3C5A48";
     ctx.font = "23px " + lorafont;
 
     drawCenterText("Воу, вы собрали " + scores.harry + " гарриков и ", level.x, level.y + 187, levelwidth);

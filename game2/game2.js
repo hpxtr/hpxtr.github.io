@@ -64,7 +64,7 @@ var gamestates = {init: 0, ready: 1, resolve: 2};
 var gamestate = gamestates.init;
 
 // Animation variables
-var animationstates = {searchClusters: 0, shiftTilesDown: 1, swapTiles: 2, reSwapTiles: 3, buster: 4};
+var animationstates = {searchClusters: 0, shiftTilesDown: 1, swapTiles: 2, reSwapTiles: 3, buster: 4, show_final: 5};
 var animationstate = animationstates.searchClusters;
 var animationtime = 0;
 var animationtimetotal = 0.3;
@@ -193,6 +193,12 @@ function update(tframe) {
         } else {
           gamestate = gamestates.ready;
         }
+        animationtime = 0;
+      }
+    }
+    else if(animationstate == animationstates.show_final){
+      if (animationtime > animationtimetotal) {
+        newGame();
         animationtime = 0;
       }
     }
