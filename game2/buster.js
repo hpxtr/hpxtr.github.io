@@ -4,11 +4,20 @@ function renderBusters() {
         let buster_coord = getTileCoordinate(buster.column, buster.row, 0, 0);
         spark(buster_coord.tilex, buster_coord.tiley);
 
-        let boom_step = Math.floor(animationtime/ (animationtimetotal/5)) + 1;
+        const time_for_step = animationtimetotal/5;
+        let boom_step = Math.floor(animationtime/ time_for_step) + 1;
+
+        let size;
+        if(boom_step < 5){
+            // growing
+            size = 222*animationtime / (time_for_step*boom_step);
+        } else {
+            size = 222*time_for_step*boom_step / animationtime;
+        }
         ctx.drawImage(document.getElementById("boom"+boom_step),
-            buster_coord.tilex - 111 + level.tilewidth/2,
-            buster_coord.tiley - 111 + level.tileheight/2,
-            222, 222);
+            buster_coord.tilex - size/2 + level.tilewidth/2,
+            buster_coord.tiley - size/2 + level.tileheight/2,
+            size, size);
     }
     else if(buster.type == "halloween"){
         let buster_coord = getTileCoordinate(buster.column, buster.row, 0, 0);
