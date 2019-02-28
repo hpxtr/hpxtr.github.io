@@ -1,7 +1,8 @@
 let font_color = "#373789";
 let border_color = "#00ffff";
 let undertext_color = "#f4ecc0";
-let font = "HoboStd";
+let hobofont = "HoboStd";
+let lorafont = "Lora";
 
 let score_x = 85;
 let score_y = 275;
@@ -23,11 +24,11 @@ function drawHeader() {
   //ctx.fillStyle = undertext_color;
   //ctx.fillRect(calendar.x, calendar.y, calendar.w, calendar.h);
 
-  ctx.font = "26px " + font;
+  ctx.font = "26px " + hobofont;
   ctx.fillStyle = font_color;
   drawCenterText(time[current_time].number, calendar.x, calendar.y + calendar.h/2 - 5, calendar.w);
 
-  ctx.font = "22px " + font;
+  ctx.font = "22px " + hobofont;
   drawCenterText(time[current_time].month, calendar.x, calendar.y + calendar.h/2 + 25, calendar.w);
 
   drawButton("Gameover", buttons[3].x, buttons[3].y, buttons[3].width, buttons[3].height);
@@ -56,7 +57,7 @@ function render() {
     ctx.fillStyle = font_color;
     ctx.fillRect(level.x, buttons[1].y - 55, levelwidth + 4, 120);
     ctx.fillStyle = "#C9BBBD";
-    ctx.font = "20px " + font;
+    ctx.font = "20px " + hobofont;
 
     drawCenterText("Воу, вы собрали " + scores.harry + " гарриков и " + scores.tom + " томиков!",
         level.x,
@@ -116,15 +117,15 @@ function drawScores() {
   //ctx.fillStyle = undertext_color;
   //ctx.fillRect(score_x, score_y-24, 166, 27);
 
-  ctx.font = "26px " + font;
+  ctx.font = "26px " + hobofont;
   ctx.fillStyle = "#86618e";
   ctx.fillText(scores.harry.toLocaleString('en-US', {minimumIntegerDigits: 3, useGrouping: false}), score_x, score_y);
 
-  ctx.font = "20px " + font;
+  ctx.font = "20px " + hobofont;
   ctx.fillStyle = font_color;
   ctx.fillText("vs", score_x + 58, score_y);
 
-  ctx.font = "26px " + font;
+  ctx.font = "26px " + hobofont;
   ctx.fillStyle = "#548bbb";
   ctx.fillText(scores.tom.toLocaleString('en-US', {minimumIntegerDigits: 3, useGrouping: false}), score_x + 90, score_y);
 
@@ -137,7 +138,7 @@ function drawButton(text, x, y, w, h) {
   ctx.fillRect(x, y, w, h);
 
   ctx.fillStyle = border_color;
-  ctx.font = "18px " + font;
+  ctx.font = "18px " + hobofont;
   var textdim = ctx.measureText(text);
   ctx.fillText(text, x + (w - textdim.width) / 2, y + 30);
 }
