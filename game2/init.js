@@ -217,6 +217,10 @@ function findMoves() {
             // if no skulls
             if(level.tiles[i][j].type != icons.indexOf("skull") &&
                 level.tiles[i+1][j].type != icons.indexOf("skull")){
+                // check busters
+                if(level.tiles[i][j].type > 6 || level.tiles[i+1][j].type > 6) {
+                    moves.push({column1: i, row1: j, column2: i + 1, row2: j});
+                }
 
                 // Swap, find clusters and swap back
                 swap(i, j, i + 1, j);
@@ -238,6 +242,11 @@ function findMoves() {
             // if no skulls
             if(level.tiles[i][j].type != icons.indexOf("skull") &&
                 level.tiles[i][j+1].type != icons.indexOf("skull")){
+                // check busters
+                if(level.tiles[i][j].type > 6 || level.tiles[i][j+1].type > 6) {
+                    moves.push({column1: i, row1: j, column2: i, row2: j+1});
+                }
+
                 // Swap, find clusters and swap back
                 swap(i, j, i, j + 1);
                 findClusters();
