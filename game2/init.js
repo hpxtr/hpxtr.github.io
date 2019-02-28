@@ -43,7 +43,7 @@ window.onload = function () {
         updateBolt();
         renderBolt();
 
-        if(days_counter > 10){
+        if(days_counter > time_duration){
             days_counter = 0;
             was_lucky = false;
             current_time++;

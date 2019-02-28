@@ -2,11 +2,13 @@
 function renderBusters() {
     if(buster.type == "hb"){
         let buster_coord = getTileCoordinate(buster.column, buster.row, 0, 0);
-        let size = 70*2 / (animationtimetotal / animationtime );
-        ctx.drawImage(document.getElementById("bang"),
-            buster_coord.tilex - size/2 + level.tilewidth/2,
-            buster_coord.tiley - size/2 + level.tileheight/2,
-            size, size);
+        spark(buster_coord.tilex, buster_coord.tiley);
+
+        let boom_step = Math.floor(animationtime/ (animationtimetotal/5)) + 1;
+        ctx.drawImage(document.getElementById("boom"+boom_step),
+            buster_coord.tilex - 111 + level.tilewidth/2,
+            buster_coord.tiley - 111 + level.tileheight/2,
+            222, 222);
     }
     else if(buster.type == "halloween"){
         let buster_coord = getTileCoordinate(buster.column, buster.row, 0, 0);
@@ -34,10 +36,9 @@ function renderBusters() {
 }
 
 function doBuster(column, row) {
-    animationtimetotal = 0.5;
     buster_victims = [];
     var type = level.tiles[column][row].type;
-    if(icons[type] == "hb1"){
+    if(icons[type] == "hb"){
         console.log("HAPPY BIRTHDAY!" + column + ";" + row);
         buster = {"type" : "hb", "column" : column, "row" : row};
         for (let i=column-1; i<=column+1; i++){
@@ -47,7 +48,8 @@ function doBuster(column, row) {
                 }
             }
         }
-    } else if(icons[type] == "hb"){
+    } else if(icons[type] == "halloween"){
+        animationtimetotal = 0.5;
         console.log("HAPPY HALLOWEEN!" + column + ";" + row);
         buster = {"type" : "halloween", "column" : column, "row" : row};
 
@@ -60,6 +62,7 @@ function doBuster(column, row) {
             }
         }
     } else if(icons[type] == "stval"){
+        animationtimetotal = 0.5;
         console.log("HAPPY ST VALENTINE!" + column + ";" + row);
         buster = {"type" : "stval", "column" : column, "row" : row};
 

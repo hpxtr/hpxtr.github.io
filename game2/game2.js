@@ -19,6 +19,7 @@ var time = [
 
 var current_time = 0;
 var days_counter = 0;
+var time_duration = 10;
 var was_lucky = false;
 
 var icons = [
@@ -75,9 +76,9 @@ var gameover = false;
 
 
 function getRandomTile() {
-    var d = was_lucky ? 120 : (80 / days_counter);
+    var d = was_lucky ? 120 : (time_duration*5 / days_counter);
     var lucky = Math.floor(Math.random() * d);
-    if (lucky == 1) {
+    if (lucky == 0) {
         was_lucky = true;
         return icons.indexOf(time[current_time].type);
     }
