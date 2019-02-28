@@ -12,10 +12,10 @@ var level = {
 };
 
 var time = [
-    {"type": "hb", "number": "31", "month": "07"},
-    {"type": "halloween", "number": "31", "month": "10"},
-    {"type": "christmas", "number": "25", "month": "12"},
-    {"type": "stval", "number": "14", "month": "02"}
+    {"type": "hb", "number": "31", "month": "July"}, //07
+    {"type": "halloween", "number": "31", "month": "Oct"}, //10
+    {"type": "christmas", "number": "25", "month": "Dec"}, // 12
+    {"type": "stval", "number": "14", "month": "Feb"} //02
 ];
 
 var current_time = 0;

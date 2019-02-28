@@ -27,7 +27,9 @@ function drawHeader() {
   ctx.font = "26px " + font;
   ctx.fillStyle = font_color;
   ctx.fillText(time[current_time].number, calendar_x, calendar_y);
-  ctx.fillText(time[current_time].month, calendar_x, calendar_y + 30);
+
+  ctx.font = "22px " + font;
+  ctx.fillText(time[current_time].month, calendar_x-4, calendar_y + 30);
 
   drawButton("Gameover", buttons[3].x, buttons[3].y, buttons[3].width, buttons[3].height);
 }
