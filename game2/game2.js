@@ -20,7 +20,7 @@ var time = [
 
 var current_time = 0;
 var days_counter = 0;
-var time_duration = 10;
+var time_duration = 20;
 var was_lucky = false;
 
 var icons = [
