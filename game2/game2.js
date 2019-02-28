@@ -18,7 +18,7 @@ var time = [
     {"type": "stval", "number": "14", "month": "02"}
 ];
 
-var current_time = 2;
+var current_time = 3;
 var days_counter = 0;
 var time_duration = 10;
 var was_lucky = false;

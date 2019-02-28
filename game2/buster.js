@@ -36,7 +36,7 @@ function renderBusters() {
 
       ctx.globalAlpha = animationtimetotal / animationtime;
 
-      var size = 70 * 1.5 / (animationtimetotal / animationtime);
+      var size = 70 * 1.25 / (animationtimetotal / animationtime);
       ctx.drawImage(document.getElementById("stval"),
           vcoord.tilex - size / 2 + level.tilewidth / 2,
           vcoord.tiley - size / 2 + level.tileheight / 2,
@@ -90,7 +90,7 @@ function doBuster(column, row) {
     }
   }
   else if (icons[type] == "stval") {
-    animationtimetotal = 0.5;
+    animationtimetotal = 0.7;
     console.log("HAPPY ST VALENTINE!" + column + ";" + row);
     buster = {"type": "stval", "column": column, "row": row};
 
@@ -105,7 +105,7 @@ function doBuster(column, row) {
     }
   }
   else if (icons[type] == "christmas") {
-    animationtimetotal = 1;
+    animationtimetotal = 0.7;
     console.log("HAPPY CHRISTMAS!" + column + ";" + row);
     buster = {"type": "christmas", "column": column, "row": row};
 
