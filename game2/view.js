@@ -46,14 +46,14 @@ function render() {
     ctx.globalAlpha = 0.3;
     //ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
     const alpha = (gamestate == gamestates.ready) ? 1 : (1 - animationtime/animationtimetotal );
-    console.info(alpha);
+    //console.info(alpha);
     ctx.globalAlpha = alpha;
 
 
     var final = (scores.harry == scores.tom) ? document.getElementById("eq_end") : (scores.harry > scores.tom) ? document.getElementById("harry_end") : document.getElementById("tom_end");
     ctx.drawImage(final, level.x-1, level.y-1,levelwidth+2, levelheight+2);
 
-    ctx.fillStyle = (scores.harry > scores.tom) ? "#4D3873" : (scores.harry > scores.tom) ? "#96493B" : "#3C5A48";
+    ctx.fillStyle = (scores.harry == scores.tom) ? "#4D3873" : (scores.harry > scores.tom) ? "#96493B" : "#3C5A48";
     ctx.font = "23px " + lorafont;
 
     drawCenterText("Воу, вы собрали " + scores.harry + " гарриков и ", level.x, level.y + 187, levelwidth);
