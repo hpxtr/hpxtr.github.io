@@ -190,35 +190,47 @@ function renderTiles() {
   // Render the swap animation
   if (gamestate == gamestates.resolve &&
       (animationstate == animationstates.swapTiles || animationstate == animationstates.reSwapTiles)) {
-    // Calculate the x and y shift
-    var shiftx = currentmove.column2 - currentmove.column1;
-    var shifty = currentmove.row2 - currentmove.row1;
 
-    // First tile
-    var coord1shift = getTileCoordinate(currentmove.column1, currentmove.row1,
-        (animationtime / animationtimetotal) * shiftx,
-        (animationtime / animationtimetotal) * shifty);
+    if(level.tiles[currentmove.column1][currentmove.row1].type == icons.indexOf("skull")){
+      skull_swap(currentmove.column1, currentmove.row1);
+    }
+    else if(level.tiles[currentmove.column2][currentmove.row2].type == icons.indexOf("skull")){
+      skull_swap(currentmove.column2, currentmove.row2);
+    }
+    else {
+      // Calculate the x and y shift
+      var shiftx = currentmove.column2 - currentmove.column1;
+      var shifty = currentmove.row2 - currentmove.row1;
 
-    // Second tile
-    var coord2shift = getTileCoordinate(currentmove.column2, currentmove.row2,
-        (animationtime / animationtimetotal) * -shiftx,
-        (animationtime / animationtimetotal) * -shifty);
+      // First tile
+      var coord1shift = getTileCoordinate(currentmove.column1, currentmove.row1,
+          (animationtime / animationtimetotal) * shiftx,
+          (animationtime / animationtimetotal) * shifty);
 
-    // Change the order, depending on the animation state
-    if (animationstate == animationstates.swapTiles) {
-      // Draw the tiles
-      drawTileWithType(coord1shift.tilex, coord1shift.tiley,
-          level.tiles[currentmove.column1][currentmove.row1].type);
-      drawTileWithType(coord2shift.tilex, coord2shift.tiley,
-          level.tiles[currentmove.column2][currentmove.row2].type);
-    } else {
-      // Draw the tiles
-      drawTileWithType(coord2shift.tilex, coord2shift.tiley,
-          level.tiles[currentmove.column2][currentmove.row2].type);
-      drawTileWithType(coord1shift.tilex, coord1shift.tiley,
-          level.tiles[currentmove.column1][currentmove.row1].type);
+      // Second tile
+      var coord2shift = getTileCoordinate(currentmove.column2, currentmove.row2,
+          (animationtime / animationtimetotal) * -shiftx,
+          (animationtime / animationtimetotal) * -shifty);
+
+      // Change the order, depending on the animation state
+      if (animationstate == animationstates.swapTiles) {
+        // Draw the tiles
+        drawTileWithType(coord1shift.tilex, coord1shift.tiley, level.tiles[currentmove.column1][currentmove.row1].type);
+        drawTileWithType(coord2shift.tilex, coord2shift.tiley, level.tiles[currentmove.column2][currentmove.row2].type);
+      } else {
+        // Draw the tiles
+        drawTileWithType(coord2shift.tilex, coord2shift.tiley, level.tiles[currentmove.column2][currentmove.row2].type);
+        drawTileWithType(coord1shift.tilex, coord1shift.tiley, level.tiles[currentmove.column1][currentmove.row1].type);
+      }
     }
   }
+}
+
+function skull_swap(column, row) {
+  let shiftx = Math.random() * 5;
+  let shifty = Math.random() * 5;
+  let coordshift = getTileCoordinate(column, row, shiftx, shifty);
+  drawTileWithType(coordshift.tilex, coordshift.tiley, icons.indexOf("rskull"));
 }
 
 function tilebolt(pos) {
