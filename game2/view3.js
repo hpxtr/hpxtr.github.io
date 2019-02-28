@@ -22,6 +22,7 @@ function drawHeader() {
     ctx.drawImage(sgn66, 10, 10, 66, 66);
     ctx.drawImage(sgn66, 10, 70, 80, 80);
     ctx.drawImage(sgn66, 10, 130, 90, 90);
+    ctx.drawImage(sgn66, 10, 190, 120, 120);
 
     var start_btn = (buttons[0].pressed) ? document.getElementById("start_on") : document.getElementById("start");
     ctx.drawImage(start_btn, buttons[0].x, buttons[0].y, buttons[0].width, buttons[0].height);
