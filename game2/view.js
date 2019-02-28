@@ -6,8 +6,7 @@ let font = "HoboStd";
 let score_x = 85;
 let score_y = 275;
 
-let calendar_x = 120;
-let calendar_y = 120;
+let calendar = {"x":100, "y": 88, "w":70, "h":70};
 
 function drawHeader() {
   // Draw background and a border
@@ -22,14 +21,14 @@ function drawHeader() {
   ctx.drawImage(start_btn, buttons[0].x, buttons[0].y, buttons[0].width, buttons[0].height);
 
   //ctx.fillStyle = undertext_color;
-  // ctx.fillRect(calendar_x, calendar_y-33, 50, 88);
+  //ctx.fillRect(calendar.x, calendar.y, calendar.w, calendar.h);
 
   ctx.font = "26px " + font;
   ctx.fillStyle = font_color;
-  ctx.fillText(time[current_time].number, calendar_x, calendar_y);
+  drawCenterText(time[current_time].number, calendar.x, calendar.y + calendar.h/2 - 5, calendar.w);
 
   ctx.font = "22px " + font;
-  ctx.fillText(time[current_time].month, calendar_x-4, calendar_y + 30);
+  drawCenterText(time[current_time].month, calendar.x, calendar.y + calendar.h/2 + 25, calendar.w);
 
   drawButton("Gameover", buttons[3].x, buttons[3].y, buttons[3].width, buttons[3].height);
 }
