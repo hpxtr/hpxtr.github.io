@@ -15,7 +15,6 @@ function drawHeader() {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   var cover = document.getElementById("cover");
-
   ctx.drawImage(cover, 0, 0, 638, 1068);//638*4150/2480);
 
   var start_btn = (buttons[0].pressed) ? document.getElementById("start_on") : document.getElementById("start");
@@ -48,20 +47,22 @@ function render() {
     var levelwidth = level.tilewidth * level.rows;
     var levelheight = level.tileheight * level.columns;
 
-    ctx.fillStyle = "#C9BBBD"; //(win)? border_color : "#44aa44";
+    ctx.fillStyle = "#E8E5D0"; //(win)? border_color : "#44aa44";
     ctx.globalAlpha = 0.3;
     ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
-    //ctx.fillRect(level.x, level.y, levelwidth, levelheight);
+    ctx.fillRect(level.x, level.y, levelwidth, levelheight);
     ctx.globalAlpha = 1.0;
 
-    ctx.fillStyle = font_color;
-    ctx.fillRect(level.x, buttons[1].y - 55, levelwidth + 4, 120);
-    ctx.fillStyle = "#C9BBBD";
-    ctx.font = "20px " + hobofont;
+    var final = (scores.harry > scores.tom) ? document.getElementById("harry_end") : document.getElementById("tom_end");
+    ctx.drawImage(final, level.x-1, level.y-1,levelwidth+2, levelheight+2);
 
-    drawCenterText("Воу, вы собрали " + scores.harry + " гарриков и " + scores.tom + " томиков!",
-        level.x,
-        buttons[1].y, levelwidth);
+    ctx.fillStyle = "#E8E5D0";
+    ctx.fillRect(level.x, level.y + 160, levelwidth, 80);
+    ctx.fillStyle = (scores.harry > scores.tom) ? "#96493B" : "#3C5A48";
+    ctx.font = "23px " + lorafont;
+
+    drawCenterText("Воу, вы собрали " + scores.harry + " гарриков и ", level.x, level.y + 190, levelwidth);
+    drawCenterText(scores.tom + " томиков!", level.x, level.y + 215, levelwidth);
   }
 
 }

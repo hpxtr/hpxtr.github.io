@@ -37,7 +37,7 @@ var scores = {
 var buttons = [
   {x: 275, y: 90, width: 95, height: 45, text: "New Game", pressed: false},
   {x: 100, y: 88, width: 70, height: 70, text: "Calendar"},
-  {x: level.x + 320, y: level.y + 200, width: 150, height: 50, text: "Nothing"},
+  {x: level.x + 220, y: level.y + 250, width: 150, height: 50, text: "Play again"},
   {x: 400, y: 160, width: 75, height: 40, text: "Win"}
 ];
 
@@ -133,10 +133,8 @@ function update(tframe) {
 
         // Check if the swap made a cluster
         findClusters();
-        var dosmth = false;
 
         if (clusters.length > 0) {
-          dosmth = true;
           // Valid swap, found one or more clusters
           // Prepare animation states
           animationstate = animationstates.searchClusters;
@@ -145,17 +143,15 @@ function update(tframe) {
         }
 
         // if buster
-        if (level.tiles[currentmove.column1][currentmove.row1].type >= 7 &&
+        else if (level.tiles[currentmove.column1][currentmove.row1].type >= 7 &&
             level.tiles[currentmove.column1][currentmove.row1].type != icons.indexOf("skull")) {
-          dosmth = true;
           gamestate = gamestates.resolve;
           animationstate = animationstates.buster;
           animationtime = 0;
           doBuster(currentmove.column1, currentmove.row1);
         }
-        if (level.tiles[currentmove.column2][currentmove.row2].type >= 7 &&
+        else if (level.tiles[currentmove.column2][currentmove.row2].type >= 7 &&
             level.tiles[currentmove.column1][currentmove.row1].type != icons.indexOf("skull")) {
-          dosmth = true;
           gamestate = gamestates.resolve;
           animationstate = animationstates.buster;
           animationtime = 0;
@@ -163,7 +159,7 @@ function update(tframe) {
         }
 
         // Invalid swap, Rewind swapping animation
-        if (!dosmth) {
+        else {
           animationstate = animationstates.reSwapTiles;
           animationtime = 0;
         }

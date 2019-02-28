@@ -460,17 +460,15 @@ function onMouseDown(e) {
 
             // Button i was clicked
             if (i == 0) {
-                // New Game
                 buttons[0].pressed = true;
                 newGame();
                 bolt(e);
             } else if (i == 1) {
                 nextDate();
             } else if (gameover && i == 2) {
-                // death = true;
+              newGame();
             } else if (i == 3) {
                 gameover = true;
-                //win = true;
             }
         }
     }
