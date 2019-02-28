@@ -27,7 +27,7 @@ var icons = [
     "hscarf", "phoenix", "snitch",
     "tscarf", "mark", "sign",
     /*"hut",*/ "prophecy",
-    "hb", "christmas", "stval"
+    "hb", "christmas", "stval", "halloween"
 ];
 
 var scores = {
