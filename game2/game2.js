@@ -18,7 +18,7 @@ var time = [
     {"type": "stval", "number": "14", "month": "02"}
 ];
 
-var current_time = 0;
+var current_time = 2;
 var days_counter = 0;
 var time_duration = 10;
 var was_lucky = false;
@@ -77,7 +77,7 @@ var gameover = false;
 
 
 function getRandomTile() {
-    var d = was_lucky ? 120 : (time_duration*5 / days_counter);
+    var d = was_lucky ? 50 : (time_duration*5 / days_counter);
     var lucky = Math.floor(Math.random() * d);
     if (lucky == 0) {
         was_lucky = true;
