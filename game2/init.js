@@ -464,7 +464,7 @@ function onMouseDown(e) {
             } else if (gameover && i == 2) {
                 // death = true;
             } else if (i == 3) {
-                //gameover = true;
+                gameover = true;
                 //win = true;
             }
         }

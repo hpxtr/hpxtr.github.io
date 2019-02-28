@@ -31,7 +31,7 @@ function drawHeader() {
     ctx.fillText(time[current_time].month, calendar_x, calendar_y+30);
 
 
-    //drawButton("Win", buttons[3].x, buttons[3].y, buttons[3].width, buttons[3].height);
+    drawButton("Gameover", buttons[3].x, buttons[3].y, buttons[3].width, buttons[3].height);
 }
 
 function render() {
@@ -48,18 +48,18 @@ function render() {
         var levelwidth = level.tilewidth * level.rows;
         var levelheight = level.tileheight * level.columns;
 
-            ctx.fillStyle = border_color; //(win)? border_color : "#44aa44";
-            ctx.globalAlpha = 0.2;
-            ctx.fillRect(level.x, level.y, levelwidth, levelheight);
+            ctx.fillStyle = "#C9BBBD"; //(win)? border_color : "#44aa44";
+            ctx.globalAlpha = 0.3;
+            ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+            //ctx.fillRect(level.x, level.y, levelwidth, levelheight);
             ctx.globalAlpha = 1.0;
 
             ctx.fillStyle = font_color;
             ctx.fillRect(level.x, buttons[1].y - 55, levelwidth + 4, 120);
-            ctx.fillStyle = border_color;
+            ctx.fillStyle = "#f4ecc0";
             ctx.font = "20px " + font;
 
-                drawCenterText("Воу, вы собрали " + scores.harry + " гарриков и "
-                    + scores.tom + " томиков!",
+            drawCenterText("Воу, вы собрали " + scores.harry + " гарриков и " + scores.tom + " томиков!",
                     level.x,
                     buttons[1].y, levelwidth);
     }
