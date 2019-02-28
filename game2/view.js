@@ -56,7 +56,7 @@ function render() {
 
             ctx.fillStyle = font_color;
             ctx.fillRect(level.x, buttons[1].y - 55, levelwidth + 4, 120);
-            ctx.fillStyle = "#f4ecc0";
+            ctx.fillStyle = "#C9BBBD";
             ctx.font = "20px " + font;
 
             drawCenterText("Воу, вы собрали " + scores.harry + " гарриков и " + scores.tom + " томиков!",
