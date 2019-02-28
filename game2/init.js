@@ -134,7 +134,9 @@ function findClusters() {
             } else {
                 // Check the type of the next tile
                 if (level.tiles[i][j].type == level.tiles[i + 1][j].type &&
-                    level.tiles[i][j].type != -1) {
+                    level.tiles[i][j].type != -1 &&
+                    level.tiles[i][j].type != icons.indexOf("skull")
+                ) {
                     // Same type as the previous tile, increase matchlength
                     matchlength += 1;
                 } else {
@@ -175,7 +177,8 @@ function findClusters() {
             } else {
                 // Check the type of the next tile
                 if (level.tiles[i][j].type == level.tiles[i][j + 1].type &&
-                    level.tiles[i][j].type != -1) {
+                    level.tiles[i][j].type != -1 &&
+                    level.tiles[i][j].type != icons.indexOf("skull")) {
                     // Same type as the previous tile, increase matchlength
                     matchlength += 1;
                 } else {

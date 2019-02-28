@@ -86,6 +86,9 @@ function doBuster(column, row) {
           buster_victims.push(
               {"column": i, "row": j, "type": level.tiles[i][j].type});
         }
+        if(level.tiles[i][j].type == icons.indexOf("skull")){
+          buster_victims.push({"column": i, "row": j, "type": level.tiles[i][j].type}); // all skulls also die
+        }
       }
     }
   }
@@ -98,8 +101,10 @@ function doBuster(column, row) {
     for (let i = 0; i < level.columns; i++) {
       for (let j = 0; j < level.rows; j++) {
         if (level.tiles[i][j].type > 2 && level.tiles[i][j].type < 6) { // all tom's items will die
-          buster_victims.push(
-              {"column": i, "row": j, "type": level.tiles[i][j].type});
+          buster_victims.push({"column": i, "row": j, "type": level.tiles[i][j].type});
+        }
+        if(level.tiles[i][j].type == icons.indexOf("skull")){
+          buster_victims.push({"column": i, "row": j, "type": level.tiles[i][j].type}); // all skulls also die
         }
       }
     }

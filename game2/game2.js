@@ -1,46 +1,45 @@
 var canvas, ctx;
 
 var level = {
-    x: 40,         // X position
-    y: 285,         // Y position
-    columns: 8,     // Number of tile columns
-    rows: 8,        // Number of tile rows
-    tilewidth: 70,  // Visual width of a tile
-    tileheight: 70, // Visual height of a tile
-    tiles: [],      // The two-dimensional tile array
-    selectedtile: {selected: false, column: 0, row: 0}
+  x: 40,         // X position
+  y: 285,         // Y position
+  columns: 8,     // Number of tile columns
+  rows: 8,        // Number of tile rows
+  tilewidth: 70,  // Visual width of a tile
+  tileheight: 70, // Visual height of a tile
+  tiles: [],      // The two-dimensional tile array
+  selectedtile: {selected: false, column: 0, row: 0}
 };
 
 var time = [
-    {"type": "hb", "number": "31", "month": "July"}, //07
-    {"type": "halloween", "number": "31", "month": "Oct"}, //10
-    {"type": "christmas", "number": "25", "month": "Dec"}, // 12
-    {"type": "stval", "number": "14", "month": "Feb"} //02
+  {"type": "hb", "number": "31", "month": "July"}, //07
+  {"type": "halloween", "number": "31", "month": "Oct"}, //10
+  {"type": "christmas", "number": "25", "month": "Dec"}, // 12
+  {"type": "stval", "number": "14", "month": "Feb"} //02
 ];
 
 var current_time = 0;
 var days_counter = 0;
 
 var icons = [
-    "hscarf", "phoenix", "snitch",
-    "tscarf", "mark", "sign",
-    /*"hut",*/ "prophecy",
-    "hb", "christmas", "stval", "halloween"
+  "hscarf", "phoenix", "snitch",
+  "tscarf", "mark", "sign",
+  /*"hut",*/ "prophecy",
+  "hb", "christmas", "stval", "halloween", "skull"
 ];
 
 var scores = {
-    "harry": 0,
-    "tom": 0,
-    "nobody": 0
+  "harry": 0,
+  "tom": 0,
+  "nobody": 0
 };
 
 var buttons = [
-    {x: 275, y: 90, width: 95, height: 45, text: "New Game", pressed: false},
-    {x: 100, y: 88, width: 70, height: 70, text: "Calendar"},
-    {x: level.x + 320, y: level.y + 200, width: 150, height: 50, text: "Nothing"},
-    {x: 400, y: 160, width: 75, height: 40, text: "Win"}
+  {x: 275, y: 90, width: 95, height: 45, text: "New Game", pressed: false},
+  {x: 100, y: 88, width: 70, height: 70, text: "Calendar"},
+  {x: level.x + 320, y: level.y + 200, width: 150, height: 50, text: "Nothing"},
+  {x: 400, y: 160, width: 75, height: 40, text: "Win"}
 ];
-
 
 // Timing and frames per second
 var lastframe = 0;
@@ -73,147 +72,153 @@ var animationtimetotal = 0.3;
 // Game Over
 var gameover = false;
 
-
 function getRandomTile() {
-    let lucky_val = 30 + 250/(5 + days_counter);
-    if (Math.floor(Math.random() * lucky_val) == 0) {
-        console.info(time[current_time].type);
-        const icon = icons.indexOf(time[current_time].type);
-        nextDate();
-        return icon;
-    }
+  // buster
+  let lucky_val = 40 + 200 / (5 + days_counter);
+  if (Math.floor(Math.random() * lucky_val) == 0) {
+    const icon = icons.indexOf(time[current_time].type);
+    nextDate();
+    return icon;
+  }
 
-    return Math.floor(Math.random() * 7); //icons.length
+  // skull
+  if (Math.floor(Math.random() * 80) == 0) {
+    return icons.indexOf("skull");
+  }
+
+  return Math.floor(Math.random() * 7); //icons.length
 }
 
 // Update the game state
 function update(tframe) {
-    var dt = (tframe - lastframe) / 1000;
-    lastframe = tframe;
+  var dt = (tframe - lastframe) / 1000;
+  lastframe = tframe;
 
-    // Update the fps counter
-    updateFps(dt);
+  // Update the fps counter
+  updateFps(dt);
 
-    if (gamestate == gamestates.ready) {
-        // Game is ready for player input
-        // Check for game over
-        if (moves.length <= 0) {
-            gameover = true;
+  if (gamestate == gamestates.ready) {
+    // Game is ready for player input
+    // Check for game over
+    if (moves.length <= 0) {
+      gameover = true;
+    }
+
+  } else if (gamestate == gamestates.resolve) {
+    // Game is busy resolving and animating clusters
+    animationtime += dt;
+
+    if (animationstate == animationstates.searchClusters) {
+      if (animationtime > animationtimetotal) {
+        afterRemovingItems();
+      }
+    } else if (animationstate == animationstates.shiftTilesDown) {
+      // Tiles need to be shifted down
+      if (animationtime > animationtimetotal) {
+        shiftTiles();
+
+        animationstate = animationstates.searchClusters;
+        animationtime = 0;
+
+        findClusters();
+        if (clusters.length <= 0) {
+          gamestate = gamestates.ready;
+        }
+      }
+    } else if (animationstate == animationstates.swapTiles) {
+      // Swapping tiles animation
+      if (animationtime > animationtimetotal) {
+
+        swap(currentmove.column1, currentmove.row1, currentmove.column2, currentmove.row2);
+
+        // Check if the swap made a cluster
+        findClusters();
+        var dosmth = false;
+
+        if (clusters.length > 0) {
+          dosmth = true;
+          // Valid swap, found one or more clusters
+          // Prepare animation states
+          animationstate = animationstates.searchClusters;
+          animationtime = 0;
+          gamestate = gamestates.resolve;
         }
 
-    } else if (gamestate == gamestates.resolve) {
-        // Game is busy resolving and animating clusters
-        animationtime += dt;
+        // if buster
+        if (level.tiles[currentmove.column1][currentmove.row1].type >= 7 &&
+            level.tiles[currentmove.column1][currentmove.row1].type != icons.indexOf("skull")) {
+          dosmth = true;
+          gamestate = gamestates.resolve;
+          animationstate = animationstates.buster;
+          animationtime = 0;
+          doBuster(currentmove.column1, currentmove.row1);
+        }
+        if (level.tiles[currentmove.column2][currentmove.row2].type >= 7 &&
+            level.tiles[currentmove.column1][currentmove.row1].type != icons.indexOf("skull")) {
+          dosmth = true;
+          gamestate = gamestates.resolve;
+          animationstate = animationstates.buster;
+          animationtime = 0;
+          doBuster(currentmove.column2, currentmove.row2);
+        }
 
-        if (animationstate == animationstates.searchClusters) {
-            if (animationtime > animationtimetotal) {
-                afterRemovingItems();
-            }
-        } else if (animationstate == animationstates.shiftTilesDown) {
-            // Tiles need to be shifted down
-            if (animationtime > animationtimetotal) {
-                shiftTiles();
-
-                animationstate = animationstates.searchClusters;
-                animationtime = 0;
-
-                findClusters();
-                if (clusters.length <= 0) {
-                    gamestate = gamestates.ready;
-                }
-            }
-        } else if (animationstate == animationstates.swapTiles) {
-            // Swapping tiles animation
-            if (animationtime > animationtimetotal) {
-
-                swap(currentmove.column1, currentmove.row1, currentmove.column2, currentmove.row2);
-
-                // Check if the swap made a cluster
-                findClusters();
-                var dosmth = false;
-
-                if (clusters.length > 0) {
-                    dosmth = true;
-                    // Valid swap, found one or more clusters
-                    // Prepare animation states
-                    animationstate = animationstates.searchClusters;
-                    animationtime = 0;
-                    gamestate = gamestates.resolve;
-                }
-
-                // if buster
-                if (level.tiles[currentmove.column1][currentmove.row1].type >= 7) {
-                    dosmth = true;
-                    gamestate = gamestates.resolve;
-                    animationstate = animationstates.buster;
-                    animationtime = 0;
-                    doBuster(currentmove.column1, currentmove.row1);
-                }
-                if (level.tiles[currentmove.column2][currentmove.row2].type >= 7) {
-                    dosmth = true;
-                    gamestate = gamestates.resolve;
-                    animationstate = animationstates.buster;
-                    animationtime = 0;
-                    doBuster(currentmove.column2, currentmove.row2);
-                }
-
-                // Invalid swap, Rewind swapping animation
-                if (!dosmth) {
-                    animationstate = animationstates.reSwapTiles;
-                    animationtime = 0;
-                }
-
-                findMoves();
-                findClusters();
-            }
-        } else if (animationstate == animationstates.reSwapTiles) {
-            // Rewind swapping animation
-            if (animationtime > animationtimetotal) {
-                // Invalid swap, swap back
-                swap(currentmove.column1, currentmove.row1, currentmove.column2,
-                    currentmove.row2);
-
-                // Animation complete
-                gamestate = gamestates.ready;
-            }
-        } else if (animationstate == animationstates.buster) {
-            if (animationtime > animationtimetotal) {
-                animationtimetotal = 0.3;
-                buster = {};
-
-                if (buster_victims.length > 0) {
-                    for (var i = 0; i < buster_victims.length; i++) {
-                        var scoretype = (buster_victims[i].type < 3) ? "harry" : (buster_victims[i].type < 6) ? "tom" : "nobody";
-                        scores[scoretype] += 1;
-                        level.tiles[buster_victims[i].column][buster_victims[i].row].type = -1;
-                    }
-                    removeClustersAndStartShiftingAnimation();
-                    animationstate = animationstates.shiftTilesDown;
-                } else {
-                    gamestate = gamestates.ready;
-                }
-                animationtime = 0;
-            }
+        // Invalid swap, Rewind swapping animation
+        if (!dosmth) {
+          animationstate = animationstates.reSwapTiles;
+          animationtime = 0;
         }
 
         findMoves();
         findClusters();
+      }
+    } else if (animationstate == animationstates.reSwapTiles) {
+      // Rewind swapping animation
+      if (animationtime > animationtimetotal) {
+        // Invalid swap, swap back
+        swap(currentmove.column1, currentmove.row1, currentmove.column2,
+            currentmove.row2);
+
+        // Animation complete
+        gamestate = gamestates.ready;
+      }
+    } else if (animationstate == animationstates.buster) {
+      if (animationtime > animationtimetotal) {
+        animationtimetotal = 0.3;
+        buster = {};
+
+        if (buster_victims.length > 0) {
+          for (var i = 0; i < buster_victims.length; i++) {
+            var scoretype = (buster_victims[i].type < 3) ? "harry" : (buster_victims[i].type < 6) ? "tom" : "nobody";
+            scores[scoretype] += 1;
+            level.tiles[buster_victims[i].column][buster_victims[i].row].type = -1;
+          }
+          removeClustersAndStartShiftingAnimation();
+          animationstate = animationstates.shiftTilesDown;
+        } else {
+          gamestate = gamestates.ready;
+        }
+        animationtime = 0;
+      }
     }
+
+    findMoves();
+    findClusters();
+  }
 }
 
 function afterRemovingItems() {
-    days_counter++;
-    findClusters();
+  days_counter++;
+  findClusters();
 
-    if (clusters.length > 0) {
-        for (var i = 0; i < clusters.length; i++) {
-            var scoretype = (clusters[i].type < 3) ? "harry" : (clusters[i].type < 6) ? "tom" : "nobody";
-            scores[scoretype] += 3 * (clusters[i].length - 2);
-        }
-        removeClustersAndStartShiftingAnimation();
-        animationstate = animationstates.shiftTilesDown;
-    } else {
-        gamestate = gamestates.ready;
+  if (clusters.length > 0) {
+    for (var i = 0; i < clusters.length; i++) {
+      var scoretype = (clusters[i].type < 3) ? "harry" : (clusters[i].type < 6) ? "tom" : "nobody";
+      scores[scoretype] += 3 * (clusters[i].length - 2);
     }
-    animationtime = 0;
+    removeClustersAndStartShiftingAnimation();
+    animationstate = animationstates.shiftTilesDown;
+  } else {
+    gamestate = gamestates.ready;
+  }
+  animationtime = 0;
 }
