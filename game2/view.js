@@ -56,10 +56,15 @@ function render() {
     ctx.fillStyle = (scores.harry == scores.tom) ? "#4D3873" : (scores.harry > scores.tom) ? "#96493B" : "#3C5A48";
     ctx.font = "23px " + lorafont;
 
-    drawCenterText("Воу, вы собрали " + scores.harry + " гарриков и ", level.x, level.y + 187, levelwidth);
-    drawCenterText(scores.tom + " томиков!", level.x, level.y + 212, levelwidth);
+    drawCenterText("Воу, вы собрали " + scores.harry + declOfNum(scores.harry, [' гаррик', ' гаррика', ' гарриков'])
+        + " и ", level.x, level.y + 187, levelwidth);
+    drawCenterText(scores.tom + declOfNum(scores.harry, [' томик', ' томика', ' томиков']) + "!", level.x, level.y + 212, levelwidth);
   }
+}
 
+function declOfNum(number, titles) {
+    cases = [2, 0, 1, 1, 1, 2];
+    return titles[ (number%100>4 && number%100<20)? 2 : cases[(number%10<5)? number%10 : 5] ];
 }
 
 function drawBoard() {
