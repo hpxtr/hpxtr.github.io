@@ -114,7 +114,7 @@ function drawScores() {
   //ctx.fillRect(score_x, score_y-24, 166, 27);
 
   ctx.font = "26px " + hobofont;
-  ctx.fillStyle = "#86618e";
+  ctx.fillStyle = "#A75778";
   ctx.fillText(scores.harry.toLocaleString('en-US', {minimumIntegerDigits: 3, useGrouping: false}), score_x, score_y);
 
   ctx.font = "20px " + hobofont;
@@ -122,7 +122,7 @@ function drawScores() {
   ctx.fillText("vs", score_x + 58, score_y);
 
   ctx.font = "26px " + hobofont;
-  ctx.fillStyle = "#548bbb";
+  ctx.fillStyle = "#3F97B1";
   ctx.fillText(scores.tom.toLocaleString('en-US', {minimumIntegerDigits: 3, useGrouping: false}), score_x + 90, score_y);
 
   //ctx.fillStyle = font_color;
