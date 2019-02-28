@@ -467,6 +467,7 @@ function onMouseDown(e) {
                 nextDate();
             } else if (gameover && i == 2) {
               newGame();
+              bolt(e);
             } else if (i == 3) {
                 gameover = true;
             }

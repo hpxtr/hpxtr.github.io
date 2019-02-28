@@ -2,7 +2,7 @@ let font_color = "#373789";
 let border_color = "#00ffff";
 let undertext_color = "#f4ecc0";
 let hobofont = "HoboStd";
-let lorafont = "Lora";
+let lorafont = "LoraRegular";
 
 let score_x = 85;
 let score_y = 275;
@@ -49,20 +49,17 @@ function render() {
 
     ctx.fillStyle = "#E8E5D0"; //(win)? border_color : "#44aa44";
     ctx.globalAlpha = 0.3;
-    ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
-    ctx.fillRect(level.x, level.y, levelwidth, levelheight);
+    //ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
     ctx.globalAlpha = 1.0;
 
     var final = (scores.harry > scores.tom) ? document.getElementById("harry_end") : document.getElementById("tom_end");
     ctx.drawImage(final, level.x-1, level.y-1,levelwidth+2, levelheight+2);
 
-    ctx.fillStyle = "#E8E5D0";
-    ctx.fillRect(level.x, level.y + 160, levelwidth, 80);
     ctx.fillStyle = (scores.harry > scores.tom) ? "#96493B" : "#3C5A48";
     ctx.font = "23px " + lorafont;
 
-    drawCenterText("Воу, вы собрали " + scores.harry + " гарриков и ", level.x, level.y + 190, levelwidth);
-    drawCenterText(scores.tom + " томиков!", level.x, level.y + 215, levelwidth);
+    drawCenterText("Воу, вы собрали " + scores.harry + " гарриков и ", level.x, level.y + 187, levelwidth);
+    drawCenterText(scores.tom + " томиков!", level.x, level.y + 212, levelwidth);
   }
 
 }
