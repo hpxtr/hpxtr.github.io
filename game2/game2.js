@@ -82,7 +82,7 @@ function getRandomTile() {
   }
 
   // skull
-  if (Math.floor(Math.random() * 8) == 0) {
+  if (Math.floor(Math.random() * 50) == 0) {
     return icons.indexOf("skull");
   }
 
