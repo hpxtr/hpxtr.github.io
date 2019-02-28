@@ -48,6 +48,7 @@ function doBuster(column, row) {
     buster_victims = [];
     var type = level.tiles[column][row].type;
     if(icons[type] == "hb"){
+        //animationtimetotal = 10;
         console.log("HAPPY BIRTHDAY!" + column + ";" + row);
         buster = {"type" : "hb", "column" : column, "row" : row};
         for (let i=column-1; i<=column+1; i++){
