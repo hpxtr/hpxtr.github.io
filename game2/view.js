@@ -227,8 +227,8 @@ function renderTiles() {
 }
 
 function skull_swap(column, row) {
-  let shiftx = Math.random() * 50;
-  let shifty = Math.random() * 50;
+  let shiftx = Math.random() ;
+  let shifty = Math.random() ;
   let coordshift = getTileCoordinate(column, row, shiftx, shifty);
   console.info("RSKULL " + shiftx +" : "+shifty);
   drawTileWithType(coordshift.tilex, coordshift.tiley, icons.indexOf("rskull"));
