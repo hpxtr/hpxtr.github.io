@@ -14,7 +14,8 @@ var level = {
 var time = [
     {"type": "hb", "number": "31", "month": "07"},
     {"type": "christmas", "number": "25", "month": "12"},
-    {"type": "stval", "number": "14", "month": "02"}
+    {"type": "stval", "number": "14", "month": "02"},
+    {"type": "halloween", "number": "31", "month": "10"}
 ];
 
 var current_time = 0;
