@@ -26,10 +26,10 @@ function drawHeader() {
 
   ctx.font = "26px " + hobofont;
   ctx.fillStyle = font_color;
-  drawCenterText(time[current_time].number, calendar.x, calendar.y + calendar.h/2 - 5, calendar.w);
+  drawCenterText(time[current_time].number, calendar.x, calendar.y + calendar.h/2 - 4, calendar.w);
 
   ctx.font = "22px " + hobofont;
-  drawCenterText(time[current_time].month, calendar.x, calendar.y + calendar.h/2 + 25, calendar.w);
+  drawCenterText(time[current_time].month, calendar.x, calendar.y + calendar.h/2 + 23, calendar.w);
 
   drawButton("Gameover", buttons[3].x, buttons[3].y, buttons[3].width, buttons[3].height);
 }
