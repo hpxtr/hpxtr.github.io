@@ -119,14 +119,14 @@ function drawScores() {
     //ctx.fillRect(score_x, score_y-24, 166, 27);
 
     ctx.font = "26px "+ font;
-    ctx.fillStyle = "#E0523C";
-    ctx.fillText(scores.harry.toLocaleString('en-US', {minimumIntegerDigits: 3, useGrouping:false}), score_x, score_y);
+    ctx.fillStyle = "#86618e";
+    ctx.fillText(scores.harry.toLocaleString('en-US', {minimumIntegerDigits: 4, useGrouping:false}), score_x, score_y);
 
-    ctx.fillStyle = "#5BD790";
-    ctx.fillText(scores.tom.toLocaleString('en-US', {minimumIntegerDigits: 3, useGrouping:false}), score_x+60, score_y);
+    ctx.fillStyle = "#548bbb";
+    ctx.fillText(scores.tom.toLocaleString('en-US', {minimumIntegerDigits: 4, useGrouping:false}), score_x+90, score_y);
 
-    ctx.fillStyle = font_color;
-    ctx.fillText(scores.nobody.toLocaleString('en-US', {minimumIntegerDigits: 3, useGrouping:false}), score_x+120, score_y);
+    //ctx.fillStyle = font_color;
+    //ctx.fillText(scores.nobody.toLocaleString('en-US', {minimumIntegerDigits: 3, useGrouping:false}), score_x+120, score_y);
 }
 
 
