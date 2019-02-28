@@ -77,7 +77,7 @@ var gameover = false;
 
 
 function getRandomTile() {
-    var d = was_lucky ? 80 : (time_duration*6 / days_counter);
+    var d = was_lucky ? 100 : (50 + time_duration/(days_counter+1));
     var lucky = Math.floor(Math.random() * d);
     if (lucky == 0) {
         was_lucky = true;
