@@ -44,12 +44,7 @@ window.onload = function () {
         renderBolt();
 
         if(days_counter > time_duration){
-            days_counter = 0;
-            was_lucky = false;
-            current_time++;
-            if(current_time >= time.length){
-                current_time = 0;
-            }
+            nextDate();
         }
         /*if(debug){
          ctx.font = "14px Verdana";
@@ -364,6 +359,15 @@ function mouseSwap(c1, r1, c2, r2) {
     gamestate = gamestates.resolve;
 }
 
+function nextDate() {
+  days_counter = 0;
+  was_lucky = false;
+  current_time++;
+  if(current_time >= time.length){
+    current_time = 0;
+  }
+}
+
 function onTouchStart(evt) {
     var pos = getTouchPos(canvas, evt);
     var mt = getMouseTile(pos);
@@ -459,8 +463,8 @@ function onMouseDown(e) {
                 buttons[0].pressed = true;
                 newGame();
                 bolt(e);
-            } else if (gameover && i == 1) {
-                // love = true;
+            } else if (i == 1) {
+                nextDate();
             } else if (gameover && i == 2) {
                 // death = true;
             } else if (i == 3) {

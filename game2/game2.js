@@ -38,8 +38,8 @@ var scores = {
 
 var buttons = [
     {x: 275, y: 90, width: 95, height: 45, text: "New Game", pressed: false},
-    {x: level.x + 80, y: level.y + 200, width: 150, height: 50, text: "Love"},
-    {x: level.x + 320, y: level.y + 200, width: 150, height: 50, text: "Kill"},
+    {x: 100, y: 100, width: 300, height: 300, text: "Calendar"},
+    {x: level.x + 320, y: level.y + 200, width: 150, height: 50, text: "Nothing"},
     {x: 400, y: 160, width: 75, height: 40, text: "Win"}
 ];
 
