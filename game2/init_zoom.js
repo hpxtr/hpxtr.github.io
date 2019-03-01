@@ -332,8 +332,8 @@ function shiftTiles() {
 // Get the tile under the mouse
 function getMouseTile(pos) {
     // Calculate the index of the tile
-    var tx = Math.floor((pos.x - level.x) / (level.tilewidth*0.8));
-    var ty = Math.floor((pos.y - level.y) / (level.tileheight*0.8));
+    var tx = Math.floor((pos.x - level.x) / level.tilewidth);
+    var ty = Math.floor((pos.y - level.y) / level.tileheight);
 
     // Check if the tile is valid
     if (tx >= 0 && tx < level.columns && ty >= 0 && ty < level.rows) {
@@ -525,9 +525,9 @@ function getMousePos(canvas, e) {
     var rect = canvas.getBoundingClientRect();
     return {
         x: Math.round(
-            (e.clientX - rect.left) / (rect.right - rect.left) * canvas.width),
+            (e.clientX/0.8 - rect.left) / (rect.right - rect.left) * canvas.width),
         y: Math.round(
-            (e.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height)
+            (e.clientY/0.8 - rect.top) / (rect.bottom - rect.top) * canvas.height)
     };
 }
 
@@ -536,10 +536,10 @@ function getTouchPos(canvas, e) {
     var rect = canvas.getBoundingClientRect();
     return {
         x: Math.round(
-            (e.changedTouches[0].pageX - rect.left) / (rect.right - rect.left)
+            (e.changedTouches[0].pageX/0.8 - rect.left) / (rect.right - rect.left)
             * canvas.width),
         y: Math.round(
-            (e.changedTouches[0].pageY - rect.top) / (rect.bottom - rect.top)
+            (e.changedTouches[0].pageY/0.8 - rect.top) / (rect.bottom - rect.top)
             * canvas.height)
     };
 }
