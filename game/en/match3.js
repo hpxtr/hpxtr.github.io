@@ -404,13 +404,13 @@ window.onload = function () {
         context.font = "20px Verdana";
 
         if (win) {
-          drawCenterText("Gc! You completed Voldemort puzzle!", level.x,
+          drawCenterText("Graz! You completed Voldemort puzzle!", level.x,
               buttons[1].y - 60, levelwidth);
           drawCenterText("What to do with him?", level.x, buttons[1].y - 20,
               levelwidth);
-          drawButton("Love", buttons[1].x, buttons[1].y, buttons[1].width,
+          drawButton("To love", buttons[1].x, buttons[1].y, buttons[1].width,
               buttons[1].height);
-          drawButton("Die", buttons[2].x, buttons[2].y, buttons[2].width,
+          drawButton("To kill", buttons[2].x, buttons[2].y, buttons[2].width,
               buttons[2].height);
         }
         else {
