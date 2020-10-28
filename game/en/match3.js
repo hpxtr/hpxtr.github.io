@@ -85,21 +85,21 @@ window.onload = function () {
     {
       type: "ring",
       value: 0,
-      img: "img/ring.png",
+      img: "game/img/ring.png",
       selected: "",
       probability: 20
     },
     {
       type: "diary",
       value: 0,
-      img: "img/diary.png",
+      img: "game/img/diary.png",
       selected: "diary_s.png",
       probability: 17
     },
     {
       type: "locket",
       value: 0,
-      img: "img/locket.png",
+      img: "game/img/locket.png",
       selected: "",
       probability: 15
     },
@@ -107,18 +107,18 @@ window.onload = function () {
     {
       type: "diadem",
       value: 0,
-      img: "img/diadem.png",
+      img: "game/img/diadem.png",
       selected: "",
       probability: 13
     },
     {
       type: "snake",
       value: 0,
-      img: "img/snake.png",
+      img: "game/img/snake.png",
       selected: "",
       probability: 12
     },
-    {type: "scar", value: 0, img: "img/scar.png", selected: "", probability: 10}
+    {type: "scar", value: 0, img: "game/img/scar.png", selected: "", probability: 10}
   ];
 
   // Animation variables
@@ -404,19 +404,19 @@ window.onload = function () {
         context.font = "20px Verdana";
 
         if (win) {
-          drawCenterText("Поздравляем, вы собрали Волдеморта!", level.x,
+          drawCenterText("Gc! You completed Voldemort puzzle!", level.x,
               buttons[1].y - 60, levelwidth);
-          drawCenterText("Что делать?", level.x, buttons[1].y - 20,
+          drawCenterText("What to do with him?", level.x, buttons[1].y - 20,
               levelwidth);
-          drawButton("Любить", buttons[1].x, buttons[1].y, buttons[1].width,
+          drawButton("Love", buttons[1].x, buttons[1].y, buttons[1].width,
               buttons[1].height);
-          drawButton("Прибить", buttons[2].x, buttons[2].y, buttons[2].width,
+          drawButton("Die", buttons[2].x, buttons[2].y, buttons[2].width,
               buttons[2].height);
         }
         else {
-          drawCenterText("У вас не вышло собрать все крестражи.", level.x,
+          drawCenterText("You loose", level.x,
               buttons[1].y - 40, levelwidth);
-          drawCenterText("Попробуйте еще раз!", level.x, buttons[1].y + 10,
+          drawCenterText("Try again!", level.x, buttons[1].y + 10,
               levelwidth);
         }
       }
@@ -472,7 +472,7 @@ window.onload = function () {
     var images = [];
     for (var i = 0; i < horcruxes.length; i++) {
       var image = new Image(horcrux_w, horcrux_h);
-      image.src = "img/top/" + horcruxes[i].type + (horcruxes[i].value+1) + ".png";
+      image.src = "game/img/top/" + horcruxes[i].type + (horcruxes[i].value+1) + ".png";
       context.imageSmoothingEnabled = false;
       context.webkitImageSmoothingEnabled = false;
       context.mozImageSmoothingEnabled = false;
