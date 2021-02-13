@@ -1,0 +1,16 @@
+{
+"companyName": "Ishtarborisovna",
+"productName": "Runes",
+"productVersion": "1.1",
+"dataUrl": "BuildRunesMobil.data.unityweb",
+"wasmCodeUrl": "BuildRunesMobil.wasm.code.unityweb",
+"wasmFrameworkUrl": "BuildRunesMobil.wasm.framework.unityweb",
+"graphicsAPI": ["WebGL 2.0","WebGL 1.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"splashScreenStyle": "Dark",
+"backgroundColor": "#47394C",
+"cacheControl": {"default": "must-revalidate"},
+"developmentBuild": false,
+"multithreading": false,
+"unityVersion": "2019.3.13f1"
+}
